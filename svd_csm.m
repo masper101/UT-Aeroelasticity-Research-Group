@@ -1,16 +1,22 @@
 function [varargout] = svd_csm(x,fs)
 %Computes the singular value decomposition plot of the cross-power spectral density matrix
-% 
-% input: 
-%           x:    measurements [N x dof]
-%          fs:    scalar [Hz]
-% output: 
-%           []:   plot of singular value spectra
-%         [sv]:   returns matrix sv containing singular value spectra
-%       [sv,f]:   returns matrix sv as well as a frequency vector
+% This is used to determine the existence of closely spaced modes in vibration tests. A set
+% of N measurement channels (e.g. accelerometers) is used to create a single figure containing 
+% all relevant information, by performing singular value decomposition of the matrix of cross-power
+% densities.
 %
 % Author: Marc Eitner
 % Created: Jan 2020
+%
+% Input: 
+%           x:    measurements [N x dof]
+%          fs:    scalar [Hz]
+% Output: 
+%           []:   plot of singular value spectra
+%         [sv]:   returns matrix sv containing singular value spectra
+%       [sv,f]:   returns matrix sv as well as a frequency vector
+
+
 
 
 % compute the power spectral density matrix. The diagonal entries are the
