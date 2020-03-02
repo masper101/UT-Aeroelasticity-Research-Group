@@ -82,13 +82,13 @@ for k = 1:length(StreamData.names)
     StreamData.Fz_inner{k} = data{:,9};         %I
     StreamData.Mx_inner{k} = data{:,10};        %J
     StreamData.My_inner{k} = data{:,11};        %K
-    StreamData.Mz_inner{k} = data{:,12}* -1;    %L
+    StreamData.Mz_inner{k} = data{:,12};        %L
     
     StreamData.encoder{k} = data{:,15};         %O
     StreamData.revolution{k} = data{:,16};      %P
     StreamData.trigger{k} = data{:,17};         %Q
     StreamData.RPM{k} = data{:,18};             %R
-    if (flip)
+    if (~flip)
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
     end
 end
