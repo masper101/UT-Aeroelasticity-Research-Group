@@ -9,7 +9,6 @@ clear; clc; %close all
 %     directory         -> location of streaming data files + corresponding mean data files 
 %                        mean data files only required for writing to xlxs file
 %     conditons = [Temperature [F], % Humidity, Pressure[in-Hg]]
-%     Nblade    = 2 or 4
 %     flip      = true  -> inner load cell in same oriendtation as outer load cell
 %               = false -> inner load cell is flipped with reference to outer load cell (small axial spacings)
 %     filename          -> xlxs file name to write data to
@@ -33,17 +32,16 @@ clear; clc; %close all
 
 %% INPUTS
 
-directory = '/Users/cmj2855/Box Sync/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/Isolated';
-conditions = [76.1	54	29.11]; %[T(Farhen), % humidity, P(in.Hg)]
-Nblade = 4;
+directory = '/Users/cmj2855/Box Sync/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/4 bladed';
+conditions = [45	54	29.11]; %[T(Farhen), % humidity, P(in.Hg)]
 flip = true;
-filename = 'IsolatedRotor_Outdoors_200228.xlsx';
+filename = 'IsolatedRotor_Outdoors_200227.xlsx';
 write_directory = '/Users/cmj2855/Box Sync/Chloe Lab Stuff/Acoustics Spring 2020/Compiled Data';
 
 %% PROCESS
 
 [MeanData,StreamData] = LoadData(directory,flip);
-[StreamData,SortedData] = SortStream(StreamData, conditions,Nblade);
+[StreamData,SortedData] = SortStream(StreamData, conditions);
 % SortedData = CheckCorrelation(SortedData);
 RevData = RevolutionAvg(SortedData);
 AvgData = TotalAvg(RevData,StreamData);

@@ -1,8 +1,7 @@
-function [StreamData, SortedData] = SortStream(StreamData, conditions, Nblade)
+function [StreamData, SortedData] = SortStream(StreamData, conditions)
 % INPUTS
 %     StreamData
 %     conditions = [Temperature [F], % Humidity, Prassure [in-hg]]
-%     Nblade = 2 or 4
 % OUTPUTS
 %     StreamData -> adds caluclated variables to StreamData
 %                     .sigma
@@ -35,6 +34,7 @@ function [StreamData, SortedData] = SortStream(StreamData, conditions, Nblade)
 
 StreamData.R = 1.108;
 c = 0.08;
+Nblade = 2;
 StreamData.sigma = StreamData.R*c*Nblade / (pi*StreamData.R^2);
 
 T = (conditions(1) - 32)*5/9 + 273.15; % [Kelvin]
