@@ -2,7 +2,9 @@ PROCESSES STREAMING DATA AND MEAN DATA FILE, (CHECKS CORRELATION OF DATA
 FOR ERRORS IN RECODING (MOTOR BUMPS) - on going), WRITES TO XLXS FILE
 
 ** CONFIGURED FOR ELECTRIC DRIVE LABVIEW CSV FILES **
-
+RUN
+    ProcMisc.mat
+    
 INPUTS
     directory         -> location of streaming data files + corresponding mean data files 
                        mean data files only required for writing to xlxs file
