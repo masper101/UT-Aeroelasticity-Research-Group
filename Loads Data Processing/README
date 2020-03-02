@@ -1,0 +1,79 @@
+PROCESSES STREAMING DATA AND MEAN DATA FILE, (CHECKS CORRELATION OF DATA
+FOR ERRORS IN RECODING (MOTOR BUMPS) - on going), WRITES TO XLXS FILE
+
+** CONFIGURED FOR ELECTRIC DRIVE LABVIEW CSV FILES **
+
+INPUTS
+    directory         -> location of streaming data files + corresponding mean data files 
+                       mean data files only required for writing to xlxs file
+    conditons = [Temperature [F], % Humidity, Pressure[in-Hg]]
+    Nblade    = 2 or 4
+    flip      = true  -> inner load cell in same oriendtation as outer load cell
+              = false -> inner load cell is flipped with reference to outer load cell (small axial spacings)
+    filename          -> xlxs file name to write data to
+    write_directory   -> location to write xlsx file to
+
+OUTPUTS
+    MeanData          -> structure containing each mean data file
+    StreamData        -> structure containing info from streaming data
+                         files; each cell = one mean data file
+    SortedData        -> structure containing streaming data sorted into matrices;
+                         each cell = one mean data file; each row matrix = one revolution
+                         calculates ct/sigma,cp/sigma, and FM's
+    RevData           -> cells containg structure of azimuthally averaged data 
+                         1 cell for each data set
+                         each cell contains avg and err for each variable in RevData
+    AvgData           -> single cell containing avgerage and error of
+                         each calculated variale in single streaming data file
+    XLSX FILE         -> with given file name, compiles data from AvgData
+                         and test conditions (colelctive, index angle, axial spacing) 
+                         from MeanData
+                         
+** MEAN DATA FILES AND STREAM DATA FILES HAVE COLUMNS DEFINED BELOW. **
+IF THESE ARE DIFFERENT, CHANGE MEAN DATA COLUMNS IN CompileData.mat AND STREAM DATA COLUMNS IN LoadData.mat
+
+    MEAN DATA FILES       
+       COLUMN 1     RPM
+       COLUMN 2     mean collective
+       COLUMN 3     differential collective
+       COLUMN 4     index angle
+       COLUMN 5     axial spacing
+       COLUMN 6     Fx_inner
+       COLUMN 7     Fy_inner
+       COLUMN 8     Fz_inner
+       COLUMN 9     Mx_inner
+       COLUMN 10    My_inner
+       COLUMN 11    Mz_inner
+       COLUMN 12    Fx_outer 
+       COLUMN 13    Fy_outer
+       COLUMN 14    Fz_outer
+       COLUMN 15    Mx_outer
+       COLUMN 16    My_outer
+       COLUMN 17    Mz_outer
+       COLUMN 18    |Ax| 
+       COLUMN 19    arg(Ax)	
+       COLUMN 20    |Ay|	
+       COLUMN 21    arg(Ay)
+       COLUMN 22    lower colelctive
+       COLUMN 23    upper collective
+       COLUMN 24    time stamp
+       COLUMN 25    corresponding streaming data file
+
+    STREAM DATA FILES
+       COLUMN 1     Fx_outer     
+       COLUMN 2     Fy_outer
+       COLUMN 3     Fz_outer
+       COLUMN 4     Mx_outer
+       COLUMN 5     My_outer
+       COLUMN 6     Mz_outer
+       COLUMN 7     Fx_inner
+       COLUMN 8     Fy_inner
+       COLUMN 9     Fz_inner
+       COLUMN 10    Mx_inner
+       COLUMN 11    My_inner
+       COLUMN 12    Mz_inner
+       COLUMN 15    encoder      -> azimuthal location of data point
+       COLUMN 16    revolution   -> revolution number
+       COLUMN 17    trigger      -> 0 = pre-trigger, 1 = post-trigger
+       COLUMN 18    RPM          -> RPM recorded by labview
+
