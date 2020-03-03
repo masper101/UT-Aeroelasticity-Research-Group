@@ -1,0 +1,31 @@
+PROCESS FULL TEST ACOUSTICS DATA USING CALIBRATION DATA FILES AND DATA FILES
+PLOTS MIC 9 FOR EACH TEST
+
+INPUTS
+    caldate                 -> calibration test date
+    calletter               -> calibration test letter
+    calsuffix               -> [] or anything added to end of "cal"
+    testdate                -> data test date
+    testletter              -> data test letter
+    Ntests                  -> number of tests taken for test_"testletter"
+    plots = true or false   -> plots calibration files
+    filename                -> name of calibration xlsx sheet
+    dir                     -> location of calibration xlsx sheet
+
+OUTPUTS
+    caldata
+        .scale              -> max magnitude of wav file at desired calibration frequency
+        .calmag
+        .tvec
+        .wavdata
+        .fs
+        .fvec
+    testdata
+        .fvec
+        .fs
+        .wavdata
+        .tvec
+        .testmag
+        .Pdata [Pa]
+        .dbdata
+    XLSX FILE               -> file containing calibration factors
