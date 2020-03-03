@@ -1,6 +1,10 @@
 PROCESS FULL TEST ACOUSTICS DATA USING CALIBRATION DATA FILES AND DATA FILES
 PLOTS MIC 9 FOR EACH TEST
 
+RUN
+    ProcFullTest_Acoustics  -> runs a full test: 1 to Ntests
+    ProcMisc_Acoustics      -> runs a single test
+
 INPUTS
     caldate                 -> calibration test date
     calletter               -> calibration test letter
