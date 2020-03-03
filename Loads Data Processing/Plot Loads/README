@@ -1,10 +1,10 @@
 PLOTTING FROM XLSX FILE: 
 
-RUN:
+RUN
   plotcpsvscts.mat
   plotctsvscol.mat
   
-INPUTS:
+INPUTS
   name      -> name of file 'XXX.xlsx'
   phi_des   -> desired index angle to plot
   RPM_des   -> desired RPM to plot
