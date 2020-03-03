@@ -1,0 +1,11 @@
+PLOTTING FROM XLSX FILE: 
+
+RUN:
+  plotcpsvscts.mat
+  plotctsvscol.mat
+  
+INPUTS:
+  name      -> name of file 'XXX.xlsx'
+  phi_des   -> desired index angle to plot
+  RPM_des   -> desired RPM to plot
+  isolated  -> true or false (true will plot only upper rotor)
