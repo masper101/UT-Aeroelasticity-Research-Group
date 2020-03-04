@@ -7,7 +7,6 @@ function caldata = CalFactor(caldata, cal_db)
 %
 % OUTPUTS
 %     caldata.calfactor    -> calibration factor, mulitply wav files by factor to get mic pressure
-    
 
 
 P_ref = 20e-6;

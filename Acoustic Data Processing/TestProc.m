@@ -30,6 +30,8 @@ for micnum = 1:16
         
         testdata(micnum).Pdata = testdata(micnum).testmag * caldata(micnum).calfactor /2; %PRESSURE DOUBLING AT RIGID SURFACE
         testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref); 
+        testdata(micnum).oaspl = OverallSPL(testdata(micnum).Pdata); 
+        
     end
 end
 
