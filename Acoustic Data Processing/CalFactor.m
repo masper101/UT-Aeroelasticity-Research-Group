@@ -11,7 +11,7 @@ function caldata = CalFactor(caldata, cal_db)
 
 
 P_ref = 20e-6;
-cal_P = 10^(cal_db / 20) * P_ref;
+cal_P = 10^(cal_db / 20) * P_ref * sqrt(2);
 
 for micnum = 1:16
     caldata(micnum).calfactor = cal_P / caldata(micnum).scale;
