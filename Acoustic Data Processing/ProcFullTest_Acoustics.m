@@ -40,7 +40,7 @@ calplots = false;
 cal_db = 114;
 
 testdate = '200227';
-testletter = 'b';
+testletter = 'a';
 Ntests = 8;
 plots = false;
 
@@ -59,6 +59,9 @@ for n = 1:Ntests
     
     figure()
     semilogx(tests(n).testdata(9).fvec, tests(n).testdata(9).dbdata)
+    hold on
+    semilogx(tests(n).testdata(9).ofilt12_fvec, tests(n).testdata(9).ofilt12_dbdata,'LineWidth', 1.2)
+    semilogx(tests(n).testdata(9).ofilt3_fvec, tests(n).testdata(9).ofilt3_dbdata, 'LineWidth',1.2)
     xlim([10^1 10^4]);
     disp(testname)
 %     disp('press space to continue')
