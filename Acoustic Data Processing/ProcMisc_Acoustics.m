@@ -10,6 +10,7 @@
 %     plots = true or false   -> plots calibration files
 %     filename                -> name of calibration xlsx sheet
 %     dir                     -> location of calibration xlsx sheet
+%     dirname                 -> location of calibration xlsx sheet
 % 
 % OUTPUTS
 %     caldata
