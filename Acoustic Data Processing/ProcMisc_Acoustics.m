@@ -60,3 +60,4 @@ testletter = 'd';
 filename = [testdate '_test_' testletter '_MicCalibration.xlsx'];
 dir = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
 CompileCalFactors(caldata,filename,dir)
+dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
