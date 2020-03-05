@@ -1,4 +1,3 @@
-% PROC MISC ACCCOUSTICS
 % PROC MISC ACOUSTICS
 % CMJOHNSON 03/03/2020
 % PROCESS SINGLE TEST ACOUSTIC DATA FILES USING CALIBRATION DATA FILES AND DATA FILES
@@ -9,7 +8,6 @@
 %     calsuffix               -> [] or anything added to end of "cal"
 %     plots = true or false   -> plots calibration files
 %     filename                -> name of calibration xlsx sheet
-%     dir                     -> location of calibration xlsx sheet
 %     dirname                 -> location of calibration xlsx sheet
 % 
 % OUTPUTS
@@ -58,7 +56,5 @@ xlim([10^1 10^4]);
 %% COMPILE CAL FACTORS
 testletter = 'd';
 filename = [testdate '_test_' testletter '_MicCalibration.xlsx'];
-dir = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
-CompileCalFactors(caldata,filename,dir)
 dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
 CompileCalFactors(caldata,filename,dirname);
