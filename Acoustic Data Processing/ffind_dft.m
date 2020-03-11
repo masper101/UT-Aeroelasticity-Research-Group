@@ -1,4 +1,3 @@
-function [fvec, magVs, psdVs, dftVsc] = ffind_dft(tvec, Vs, winlen)
 function [fvec, magVs, psdVs, dftVs2] = ffind_dft(tvec, Vs, winlen)
 %--------------------------------------------------------------------------
 % function to return dft and frequency vector of a time signal
