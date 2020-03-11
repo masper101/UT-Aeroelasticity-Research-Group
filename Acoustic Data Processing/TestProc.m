@@ -19,7 +19,7 @@ function testdata = TestProc(testdate, testletter, plots, caldata)
 Pref = 20E-6; %[Pa]
 testdata = struct('dbdata',[],'Pdata',[],'testmag',[],'tvec',[],'wavdata',[],'fs',[],'fvec',[]);
 testprefix = [testdate '_test_' testletter ' - 01 Start - '];
-
+Afilt = WeightingFilter('A-weighting',48000);
 % read the test files
 for micnum = 1:16
     fname = [testprefix num2str(micnum) '.wav'];
@@ -29,7 +29,19 @@ for micnum = 1:16
         [testdata(micnum).fvec, testdata(micnum).testmag, ~, ~] = ffind_dft(testdata(micnum).tvec, testdata(micnum).wavdata, 0);
         
         testdata(micnum).Pdata = testdata(micnum).testmag * caldata(micnum).calfactor /2; %PRESSURE DOUBLING AT RIGID SURFACE
-        testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref); 
+        testdata(micnum).APdata = Afilt(testdata(micnum).Pdata);
+        
+        [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata] = OctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,12);
+        [testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata] = OctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,3);
+        
+        testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref);
+        testdata(micnum).dbAdata = 20*log10(testdata(micnum).APdata/Pref);
+        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref); 
+        testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref); 
+        
+        testdata(micnum).oaspl = OverallSPL(testdata(micnum).Pdata); 
+        testdata(micnum).oaspla = OverallSPL(testdata(micnun).APdata);
+        
     end
 end
 
