@@ -1,5 +1,5 @@
-% PROC MISC ACCCOUSTICS 
-% CMJOHNSON 03/25/2020
+% PROC MISC ACCCOUSTICS SAVE MEMORY
+% CMJOHNSON 03/03/2020
 % PROCESS SINGLE TEST ACOUSTIC DATA FILES USING CALIBRATION DATA FILES AND DATA FILES
 % 
 % INPUTS
@@ -13,49 +13,35 @@
 % OUTPUTS
 %     caldata
 %         .scale              -> max magnitude of wav file at desired calibration frequency
-%         .calmag
-%         .tvec
-%         .wavdata
-%         .fs
-%         .fvec
+%         .calfactor
 %     testdata
 %         .fvec
-%         .fs
-%         .wavdata
-%         .tvec
-%         .testmag
-%         .Pdata [Pa]
-%         .Pdata_t [Pa]       -> Pressure in time domain
 %         .dbdata
-%         .ofilt12_dbdata
-%         .ofilt3_dbdata
-%         .oaspl
 
 clear; clc; %close all;      
-dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200208/Audio Files';
+dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
 
 chdir(dirname)
 %% CALIBRATION 
 % INPUTS
-caldate = '200208';
+caldate = '200227';
 calletter = 'a';
 calsuffix = [];
-calplots = false;
 cal_db = 114;
 
-caldata = CalProc(caldate, calletter,calsuffix,cal_db, calplots);
+caldata = CalProc_SaveMem(caldate, calletter,calsuffix, cal_db);
 
 %% DATA
-testdate = '200208';
-testletter = 'a_3';
-plots = false;
-testdata = TestProc(testdate,testletter,plots, caldata);
+testdate = '200227';
+testletter = 'b_4';
+testdata = TestProc_SaveMem(testdate,testletter, caldata);
 
+%% PLOT
 figure(22)
 semilogx(testdata(9).fvec, testdata(9).dbdata)
 hold on
-semilogx(testdata(9).fvec, testdata(9).dbAdata)
-
+l = semilogx(testdata(9).fvec, testdata(9).dbAdata);
+l.Color(4)=0.3;
 xlim([10^1 10^4]);
 
 

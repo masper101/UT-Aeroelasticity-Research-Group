@@ -1,4 +1,4 @@
-function caldata = CalFactor(caldata, cal_db)
+function calfactor = CalFactor(caldata, cal_db,  micnum)
 % CALCULATES CALIBRATION FACTOR IN [Pa /.WAV UNITS]
 % CMJOHNSON 03/03/2020
 % INPUTS
@@ -12,6 +12,4 @@ function caldata = CalFactor(caldata, cal_db)
 P_ref = 20e-6;
 cal_P = 10^(cal_db / 20) * P_ref * sqrt(2);
 
-for micnum = 1:16
-    caldata(micnum).calfactor = cal_P / caldata(micnum).scale;
-end
+calfactor = cal_P / caldata(micnum).scale;
