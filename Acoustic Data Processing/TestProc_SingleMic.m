@@ -1,10 +1,11 @@
-function testdata = TestProc(testdate, testletter, plots, caldata)
+function testdata = TestProc_SingleMic(testdate, testletter,micnums, caldata, plots)
 % READ AND CONVERT TEST FILES INTO DB VALUES, PLOT EACH MIC
 % CMJOHNSON 03/25/2020
 % INPUTS
 %     caldata                 -> get calibration factors
 %     testdate
 %     testletter
+%     micnums
 %     plots = true or false
 % OUTPUTS
 %     testdata
@@ -27,7 +28,7 @@ testdata = struct('dbdata',[],'Pdata',[],'Pdata_t',[],'testmag',[],'tvec',[],'wa
 testprefix = [testdate '_test_' testletter ' - 01 Start - '];
 % Afilt = WeightingFilter('A-weighting',48000);
 % read the test files
-for micnum = 1:16
+for micnum = micnums
     fname = [testprefix num2str(micnum) '.wav'];
     if isfile(fname)
         [testdata(micnum).wavdata, testdata(micnum).fs] = audioread(fname);
@@ -56,57 +57,34 @@ end
 if (plots)
     %TIME DOMAIN
     figure(1)
-    for micnum = 1:8
-        subplot(8,1,micnum)
+    for micnum = micnums
+        subplot(length(micnums),1,micnum)
         plot(testdata(micnum).tvec, testdata(micnum).wavdata)
         axis([0 1 -0.5 0.5]);
         legend(['Mic ' num2str(micnum)]);
     end
     xlabel('Time, s')
     
-    figure(2)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        plot(testdata(micnum).tvec, testdata(micnum).wavdata)
-        axis([0 1 -0.5 0.5]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Time, s')
     
     %FREQ DOMAIN
     figure(11)
-    for micnum = 1:8
-        subplot(8,1,micnum)
+    for micnum = micnums
+        subplot(length(micnums),1,micnum)
         semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
         xlim([10^1 10^4]);
         legend(['Mic ' num2str(micnum)]);
     end
     xlabel('Frequency, Hz')
     
-    figure(12)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
     
     figure(13)
-    for micnum = 1:8
-        subplot(8,1,micnum)
+    for micnum = micnums
+        subplot(length(minnums),1,micnum)
         semilogx(testdata(micnum).fvec, testdata(micnum).dbAdata)
         xlim([10^1 10^4]);
         legend(['Mic ' num2str(micnum)]);
     end
     xlabel('Frequency, Hz')
     
-    figure(14)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbAdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
+
 end
