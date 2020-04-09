@@ -76,7 +76,7 @@ for k = 1:length(StreamData.names)
     StreamData.Fz_outer{k} = data{:,3} * -1;    %C
     StreamData.Mx_outer{k} = data{:,4};         %D
     StreamData.My_outer{k} = data{:,5};         %E
-    StreamData.Mz_outer{k} = data{:,6} * -1;    %F
+    StreamData.Mz_outer{k} = data{:,6};         %F
     StreamData.Fx_inner{k} = data{:,7};         %G
     StreamData.Fy_inner{k} = data{:,8};         %H
     StreamData.Fz_inner{k} = data{:,9};         %I
@@ -86,10 +86,12 @@ for k = 1:length(StreamData.names)
     
     StreamData.encoder{k} = data{:,15};         %O
     StreamData.revolution{k} = data{:,16};      %P
-    StreamData.trigger{k} = data{:,17};         %Q
-    StreamData.RPM{k} = data{:,18};             %R
+%     StreamData.trigger{k} = data{:,17};         %Q
+%     StreamData.RPM{k} = data{:,18};             %R
     if (~flip)
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
+     else
+        StreamData.Mz_outer{k} = StreamData.Mz_outer{k}*-1; 
     end
 end
     

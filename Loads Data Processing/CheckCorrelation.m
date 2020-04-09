@@ -18,8 +18,14 @@ for k = 1:length(RevData.Fx_outer)
 %         hold on
 %         plot(RevData.Mz_inner{k}(i,:))
 %     end
-    plot(RevData.Mz_outer{k}(R,:),'o')
-    plot(RevData.Mz_inner{k}(R,:),'o')
+if sum(R) > 0
+    sum(R)
+    plot(RevData.FM_outer{k}(R,:)','o')
+    pause
+    plot(RevData.FM_inner{k}(R,:)','o')
+    pause
+end
+
     RevData.Fx_outer{k}(R,:) = [];
     RevData.Fy_outer{k}(R,:) = [];
     RevData.Fz_outer{k}(R,:) = [];

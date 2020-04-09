@@ -1,4 +1,4 @@
-function RevData = RevolutionAvg(SortedData)
+function RevData = RevolutionAvg(SortedData,StreamData)
 % AVERAGES DATA INTO A SINGLE REVOLUTION
 %
 % INPUTS
@@ -47,9 +47,11 @@ function RevData = RevolutionAvg(SortedData)
 %                     .err_FM_tot 
 
 
-
 for k = 1:length(SortedData.Fx_inner)
-    
+    OMEGA = nanmean(StreamData.OMEGA{k});
+    ct_bias = 8 ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA*StreamData.R).^2 / StreamData.sigma;
+    cp_bias = 0.48 ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA*StreamData.R).^2 /StreamData.R / StreamData.sigma;
+
     RevData{k}.avg_check = nanmean(SortedData.check{k});
     RevData{k}.avg_Fx_outer = nanmean(SortedData.Fx_outer{k});
     RevData{k}.avg_Fy_outer = nanmean(SortedData.Fy_outer{k});
@@ -90,6 +92,12 @@ for k = 1:length(SortedData.Fx_inner)
     RevData{k}.err_cps_outer = nanstd(SortedData.cps_outer{k})*1.96;
     RevData{k}.err_cts_inner = nanstd(SortedData.cts_inner{k})*1.96;
     RevData{k}.err_cps_inner = nanstd(SortedData.cps_inner{k})*1.96;
+  
+    RevData{k}.toterr_cts_outer = sqrt(RevData{k}.err_cts_outer.^2 + ct_bias.^2);
+    RevData{k}.toterr_cps_outer = sqrt(RevData{k}.err_cps_outer.^2 + cp_bias.^2);
+    RevData{k}.toterr_cts_inner = sqrt(RevData{k}.err_cts_inner.^2 + ct_bias.^2);
+    RevData{k}.toterr_cps_inner = sqrt(RevData{k}.err_cps_inner.^2 + cp_bias.^2);
+    
 
     RevData{k}.err_FM_outer = nanstd(SortedData.FM_outer{k})*1.96;
     RevData{k}.err_FM_inner = nanstd(SortedData.FM_inner{k})*1.96;
