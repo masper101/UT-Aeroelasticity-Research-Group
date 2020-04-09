@@ -56,14 +56,11 @@ plot([AvgData.avg_cps_outer{1:9}],[AvgData.avg_cts_outer{1:9}], '^','color',colo
 plot([AvgData.avg_cps_total{1:9}],[AvgData.avg_cts_total{1:9}], 'o','color',colors{1})
 
 figure()
-for i = 1:length(RevData) %THIS MAKES A LOT OF SUBPLOTS, SO CHANGE 1:length() FOR REASONABLE FIG
-    psi = linspace(0,360,length(RevData{i}.avg_cts_outer));
-    subplot(length(RevData),2,2*i-1)
-    plot_confidenceint(psi, RevData{i}.avg_cts_outer, RevData{i}.err_cts_outer, colors{5})
-    subplot(length(RevData),2,2*i)
-    plot_confidenceint(psi, RevData{i}.avg_cps_outer, RevData{i}.err_cps_outer, colors{5})
-end
-
+for i = 1:length(RevData)
+    psi = length(RevData{i}.cts_outer
+subplot(length(RevData),2,2*i-1)
+plot(RevData.
+subplot(length(RevData),2,2*i)
 
 
 %% WRITE TO FILE
