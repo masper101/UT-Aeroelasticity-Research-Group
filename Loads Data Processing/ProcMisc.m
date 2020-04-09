@@ -43,7 +43,7 @@ write_directory = '/Users/cmj2855/Box Sync/Chloe Lab Stuff/Acoustics Spring 2020
 [MeanData,StreamData] = LoadData(directory,flip);
 [StreamData,SortedData] = SortStream(StreamData, conditions);
 % SortedData = CheckCorrelation(SortedData);
-RevData = RevolutionAvg(SortedData);
+RevData = RevolutionAvg(SortedData,StreamData);
 AvgData = TotalAvg(RevData,StreamData);
 
 %% PLOT
