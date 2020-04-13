@@ -32,8 +32,8 @@ clear; clc; %close all
 
 %% INPUTS
 
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/Isolated';
-conditions = [34	54	29.11]; %[T(Farhen), % humidity, P(in.Hg)]
+directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200208/Loads Files/Relevant Loads';
+conditions = [54	54	29.11]; %[T(Farhen), % humidity, P(in.Hg)]
 flip = true;
 filename = 'IsolatedRotor_Outdoors_200227.xlsx';
 % write_directory = '/Users/cmj2855/Box Sync/Chloe Lab Stuff/Acoustics Spring 2020/Compiled Data';
@@ -56,7 +56,8 @@ plot([AvgData.avg_cps_outer{1:9}],[AvgData.avg_cts_outer{1:9}], '^','color',colo
 plot([AvgData.avg_cps_total{1:9}],[AvgData.avg_cts_total{1:9}], 'o','color',colors{1})
 
 figure()
-for i = 1:length(RevData) %THIS MAKES A LOT OF SUBPLOTS, SO CHANGE 1:length() FOR REASONABLE FIG
+for i = 32:34 %THIS MAKES A LOT OF SUBPLOTS, SO CHANGE 1:length() FOR REASONABLE FIG
+    Nplots = length(RevData{i}.avg_cts_outer);
     psi = linspace(0,360,length(RevData{i}.avg_cts_outer));
     subplot(length(RevData),2,2*i-1)
     plot_confidenceint(psi, RevData{i}.avg_cts_outer, RevData{i}.err_cts_outer, colors{5})
