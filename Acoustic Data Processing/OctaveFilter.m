@@ -1,4 +1,4 @@
-function [xfilt,yfilt] = OctaveFilter(fv,fy,octband)
+function [xfilt,yfilt] = OctaveFilter(fv,fy,N)
 % AVERAGES DATA OVER FRACTIONAL OCTAVE BANDS 
 %
 % DLWYLIE 03/03/2020
@@ -7,33 +7,47 @@ function [xfilt,yfilt] = OctaveFilter(fv,fy,octband)
 % INPUTS
 %   fv                  -> unfiltered frequency vector (testdata(micnum).fvec)
 %   fy                  -> unfiltered pressure vector (testdata(micnum).Pdata)
-%   octband             -> octave band to average over (1/12th -> 12), (1/3rd-> 3)
+%   N                   -> octave band to average over (1/12th -> 12), (1/3rd-> 3)
 %
 % OUTPUTS
 %   xfilt               -> filtered frequency vector
 %   yfilt               -> filtered pressure vector
 
-one_octave = [10 22 44 88 177 355 710 1420 2840 5680 10000];
-one_octave = [10 20 40 80 160 320 640 1280 2560 3120 6240 12480 24960];
-band = [];
-% getting octave band boundaries
-for i = 1:length(one_octave)-1
-    X = linspace(one_octave(i),one_octave(i+1),octband+1);
-    band = [band X];
-    for ii = 1:length(band)-1
-        if ii>=length(band)
-            break
-        elseif band(ii+1) - band(ii) ==0        %% ditching repeat values
-            band(ii) = [];
-        end
-    end
+
+%CREATE CENTER FREQUENCIES AND UPPER/LOWER FREQUENCIES
+oct =1000;
+% a = 2^(1/N); %BASE 2
+a = 10^(2/(10*N)); %BASE 10
+
+f_c = [oct];
+% f_a = [oct / 2^(1/(2*N))]; %BASE 2
+f_a = [oct / 10^(2/(10*2*N))]; %BASE 10
+while oct >= 1 
+    oct = oct / a;
+    f_c = [oct f_c];
+    
+    oct_a = f_a(1) / a;
+    f_a = [oct_a f_a];  
 end
-% getting vector of average in each band
-for q = 1:length(band)-1
-    [~,loc1] = min(abs(fv - band(q)));
-    [~,loc2] = min(abs(fv - band(q + 1)));
-    xfilt(q) = (band(q + 1) + band(q))/2;
-    yfilt(q) = mean(fy(loc1:loc2));
+
+while oct<= 24000
+    oct = f_c(end) * a;
+    f_c = [f_c oct];
+    
+    oct_a = f_a(end) * a; 
+    f_a = [f_a oct_a];
 end
+oct_a = f_a(end) * a;
+f_a = [f_a oct_a];
+
+
+%AVERGAE BETWEEN UPPER AND LOWER FREQUENCIES
+xfilt = f_c;
+yfilt = ones(size(f_c))';
+
+for n = 1:length(f_a) - 1
+    [~,loc_f_a] = min(abs(fv - f_a(n)));
+    [~,loc_f_b] = min(abs(fv - f_a(n+1)));
+    yfilt(n) = mean(fy(loc_f_a:loc_f_b));
 end
 
