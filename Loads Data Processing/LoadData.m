@@ -68,7 +68,8 @@ TF = contains(FileName,pattern);
 StreamData.names = FileName(TF);
 
 % PROCESS STREAMING DATA
-addpath(directory)
+eval(['cd ' directory]);
+
 for k = 1:length(StreamData.names)
     data = readtable(StreamData.names{k});
     StreamData.Fx_outer{k} = data{:,1};         %A
@@ -84,14 +85,12 @@ for k = 1:length(StreamData.names)
     StreamData.My_inner{k} = data{:,11};        %K
     StreamData.Mz_inner{k} = data{:,12};        %L
     
-    StreamData.encoder{k} = data{:,15};         %O
-    StreamData.revolution{k} = data{:,16};      %P
-%     StreamData.trigger{k} = data{:,17};         %Q
-%     StreamData.RPM{k} = data{:,18};             %R
+    StreamData.encoder{k} = data{:,13};         %O
+    StreamData.revolution{k} = data{:,14};      %P
+    %StreamData.trigger{k} = data{:,17};         %Q
+    %StreamData.RPM{k} = data{:,18};             %R
     if (~flip)
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
-     else
-        StreamData.Mz_outer{k} = StreamData.Mz_outer{k}*-1; 
     end
 end
     
@@ -99,5 +98,7 @@ end
 for k = 1:length(MeanData.names)
     MeanData.data{k} = readtable(MeanData.names{k}, 'TextType', 'string');
 end
+
+eval(['cd ..']);
 
     
