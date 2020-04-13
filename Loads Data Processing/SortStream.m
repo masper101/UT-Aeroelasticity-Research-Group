@@ -12,6 +12,8 @@ function [StreamData, SortedData] = SortStream(StreamData, conditions)
 %                   each cell = one mean data file; each row matrix = one revolution
 %                   calculates ct/sigma,cp/sigma, and FM's
 %                     .binsize      -> number of points recorded in each revolution
+%                     .encoder      -> azimuthal position
+%                     .instRPM      -> instantaneous rotor speed at each time
 %                     .Fx_outer     -> all data points recorded by labview
 %                     .Fy_outer
 %                     .Fz_outer
@@ -64,6 +66,8 @@ for k = 1:length(StreamData.names)
     count = 1;
     
     SortedData.check{k} = [];    
+    SortedData.encoder{k} = [];
+    SortedData.instRPM{k} = [];    
     SortedData.Fx_outer{k} = [];
     SortedData.Fy_outer{k} = [];
     SortedData.Fz_outer{k} = []; 
@@ -86,11 +90,15 @@ for k = 1:length(StreamData.names)
     SortedData.FM_inner{k} = [];
     SortedData.FM_tot{k} = [];
     
-    a = 0;
     for n = 1:101
         b = StreamData.binsize{k}(n);
 
-        SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';              
+        SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
+        SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
+        az = StreamData.encoder{k}(count:count-1+b)';
+        azdt = wshift('1D', az, 1);
+        instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
+        SortedData.instRPM{k}(n,1:b) = [instRPM 0]; % add one element to get size 1xb
         SortedData.Fx_outer{k}(n,1:b) = StreamData.Fx_outer{k}(count:count-1+b)';      
         SortedData.Fy_outer{k}(n,1:b) = StreamData.Fy_outer{k}(count:count-1+b)';
         SortedData.Fz_outer{k}(n,1:b) = StreamData.Fz_outer{k}(count:count-1+b)';
@@ -107,6 +115,8 @@ for k = 1:length(StreamData.names)
     end
     
     SortedData.check{k}(SortedData.check{k} ==0) = nan;
+    SortedData.encoder{k}(SortedData.encoder{k} ==0) = nan;
+    SortedData.instRPM{k}(SortedData.instRPM{k} ==0) = nan;
     SortedData.Fx_outer{k}(SortedData.Fx_outer{k} ==0) = nan;
     SortedData.Fy_outer{k}(SortedData.Fy_outer{k} ==0) = nan;
     SortedData.Fz_outer{k}(SortedData.Fz_outer{k} ==0) = nan;
