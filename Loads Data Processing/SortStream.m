@@ -61,7 +61,7 @@ for k = 1:length(StreamData.names)
     SortedData.binsize{k} = StreamData.binsize{k};
 end
 
-% CALUCALTE CT/S AND CP/S
+% CALCULATE CT/S AND CP/S
 for k = 1:length(StreamData.names)
     count = 1;
     
@@ -90,55 +90,47 @@ for k = 1:length(StreamData.names)
     SortedData.FM_inner{k} = [];
     SortedData.FM_tot{k} = [];
     
+    bmax = max(SortedData.binsize{k});
+    
     for n = 1:101
-        b = StreamData.binsize{k}(n);
-
-        SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
-        SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
+        b = SortedData.binsize{k}(n);
+        % put in a place holder of -77 to pad the end of each revolution
+        SortedData.check{k}(n,:) = [StreamData.revolution{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.encoder{k}(n,:) = [StreamData.encoder{k}(count:count-1+b)' -77*ones(1,bmax-b)];
         az = StreamData.encoder{k}(count:count-1+b)';
         azdt = wshift('1D', az, 1);
         instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
-        SortedData.instRPM{k}(n,1:b) = [instRPM 0]; % add one element to get size 1xb
-        SortedData.Fx_outer{k}(n,1:b) = StreamData.Fx_outer{k}(count:count-1+b)';      
-        SortedData.Fy_outer{k}(n,1:b) = StreamData.Fy_outer{k}(count:count-1+b)';
-        SortedData.Fz_outer{k}(n,1:b) = StreamData.Fz_outer{k}(count:count-1+b)';
-        SortedData.Mx_outer{k}(n,1:b) = StreamData.Mx_outer{k}(count:count-1+b)';
-        SortedData.My_outer{k}(n,1:b) = StreamData.My_outer{k}(count:count-1+b)';
-        SortedData.Mz_outer{k}(n,1:b) = StreamData.Mz_outer{k}(count:count-1+b)';
-        SortedData.Fx_inner{k}(n,1:b) = StreamData.Fx_inner{k}(count:count-1+b)';
-        SortedData.Fy_inner{k}(n,1:b) = StreamData.Fy_inner{k}(count:count-1+b)';
-        SortedData.Fz_inner{k}(n,1:b) = StreamData.Fz_inner{k}(count:count-1+b)';
-        SortedData.Mx_inner{k}(n,1:b) = StreamData.Mx_inner{k}(count:count-1+b)';
-        SortedData.My_inner{k}(n,1:b) = StreamData.My_inner{k}(count:count-1+b)';
-        SortedData.Mz_inner{k}(n,1:b) = StreamData.Mz_inner{k}(count:count-1+b)';
+        SortedData.instRPM{k}(n,:) = [instRPM -77*ones(1,bmax-b+1)]; % add one element to get size 1xb        
+        SortedData.Fx_outer{k}(n,:) = [StreamData.Fx_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];      
+        SortedData.Fy_outer{k}(n,:) = [StreamData.Fy_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Fz_outer{k}(n,:) = [StreamData.Fz_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Mx_outer{k}(n,:) = [StreamData.Mx_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.My_outer{k}(n,:) = [StreamData.My_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Mz_outer{k}(n,:) = [StreamData.Mz_outer{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Fx_inner{k}(n,:) = [StreamData.Fx_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Fy_inner{k}(n,:) = [StreamData.Fy_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Fz_inner{k}(n,:) = [StreamData.Fz_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Mx_inner{k}(n,:) = [StreamData.Mx_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.My_inner{k}(n,:) = [StreamData.My_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
+        SortedData.Mz_inner{k}(n,:) = [StreamData.Mz_inner{k}(count:count-1+b)' -77*ones(1,bmax-b)];
         count = count+b;
     end
     
-    SortedData.check{k}(SortedData.check{k} ==0) = nan;
-    SortedData.encoder{k}(SortedData.encoder{k} ==0) = nan;
-    SortedData.instRPM{k}(SortedData.instRPM{k} ==0) = nan;
-    SortedData.Fx_outer{k}(SortedData.Fx_outer{k} ==0) = nan;
-    SortedData.Fy_outer{k}(SortedData.Fy_outer{k} ==0) = nan;
-    SortedData.Fz_outer{k}(SortedData.Fz_outer{k} ==0) = nan;
-    SortedData.Mx_outer{k}(SortedData.Mx_outer{k} ==0) = nan;
-    SortedData.My_outer{k}(SortedData.My_outer{k} ==0) = nan;
-    SortedData.Mz_outer{k}(SortedData.Mz_outer{k} ==0) = nan;
-    SortedData.Fx_inner{k}(SortedData.Fx_inner{k} ==0) = nan;
-    SortedData.Fy_inner{k}(SortedData.Fy_inner{k} ==0) = nan;
-    SortedData.Fz_inner{k}(SortedData.Fz_inner{k} ==0) = nan;
-    SortedData.Mx_inner{k}(SortedData.Mx_inner{k} ==0) = nan;
-    SortedData.My_inner{k}(SortedData.My_inner{k} ==0) = nan;
-    SortedData.Mz_inner{k}(SortedData.Mz_inner{k} ==0) = nan;
-    
-    SortedData.cts_outer{k}(SortedData.cts_outer{k} ==0) = nan;
-    SortedData.cps_outer{k}(SortedData.cps_outer{k} ==0) = nan;
-    SortedData.cts_inner{k}(SortedData.cts_inner{k} ==0) = nan;
-    SortedData.cps_inner{k}(SortedData.cps_inner{k} ==0) = nan;
-    
-    SortedData.FM_outer{k}(SortedData.FM_outer{k} ==0) = nan;
-    SortedData.FM_inner{k}(SortedData.FM_inner{k} ==0) = nan;
-    SortedData.FM_tot{k}(SortedData.FM_tot{k} ==0) = nan;
-    
+    SortedData.check{k}(SortedData.check{k} == -77) = nan;
+    SortedData.encoder{k}(SortedData.encoder{k} == -77) = nan;
+    SortedData.instRPM{k}(SortedData.instRPM{k} == -77) = nan;
+    SortedData.Fx_outer{k}(SortedData.Fx_outer{k} == -77) = nan;
+    SortedData.Fy_outer{k}(SortedData.Fy_outer{k} == -77) = nan;
+    SortedData.Fz_outer{k}(SortedData.Fz_outer{k} == -77) = nan;
+    SortedData.Mx_outer{k}(SortedData.Mx_outer{k} == -77) = nan;
+    SortedData.My_outer{k}(SortedData.My_outer{k} == -77) = nan;
+    SortedData.Mz_outer{k}(SortedData.Mz_outer{k} == -77) = nan;
+    SortedData.Fx_inner{k}(SortedData.Fx_inner{k} == -77) = nan;
+    SortedData.Fy_inner{k}(SortedData.Fy_inner{k} == -77) = nan;
+    SortedData.Fz_inner{k}(SortedData.Fz_inner{k} == -77) = nan;
+    SortedData.Mx_inner{k}(SortedData.Mx_inner{k} == -77) = nan;
+    SortedData.My_inner{k}(SortedData.My_inner{k} == -77) = nan;
+    SortedData.Mz_inner{k}(SortedData.Mz_inner{k} == -77) = nan;    
     
     OMEGA = StreamData.OMEGA{k};
     SortedData.cts_outer{k} = SortedData.Fz_outer{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
@@ -146,12 +138,23 @@ for k = 1:length(StreamData.names)
     SortedData.cts_inner{k} = SortedData.Fz_inner{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
     SortedData.cps_inner{k} = SortedData.Mz_inner{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
 
+    SortedData.cts_outer{k}(SortedData.cts_outer{k} == 0) = nan;
+    SortedData.cps_outer{k}(SortedData.cps_outer{k} == 0) = nan;
+    SortedData.cts_inner{k}(SortedData.cts_inner{k} == 0) = nan;
+    SortedData.cps_inner{k}(SortedData.cps_inner{k} == 0) = nan;
+
 %     RevData.FM_outer{k} = (abs(RevData.Fz_outer{k}).^(3/2)) ./ sqrt(2*StreamData.rho * pi*StreamData.R^2) ./ (OMEGA'.*RevData.Mz_outer{k});
 %     RevData.FM_inner{k} = (abs(RevData.Fz_inner{k}).^(3/2)) ./ sqrt(2*StreamData.rho * pi*StreamData.R^2) ./ (OMEGA'.*RevData.Mz_inner{k});
 %     RevData.FM_tot{k} = (abs(RevData.Fz_outer{k}).^(3/2) + abs(RevData.Fz_inner{k}).^(3/2)) ./ sqrt(2*StreamData.rho * pi*StreamData.R^2) ./ (OMEGA'.*RevData.Mz_outer{k} + OMEGA'.*RevData.Mz_inner{k});
     SortedData.FM_outer{k} = sqrt(StreamData.sigma) * (abs(SortedData.cts_outer{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_outer{k});
     SortedData.FM_inner{k} = sqrt(StreamData.sigma) * (abs(SortedData.cts_inner{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_inner{k});
-    SortedData.FM_tot{k} = sqrt(StreamData.sigma) * (abs(SortedData.cts_outer{k} + SortedData.cts_inner{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_outer{k} + SortedData.cps_inner{k});
+    SortedData.FM_tot{k} = sqrt(StreamData.sigma) * ...
+        (abs(SortedData.cts_outer{k} + SortedData.cts_inner{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_outer{k} + SortedData.cps_inner{k});
+    
+    SortedData.FM_outer{k}(SortedData.FM_outer{k} == 0) = nan;
+    SortedData.FM_inner{k}(SortedData.FM_inner{k} == 0) = nan;
+    SortedData.FM_tot{k}(SortedData.FM_tot{k} == 0) = nan;
+
 end
 
 
