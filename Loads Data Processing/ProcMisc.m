@@ -32,7 +32,7 @@ clear; clc; %close all
 
 %% INPUTS
 
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200208/Loads Files/Relevant Loads';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_900RPM_Closed/streaming';
 conditions = [54	54	29.11]; %[T(Farhen), % humidity, P(in.Hg)]
 flip = true;
 filename = 'IsolatedRotor_Outdoors_200227.xlsx';

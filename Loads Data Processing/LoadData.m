@@ -68,7 +68,7 @@ TF = contains(FileName,pattern);
 StreamData.names = FileName(TF);
 
 % PROCESS STREAMING DATA
-eval(['cd ' directory]);
+% eval(['cd ' '"' directory '"']);
 
 for k = 1:length(StreamData.names)
     data = readtable(StreamData.names{k});
