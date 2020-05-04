@@ -126,10 +126,16 @@ while plotting == true
             else
                 pmcols_out = umcols_out;
             end
-    end
+            % identify corresponding data files
+            fnos_pRPMs = (MeanData.RPMs == pRPMs);
+            fnos_pmcols_out = (MeanData.cols_out == pmcols_out);
+            fnos_pmcols_in = (MeanData.cols_in == pmcols_in);
+
+            fnos_p = (fnos_pRPMs & fnos_pmcols_out & fnos_pmcols_in);
+end
     
     % choose corresponding files
-    [~,nvars] = size(fnos_p);
+    [~,nvars] = size(fnos_p);   % nvars > 1 only if there is a thirdvar 
     for ii = 1:nvars
         yvar_Fxi = cell2mat(SortedData.Fx_inner(fnos_p(:,ii))');   % [ (Nrevs x nfiles) x Naz ]
         yvar_Fyi = cell2mat(SortedData.Fy_inner(fnos_p(:,ii))');
@@ -146,74 +152,78 @@ while plotting == true
     end
     xvar = cell2mat(SortedData.azimuth(fnos_p(:,ii))');
     xvar = xvar(1,:);   % keep only the first row [ 1 x Naz ]
-    
+     
     close all
     clear gi1 gi2 go1 go2
     [nrevs,~] = size(yvar_Fxi);
-    gi1(1,1) = gramm('x', xvar, 'y', yvar_Fxi, 'color', 1:1:nrevs);
+    
+    stat_type = 'std';
+    rev_vec = 1:1:nrevs;
+
+    gi1(1,1) = gramm('x', xvar, 'y', yvar_Fxi, 'color', rev_vec);
     gi1(1,1).set_names('x', 'Azimuth, deg', 'y', 'Fx_inner, N', 'color', 'Rev.');
     gi1(1,1).geom_line();
-    gi1(1,1).stat_summary('type', 'std', 'geom', 'area');
+    gi1(1,1).stat_summary('type', stat_type, 'geom', 'area');
 
-    gi1(1,2) = gramm('x', xvar, 'y', yvar_Fyi, 'color', 1:1:nrevs);
+    gi1(1,2) = gramm('x', xvar, 'y', yvar_Fyi, 'color', rev_vec);
     gi1(1,2).set_names('x', 'Azimuth, deg', 'y', 'Fy_inner, N', 'color', 'Rev.');
     gi1(1,2).geom_line();
-    gi1(1,2).stat_summary('type', 'std', 'geom', 'area');
+    gi1(1,2).stat_summary('type', stat_type, 'geom', 'area');
 
-    gi1(1,3) = gramm('x', xvar, 'y', yvar_Fzi, 'color', 1:1:nrevs);
+    gi1(1,3) = gramm('x', xvar, 'y', yvar_Fzi, 'color', rev_vec);
     gi1(1,3).set_names('x', 'Azimuth, deg', 'y', 'Fz_inner, N', 'color', 'Rev.');
     gi1(1,3).geom_line();
-    gi1(1,3).stat_summary('type', 'std', 'geom', 'area');
+    gi1(1,3).stat_summary('type', stat_type, 'geom', 'area');
 
-    gi1(2,1) = gramm('x', xvar, 'y', yvar_Mxi, 'color', 1:1:nrevs);
+    gi1(2,1) = gramm('x', xvar, 'y', yvar_Mxi, 'color', rev_vec);
     gi1(2,1).set_names('x', 'Azimuth, deg', 'y', 'Mx_inner, N', 'color', 'Rev.');
     gi1(2,1).geom_line();
-    gi1(2,1).stat_summary('type', 'std', 'geom', 'area');
+    gi1(2,1).stat_summary('type', stat_type, 'geom', 'area');
 
-    gi1(2,2) = gramm('x', xvar, 'y', yvar_Myi, 'color', 1:1:nrevs);
+    gi1(2,2) = gramm('x', xvar, 'y', yvar_Myi, 'color', rev_vec);
     gi1(2,2).set_names('x', 'Azimuth, deg', 'y', 'My_inner, N', 'color', 'Rev.');
     gi1(2,2).geom_line();
-    gi1(2,2).stat_summary('type', 'std', 'geom', 'area');
+    gi1(2,2).stat_summary('type', stat_type, 'geom', 'area');
 
-    gi1(2,3) = gramm('x', xvar, 'y', yvar_Mzi, 'color', 1:1:nrevs);
+    gi1(2,3) = gramm('x', xvar, 'y', yvar_Mzi, 'color', rev_vec);
     gi1(2,3).set_names('x', 'Azimuth, deg', 'y', 'Mz_inner, N', 'color', 'Rev.');
     gi1(2,3).geom_line();
-    gi1(2,3).stat_summary('type', 'std', 'geom', 'area');
+    gi1(2,3).stat_summary('type', stat_type, 'geom', 'area');
 
     gi1.axe_property('XGrid', 'on', 'YGrid', 'on', 'XLim', [0 360], 'XTick', 0:60:360, 'Box', 'on');
     gi1.set_text_options('font','Times','base_size',14, 'label_scaling', 1.25);
     figure('Position',[100 200 1800 800]);
     gi1.draw();
 
-    go1(1,1) = gramm('x', xvar, 'y', yvar_Fxo, 'color', 1:1:nrevs);
+    go1(1,1) = gramm('x', xvar, 'y', yvar_Fxo, 'color', rev_vec);
     go1(1,1).set_names('x', 'Azimuth, deg', 'y', 'Fx_outer, N', 'color', 'Rev.');
     go1(1,1).geom_line();
-    go1(1,1).stat_summary('type', 'std', 'geom', 'area');
+    go1(1,1).stat_summary('type', stat_type, 'geom', 'area');
 
-    go1(1,2) = gramm('x', xvar, 'y', yvar_Fyo, 'color', 1:1:nrevs);
+    go1(1,2) = gramm('x', xvar, 'y', yvar_Fyo, 'color', rev_vec);
     go1(1,2).set_names('x', 'Azimuth, deg', 'y', 'Fy_outer, N', 'color', 'Rev.');
     go1(1,2).geom_line();
-    go1(1,2).stat_summary('type', 'std', 'geom', 'area');
+    go1(1,2).stat_summary('type', stat_type, 'geom', 'area');
 
-    go1(1,3) = gramm('x', xvar, 'y', yvar_Fzo, 'color', 1:1:nrevs);
+    go1(1,3) = gramm('x', xvar, 'y', yvar_Fzo, 'color', rev_vec);
     go1(1,3).set_names('x', 'Azimuth, deg', 'y', 'Fz_outer, N', 'color', 'Rev.');
     go1(1,3).geom_line();
-    go1(1,3).stat_summary('type', 'std', 'geom', 'area');
+    go1(1,3).stat_summary('type', stat_type, 'geom', 'area');
 
-    go1(2,1) = gramm('x', xvar, 'y', yvar_Mxo, 'color', 1:1:nrevs);
+    go1(2,1) = gramm('x', xvar, 'y', yvar_Mxo, 'color', rev_vec);
     go1(2,1).set_names('x', 'Azimuth, deg', 'y', 'Mx_outer, N', 'color', 'Rev.');
     go1(2,1).geom_line();
-    go1(2,1).stat_summary('type', 'std', 'geom', 'area');
+    go1(2,1).stat_summary('type', stat_type, 'geom', 'area');
 
-    go1(2,2) = gramm('x', xvar, 'y', yvar_Myo, 'color', 1:1:nrevs);
+    go1(2,2) = gramm('x', xvar, 'y', yvar_Myo, 'color', rev_vec);
     go1(2,2).set_names('x', 'Azimuth, deg', 'y', 'My_outer, N', 'color', 'Rev.');
     go1(2,2).geom_line();
-    go1(2,2).stat_summary('type', 'std', 'geom', 'area');
+    go1(2,2).stat_summary('type', stat_type, 'geom', 'area');
 
-    go1(2,3) = gramm('x', xvar, 'y', yvar_Mzo, 'color', 1:1:nrevs);
+    go1(2,3) = gramm('x', xvar, 'y', yvar_Mzo, 'color', rev_vec);
     go1(2,3).set_names('x', 'Azimuth, deg', 'y', 'Mz_outer, N', 'color', 'Rev.');
     go1(2,3).geom_line();
-    go1(2,3).stat_summary('type', 'std', 'geom', 'area');
+    go1(2,3).stat_summary('type', stat_type, 'geom', 'area');
 
     go1.axe_property('XGrid', 'on', 'YGrid', 'on', 'XLim', [0 360], 'XTick', 0:60:360, 'Box', 'on');
     go1.set_text_options('font','Times','base_size',14, 'label_scaling', 1.25);
