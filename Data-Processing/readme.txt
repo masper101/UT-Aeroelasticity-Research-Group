@@ -16,3 +16,7 @@ pitchangle_collect_0.m  : Reads streaming data files and collects pitch angle da
 
 pitchangle_process_1.m  : Reads the data file created by pitchangle_collect_0.m and processes it to find time shifts, average and 
                           standard deviation
+                          
+StepProcess : This function is used to process loads data with step input 
+
+fprocStep: Function is used to determine when the step input occurs
