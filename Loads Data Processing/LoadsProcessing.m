@@ -37,12 +37,12 @@ warning off
 %% INPUTS
 
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Streaming data_DIC_August_2019';
-directory = '/Users/sirohi/Desktop/Two-bladed loads/Horizontal_900RPM_Outdoor';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_900RPM_Outdoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 testletters = input('Test letters: ','s');
 testletters = split(testletters, ' ');
 
-conditions = [70	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+% conditions = [70	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
@@ -52,7 +52,7 @@ write_directory = directory;
 [MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip);
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
 % SortedData = CheckCorrelation(SortedData);
-RevData = RevolutionAvg(SortedData);
+RevData = RevolutionAvg(SortedData,StreamData);
 AvgData = TotalAvg(RevData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
