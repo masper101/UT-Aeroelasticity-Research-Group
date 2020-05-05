@@ -44,9 +44,10 @@ f_a = [f_a oct_a];
 %AVERGAE BETWEEN UPPER AND LOWER FREQUENCIES
 xfilt = f_c;
 yfilt = ones(size(f_c))';
+
 for n = 1:length(f_a) - 1
     [~,loc_f_a] = min(abs(fv - f_a(n)));
     [~,loc_f_b] = min(abs(fv - f_a(n+1)));
-    yfilt(n) = sqrt(nansum(fy(loc_f_a:loc_f_b).^2));
+    yfilt(n) = 2*nansum(fy(loc_f_a:loc_f_b).^2);
 end
 

@@ -52,14 +52,16 @@ plots = false;
 testdata = TestProc(testdate,testletter,plots, caldata);
 
 %%
-figure(23)
-semilogx(testdata(9).fvec, testdata(9).dbdata);%,testdata(4).fvec, testdata(4).dbdata)
-hold on
-grid on
-grid minor
-xlabel('Frequency [Hz]')
-ylabel('SPL [dB]')
-xlim([10^1 10^4]);
+% figure(23)
+% semilogx(testdata(9).fvec, testdata(9).dbdata);%,testdata(4).fvec, testdata(4).dbdata)
+% hold on
+% semilogx(testdata(9).fvec, testdata(9).dbAdata);%,testdata(4).fvec, testdata(4).dbdata)
+% 
+% grid on
+% grid minor
+% xlabel('Frequency [Hz]')
+% ylabel('SPL [dB]')
+% xlim([10^1 10^4]);
 
 
 %% COMPILE CAL FACTORS

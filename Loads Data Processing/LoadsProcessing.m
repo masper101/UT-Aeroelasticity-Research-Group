@@ -31,7 +31,7 @@
 %                          and test conditions (colelctive, index angle, axial spacing) 
 %                          from MeanData
 
-clear; clc; %close all
+% clear; clc; %close all
 warning off
 
 %% INPUTS

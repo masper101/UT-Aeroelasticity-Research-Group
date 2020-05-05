@@ -23,7 +23,8 @@ function caldata = CalProc(testdate, testletter, calsuffix, cal_db, plots)
 caldata = struct('scale', [], 'calmag', [], 'tvec',[],'wavdata',[],'fs',[],'fvec',[]);
 
 
-calprefix = ['./Uber Acoustics ' testdate '/Audio Files/' testdate '_test_' testletter '_cal' calsuffix ' - 01 Start - '];
+% calprefix = ['./Uber Acoustics ' testdate '/Audio Files/' testdate '_test_' testletter '_cal' calsuffix ' - 01 Start - '];
+calprefix = [testdate '_test_' testletter '_cal' calsuffix ' - 01 Start - '];
 
 % read the calibration files
 for micnum = 1:16

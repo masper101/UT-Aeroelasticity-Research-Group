@@ -63,7 +63,7 @@ for micnum = 1:16
         testdata(micnum).oaspl = OverallSPL(testdata(micnum).Pdata); 
         testdata(micnum).oasplA = OverallSPL(Pref * 10.^(testdata(micnum).dbAdata / 20));
         
-        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref); 
+        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref);
         testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref);       
         
     end

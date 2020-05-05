@@ -73,10 +73,10 @@ ylabel('SPL [dB]')
 xlim([10^1 10^4]);
 
 figure(24)
-loglog(testdata(9).fvec, testdata(9).Pdata);%,testdata(4).fvec, testdata(4).dbdata)
+semilogx(testdata(9).fvec, testdata(9).Pdata);%,testdata(4).fvec, testdata(4).dbdata)
 hold on
-loglog(testdata(9).ofilt3_fvec, testdata(9).ofilt3_Pdata,'k-o','linewidth',1.3)
-loglog(testdata(9).ofilt12_fvec, testdata(9).ofilt12_Pdata,'k-*','linewidth',1.3)
+semilogx(testdata(9).ofilt3_fvec, testdata(9).ofilt3_dbdata,'k-o','linewidth',1.3)
+semilogx(testdata(9).ofilt12_fvec, testdata(9).ofilt12_dbdata,'k-*','linewidth',1.3)
 grid on
 grid minor
 xlabel('Frequency [Hz]')
