@@ -51,8 +51,8 @@ write_directory = directory;
 
 [MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip);
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
-% SortedData = CheckCorrelation(SortedData);
 RevData = RevolutionAvg(SortedData);
+[SortedData, RevData] = fCheckCorrelation(SortedData, RevData);
 AvgData = TotalAvg(RevData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
