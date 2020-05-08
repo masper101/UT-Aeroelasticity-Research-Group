@@ -42,7 +42,7 @@ rotor = input('Rotor type [ Uber CCR ]: ', 's');
 testletters = input('Test letters: ','s');
 testletters = split(testletters, ' ');
 
-% conditions = [70	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+% conditions = [54	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;

@@ -31,7 +31,8 @@ for k = 1:length(RevData)
     AvgData.avg_FM_outer{k} = nanmean(RevData{k}.avg_FM_outer);
     AvgData.avg_FM_inner{k} = nanmean(RevData{k}.avg_FM_inner);
     AvgData.avg_FM_tot{k} = nanmean(RevData{k}.avg_FM_tot);
-   
+    AvgData.avg_Fz_outer{k} = nanmean(RevData{k}.avg_Fz_outer);
+    AvgData.avg_Fz_inner{k} = nanmean(RevData{k}.avg_Fz_inner);   
     
     OMEGA = nanmean(StreamData.OMEGA{k});
     ct_bias = 8 ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA*StreamData.R).^2 / StreamData.sigma;
