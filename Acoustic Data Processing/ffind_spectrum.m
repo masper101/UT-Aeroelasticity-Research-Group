@@ -42,6 +42,8 @@ end
 
 % create matrix with NFFT rows and Nav columns, each containing a block of x  
 xblock = zeros(NFFT, Nav);
+tblock = zeros(NFFT, Nav);
+
 if Nav>1
     Noffset = floor((N-NFFT) /(Nav-1));
 else
@@ -60,6 +62,7 @@ for iav = 1:Nav
     idx1 = (iav-1) *Noffset +1;
     idx2 = idx1 +NFFT -1;
     xblock(:,iav) = x(idx1:idx2);
+    tblock(:,iav) = tvec(idx1:idx2);
     xblock(:,iav) = xblock(:,iav).*winfn;
 end
 
@@ -75,5 +78,12 @@ magX = mean(magVs2,2);                % average of all the blocks
 powerX = mean(powerVs2,2);
 
 fvec = f(1:NFFT/2);                    % generate frequency vector
+
+% figure()
+% for i =1:Nav
+% subplot(Nav,1,i)
+% plot(tblock(:,i),xblock(:,i))
+% xlim([0,10])
+% end
 
 end

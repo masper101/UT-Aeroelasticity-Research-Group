@@ -56,9 +56,9 @@ for k = 1:length(StreamData.names)
     StreamData.binsize{k} = zeros(1,StreamData.nrevs{k});
     for n = 1:StreamData.nrevs{k}
         StreamData.binsize{k}(n) = sum(StreamData.revolution{k}(:) == n-1);
-        if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 10 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
-            StreamData.binsize{k}(n) = StreamData.binsize{k}(1) + 10;
-        end
+%         if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 10 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
+%             StreamData.binsize{k}(n) = StreamData.binsize{k}(1) + 10;
+%         end
     end
     StreamData.OMEGA{k} = SR./StreamData.binsize{k} * 2 * pi;
     SortedData.binsize{k} = StreamData.binsize{k};
@@ -110,11 +110,13 @@ for k = 1:length(StreamData.names)
         SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
         SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
         az = StreamData.encoder{k}(count:count-1+b)';
-        azdt = wshift('1D', az, 1);
+%         azdt = wshift('1D', az, 1);
+azdt = circshift(az, 1);
         instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
         instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb        
 
         % interpolate to azimuth with dpsi = 1/Naz
+        
         SortedData.instRPM{k}(n,:) = interp1(az, instRPM, SortedData.azimuth{k}, 'pchip');
                 
         SortedData.Fx_outer{k}(n,:) = interp1(az, StreamData.Fx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
