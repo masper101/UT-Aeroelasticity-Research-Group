@@ -10,6 +10,6 @@ function calfactor = CalFactor(caldata, cal_db,  micnum)
 
 
 P_ref = 20e-6;
-cal_P = 10^(cal_db / 20) * P_ref * sqrt(2);
+cal_P = 10^(cal_db / 20) * P_ref;
 
 calfactor = cal_P / caldata(micnum).scale;

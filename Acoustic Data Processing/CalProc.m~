@@ -46,16 +46,8 @@ for micnum = 1:16
         
         caldata(micnum).calfactor = CalFactor(caldata, cal_db,micnum);
         
-        hf = figure(micnum);
+        figure(micnum)
         semilogx(caldata(micnum).fvec, 20*log10(caldata(micnum).calfactor*caldata(micnum).calmag/20E-6));
-        title(['114 dB Calibration: Mic ',num2str(micnum),', 02/27/20'])
-        xlabel('Frequency [Hz]')
-        ylabel('dB')
-        xlim([10,20000])
-        grid on
-        grid minor
-        ylim([-20,120])
-        set(gca, 'fontsize',16,'fontname','Times')
         
         if (plots)
         subplot(2,1,1)
