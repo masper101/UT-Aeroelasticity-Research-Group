@@ -37,7 +37,8 @@ warning off
 %% INPUTS
 
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Streaming data_DIC_August_2019';
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_800RPM_Outdoor';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_800RPM_Outdoor';
+directory = '/Users/chloe/Library/Mobile Documents/com~apple~CloudDocs/Grad/Research/RPM Ramp/RPM Ramp Data/PART1/CTs01/STEP';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 testletters = input('Test letters: ','s');
 testletters = split(testletters, ' ');
