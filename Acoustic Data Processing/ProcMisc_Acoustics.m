@@ -32,36 +32,37 @@
 %         .oaspl
 
 % clear; clc; %close all;      
-% dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
+dirname = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200208/Audio Files';
 
 chdir(dirname)
 %% CALIBRATION 
 % INPUTS
-% caldate = '200227';
-% calletter = 'a';
-% calsuffix = [];
+caldate = '200208';
+calletter = 'a';
+calsuffix = [];
 calplots = false;
 cal_db = 114;
 
 caldata = CalProc(caldate, calletter,calsuffix,cal_db, calplots);
 
 %% DATA
-% testdate = '200227';
-% testletter = 'b_3';
+testdate = '200208';
+testletter = 'a_cal';
 plots = false;
-testdata = TestProc(testdate,testletter,plots, caldata);
+Pdoubling = false;
+testdata = TestProc(testdate,testletter,plots, caldata,Pdoubling);
 
 %%
-% figure(23)
-% semilogx(testdata(9).fvec, testdata(9).dbdata);%,testdata(4).fvec, testdata(4).dbdata)
+figure(23)
+semilogx(testdata(9).fvec, testdata(9).dbdata);%,testdata(4).fvec, testdata(4).dbdata)
 % hold on
 % semilogx(testdata(9).fvec, testdata(9).dbAdata);%,testdata(4).fvec, testdata(4).dbdata)
 % 
-% grid on
-% grid minor
-% xlabel('Frequency [Hz]')
-% ylabel('SPL [dB]')
-% xlim([10^1 10^4]);
+grid on
+grid minor
+xlabel('Frequency [Hz]')
+ylabel('SPL [dB]')
+xlim([10^1 10^4]);
 
 
 %% COMPILE CAL FACTORS
