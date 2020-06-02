@@ -31,18 +31,19 @@
 %                          and test conditions (colelctive, index angle, axial spacing) 
 %                          from MeanData
 
-% clear; clc; %close all
+clear; clc; %close all
 warning off
 
 %% INPUTS
 
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Streaming data_DIC_August_2019';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_900RPM_Outdoor';
+directory = '/Users/sirohi/Desktop/Two-bladed loads/Horizontal_900RPM_Outdoor';
+%directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 testletters = input('Test letters: ','s');
 testletters = split(testletters, ' ');
 
-% conditions = [54	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [70	54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
@@ -51,14 +52,9 @@ write_directory = directory;
 
 [MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip);
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
-<<<<<<< HEAD
-RevData = RevolutionAvg(SortedData);
+RevData = fRevolutionAvg(SortedData);
 [SortedData, RevData] = fCheckCorrelation(SortedData, RevData);
-=======
-% SortedData = CheckCorrelation(SortedData);
-RevData = RevolutionAvg(SortedData,StreamData);
->>>>>>> 634cc8543a157eb4f988775453768cb41b826301
-AvgData = TotalAvg(RevData,StreamData);
+AvgData = fTotalAvg(RevData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
 % 
