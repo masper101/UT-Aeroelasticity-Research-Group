@@ -55,8 +55,8 @@ if Noffset==0
 end
 
 Noverlap = (1 -Noffset/NFFT)*100;
-disp(['Block size: ' num2str(NFFT) ' Averages: ' num2str(Nav) ' Overlap: '...
-    num2str(Noverlap) '%']);
+% disp(['Block size: ' num2str(NFFT) ' Averages: ' num2str(Nav) ' Overlap: '...
+%     num2str(Noverlap) '%']);
     
 for iav = 1:Nav
     idx1 = (iav-1) *Noffset +1;

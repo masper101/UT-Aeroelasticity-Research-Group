@@ -1,4 +1,4 @@
-function oaspl = OverallSPL_freq(Pvec)
+function oaspl = fOverallSPL_freq(Pvec)
 % CALCULATES OVERALL SOUND PRESSURE LEVEL IN DECIBELS
 % P IN FREQ DOMAIN
 

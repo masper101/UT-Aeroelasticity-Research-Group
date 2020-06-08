@@ -1,4 +1,4 @@
-function oaspl = OverallSPL(Pvec,tvec)
+function oaspl = fOverallSPL_time(Pvec,tvec)
 % CALCULATES OVERALL SOUND PRESSURE LEVEL IN DECIBELS
 
 % rss_P = sqrt(nansum(P.^2));
