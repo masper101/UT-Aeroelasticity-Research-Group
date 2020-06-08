@@ -19,7 +19,7 @@ function [caldata,testdate] = fCalProc(directory)
 
 pdir = pwd;
 cd(directory); 
-fprintf('\n%s\n',['Calibrating microphones. Calibration file: '])
+fprintf('%s\n',['Calibrating microphones. Calibration file: '])
 
 %% INPUTS
 files = dir('*.wav');
@@ -38,7 +38,8 @@ fprintf('\n\t')
 calletter = input('Calibration test : ', 's');
 
 if sum(contains(filenames,[calletter,'_cal'])) > 16 %more than one set of calibration files
-    calsuffix = input('\nCalibration test suffix : ', 's');
+    fprintf('\n\t')
+    calsuffix = input('Calibration test suffix : ', 's');
 else
     calsuffix = '';
 end
@@ -69,7 +70,7 @@ for micnum = 1:16
         
         %ASSUMING IMPERFECT SIN WAV
         caldata(micnum).scale = sqrt(sum(caldata(micnum).wavdata.^2)/length(caldata(micnum).wavdata));   
-        caldata(micnum).calfactor = CalFactor(caldata, cal_db,micnum);
+        caldata(micnum).calfactor = fCalFactor(caldata, cal_db,micnum);
 
         %CHECK CALIBRATION
         OASPL = fOverallSPL_freq(caldata(micnum).calfactor * caldata(micnum).calmag);

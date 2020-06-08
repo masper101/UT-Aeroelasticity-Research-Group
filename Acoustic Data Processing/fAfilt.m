@@ -1,4 +1,4 @@
-function A = Afilt(fvec)
+function A = fAfilt(fvec)
 
 Ra = fun_Ra(fvec);
 A = 20*log10(Ra) - 20*log10(fun_Ra(1000));

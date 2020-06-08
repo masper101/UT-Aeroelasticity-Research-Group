@@ -1,4 +1,4 @@
-function [xfilt,yfilt] = OctaveFilter(fv,fy,N)
+function [xfilt,yfilt] = fOctaveFilter(fv,fy,N)
 % AVERAGES DATA OVER FRACTIONAL OCTAVE BANDS 
 %
 % DLWYLIE 03/03/2020

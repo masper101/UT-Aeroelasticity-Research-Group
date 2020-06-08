@@ -20,20 +20,20 @@ function testdata = fAcProc(directory, testdate, caldata)
 %         .dbdata             -> pressure magnitudes in freq. domain
 %                                converted to dB (240000 x 1)
 %         .Pdata_t [Pa]       -> pressure in time domain (240000 x 1)
-%   
+%
 %         .ofilt12_fvec
 %         .ofilt12_Pdata
 %         .ofilt12_dbdata
-% 
+%
 %         .ofilt3_fvec
 %         .ofilt3_Pdata
 %         .ofilt3_dbdata
-% 
+%
 %         .oaspl
 %         .dbdataA
 %         .oasplA
 pdir = pwd;
-cd(directory); 
+cd(directory);
 fprintf('\n%s\n','Processing Data. Test file: ')
 
 %% INPUTS
@@ -43,12 +43,11 @@ filenames = {files(:).name}';
 testletters = unique(extractBetween(filenames(~contains(filenames,'cal')),'test_',' -'));
 
 fprintf('\n\t%s', 'Loaded tests are : ')
-fprintf('%s ',testletters{:});
+fprintf('\n\t\t%s ',testletters{:});
 fprintf('\n\t')
 testletter = input('Test to process : ', 's');
 
-fprintf('\n\t')
-Pdoubling = input('Pressure doubling [y n] ? ', 's');
+Pdoubling = input('\nPressure doubling [y n] ? ', 's');
 if (Pdoubling == 'y')
     doubling_factor = 1/2; %PRESSURE DOUBLING AT RIGID SURFACE
 else
@@ -59,91 +58,58 @@ testdata = struct('oaspl',[],'oasplA',[],'dbAdata',[],'dbdata',[],'Pdata',[],'Pd
 testprefix = [testdate '_test_' testletter ' - 01 Start - '];
 
 %% read the test files
-worv = input('\nVisualize (v) test data ? ', 's');
 for micnum = 1:16
     fname = [testprefix num2str(micnum) '.wav'];
     if isfile(fname)
+        fprintf('\t%s',['- Mic ', num2str(micnum),' ... '])
         [testdata(micnum).wavdata, testdata(micnum).fs] = audioread(fname);
         testdata(micnum).tvec = 0: 1/testdata(micnum).fs: (length(testdata(micnum).wavdata)-1)/testdata(micnum).fs;
         [testdata(micnum).fvec, testdata(micnum).testmag, ~, ~] = ffind_dft(testdata(micnum).tvec, testdata(micnum).wavdata, 0);
         
-        testdata(micnum).Pdata = testdata(micnum).testmag * caldata(micnum).calfactor * doubling_factor; 
-        testdata(micnum).Pdata_t = testdata(micnum).wavdata * caldata(micnum).calfactor * doubling_factor; 
+        testdata(micnum).Pdata = testdata(micnum).testmag * caldata(micnum).calfactor * doubling_factor;
+        testdata(micnum).Pdata_t = testdata(micnum).wavdata * caldata(micnum).calfactor * doubling_factor;
         
-        [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata] = OctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,12);
-        [testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata] = OctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,3);
+        [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,12);
+        [testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,3);
         
         testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref);
         A = fAfilt(testdata(micnum).fvec);
         testdata(micnum).dbAdata = testdata(micnum).dbdata + A';
         
-        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref); 
-        testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref); 
+        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref);
+        testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref);
         
-        testdata(micnum).oaspl = fOverallSPL_time(testdata(micnum).Pdata_t, testdata(micnum).tvec); 
+        testdata(micnum).oaspl = fOverallSPL_time(testdata(micnum).Pdata_t, testdata(micnum).tvec);
         testdata(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata(micnum).dbAdata / 20));
-
         
+        fprintf('%s\n',['OASPL = ',num2str(testdata(micnum).oaspl)])
     end
 end
 
+worv = input('\nVisualize (v) test data ? ', 's');
 switch worv
     case 'v'
-    %TIME DOMAIN
-    figure(1)
-    for micnum = 1:8
-        subplot(8,1,micnum)
-        plot(testdata(micnum).tvec, testdata(micnum).wavdata)
-        axis([0 1 -0.5 0.5]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Time, s')
-    
-    figure(2)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        plot(testdata(micnum).tvec, testdata(micnum).wavdata)
-        axis([0 1 -0.5 0.5]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Time, s')
-    
-    %FREQ DOMAIN
-    figure(11)
-    for micnum = 1:8
-        subplot(8,1,micnum)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
-    
-    figure(12)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
-    
-    figure(13)
-    for micnum = 1:8
-        subplot(8,1,micnum)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbAdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
-    
-    figure(14)
-    for micnum = 9:16
-        subplot(8,1,micnum-8)
-        semilogx(testdata(micnum).fvec, testdata(micnum).dbAdata)
-        xlim([10^1 10^4]);
-        legend(['Mic ' num2str(micnum)]);
-    end
-    xlabel('Frequency, Hz')
+        %FREQ DOMAIN
+        figure(11)
+        for micnum = 1:8
+            subplot(8,1,micnum)
+            semilogx(testdata(micnum).fvec, testdata(micnum).dbdata,testdata(micnum).fvec, testdata(micnum).dbAdata)
+            xlim([10^1 10^4]);
+            legend(['Mic ' num2str(micnum)]);
+        end
+        xlabel('Frequency, Hz')
+        sgtitle([testdate '_test_' testletter])
+        
+        figure(12)
+        for micnum = 9:16
+            subplot(8,1,micnum-8)
+            semilogx(testdata(micnum).fvec, testdata(micnum).dbdata,testdata(micnum).fvec, testdata(micnum).dbAdata)
+            xlim([10^1 10^4]);
+            legend(['Mic ' num2str(micnum)]);
+        end
+        xlabel('Frequency, Hz')
+        sgtitle([testdate ' test ' testletter])
+        
     otherwise
 end
 

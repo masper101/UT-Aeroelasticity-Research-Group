@@ -1,4 +1,4 @@
-function calfactor = CalFactor(caldata, cal_db,  micnum)
+function calfactor = fCalFactor(caldata, cal_db,  micnum)
 % CALCULATES CALIBRATION FACTOR IN [Pa /.WAV UNITS]
 % CMJOHNSON 03/03/2020
 % INPUTS
