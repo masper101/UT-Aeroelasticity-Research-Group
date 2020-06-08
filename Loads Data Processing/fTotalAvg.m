@@ -1,4 +1,4 @@
-function AvgData = fTotalAvg(RevData,StreamData)
+function AvgData = fTotalAvg(RevData,SortedData,StreamData)
 % CALCULATES TOTAL AVERAGE AND ERROR FOR STREAM DATA FILE
 %
 % INPUTS
@@ -49,26 +49,26 @@ for k = 1:length(RevData)
     % se = std(means)/sqrt(Nrev)
     % multiply by 1.96 to get 95% CI
     AvgData.err_cts_outer{k} = 1.96* sqrt( std(RevData.ms_cts_outer{k})^2 + cts_bias^2 )...
-        / sqrt(StreamData.nrevs{k});
+        / sqrt(SortedData.nrevs{k});
     AvgData.err_cps_outer{k} = 1.96* sqrt( std(RevData.ms_cps_outer{k})^2 + cps_bias^2 )...
-        / sqrt(StreamData.nrevs{k});
+        / sqrt(SortedData.nrevs{k});
     AvgData.err_cts_inner{k} = 1.96* sqrt( std(RevData.ms_cts_inner{k})^2 + cts_bias^2 )...
-        / sqrt(StreamData.nrevs{k});
+        / sqrt(SortedData.nrevs{k});
     AvgData.err_cps_inner{k} = 1.96* sqrt( std(RevData.ms_cps_inner{k})^2 + cps_bias^2 )...
-        / sqrt(StreamData.nrevs{k});
+        / sqrt(SortedData.nrevs{k});
 
-    AvgData.err_FM_outer{k} = 1.96* std(RevData.ms_FM_outer{k})/sqrt(StreamData.nrevs{k});
-    AvgData.err_FM_inner{k} = 1.96* std(RevData.ms_FM_inner{k})/sqrt(StreamData.nrevs{k});
-    AvgData.err_FM_tot{k} = 1.96* std(RevData.ms_FM_tot{k})/sqrt(StreamData.nrevs{k});
+    AvgData.err_FM_outer{k} = 1.96* std(RevData.ms_FM_outer{k})/sqrt(SortedData.nrevs{k});
+    AvgData.err_FM_inner{k} = 1.96* std(RevData.ms_FM_inner{k})/sqrt(SortedData.nrevs{k});
+    AvgData.err_FM_tot{k} = 1.96* std(RevData.ms_FM_tot{k})/sqrt(SortedData.nrevs{k});
  
     AvgData.avg_cts_total{k} = (AvgData.avg_cts_inner{k} + AvgData.avg_cts_outer{k})/2;
     AvgData.avg_cps_total{k} = (AvgData.avg_cps_inner{k} + AvgData.avg_cps_outer{k})/2;
        
     AvgData.err_cts_total{k} = 1.96* sqrt( std(RevData.ms_cts_outer{k}+RevData.ms_cts_inner{k})^2 ...
-    + (2*cts_bias)^2 ) / sqrt(StreamData.nrevs{k}); 
+    + (2*cts_bias)^2 ) / sqrt(SortedData.nrevs{k}); 
     
     AvgData.err_cps_total{k} = 1.96* sqrt( std(RevData.ms_cps_outer{k}+RevData.ms_cps_inner{k})^2 ...
-    + (2*cps_bias)^2 ) / sqrt(StreamData.nrevs{k}); 
+    + (2*cps_bias)^2 ) / sqrt(SortedData.nrevs{k}); 
 end
 
 

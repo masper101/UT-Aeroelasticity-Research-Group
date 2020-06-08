@@ -113,7 +113,8 @@ for k = 1:length(StreamData.names)
         SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
         SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
         az = StreamData.encoder{k}(count:count-1+b)';
-        azdt = wshift('1D', az, 1);
+%         azdt = wshift('1D', az, 1);
+        azdt = circshift(az,1);
         instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
         instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb        
 
