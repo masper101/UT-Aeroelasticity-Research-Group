@@ -23,7 +23,7 @@ function AvgData = fTotalAvg(RevData,SortedData,StreamData)
 %                     .err_FM_inner
 %                     .err_FM_tot 
 
-for k = 1:length(RevData)
+for k = 1:length(StreamData.names)
     OMEGA = nanmean(StreamData.OMEGA{k});
 
     % non-dimensionalization factor for CT
