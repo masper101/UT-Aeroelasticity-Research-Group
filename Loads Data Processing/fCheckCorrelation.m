@@ -53,7 +53,7 @@ for k = 1:length(SortedData.names)
             Nbadrevs = sum(SortedData.badrevs{k});
             fprintf('%s\n', ['Nbadrevs: ' num2str(Nbadrevs)]);
             
-            figure;
+            figure(22);
             subplot(231)
             plot(crFxo, 'r.-', 'MarkerSize', 15); hold on;
             plot(crFxi, 'b.-', 'MarkerSize', 15);
@@ -110,7 +110,7 @@ for k = 1:length(SortedData.names)
     end 
     
     clear crFxi crFxo crFyi crFyo crFzi crFzo crMxi crMxo crMyi crMyo crMzi crMzo
-    close all
+    close(figure(22))
 end
 
 end

@@ -15,22 +15,16 @@ function [xfilt,yfilt] = fOctaveFilter(fv,fy,N)
 
 
 %CREATE CENTER FREQUENCIES AND UPPER/LOWER FREQUENCIES
-oct =1000;
-% a = 2^(1/N); %BASE 2
-a = 10^(2/(10*N)); %BASE 10
+oct =10; %beginning frequency
+a = 2^(1/N); %BASE 2
+% a = 10^(2/(10*N)); %BASE 10
 
 f_c = [oct];
-% f_a = [oct / 2^(1/(2*N))]; %BASE 2
-f_a = [oct / 10^(2/(10*2*N))]; %BASE 10
-while oct >= 1 
-    oct = oct / a;
-    f_c = [oct f_c];
-    
-    oct_a = f_a(1) / a;
-    f_a = [oct_a f_a];  
-end
+f_a = [oct / 2^(1/(2*N))]; %BASE 2
+% f_a = [oct / 10^(2/(10*2*N))]; %BASE 10
 
-while oct<= 24000
+
+while oct<= 40960
     oct = f_c(end) * a;
     f_c = [f_c oct];
     
