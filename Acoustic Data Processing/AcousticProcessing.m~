@@ -46,8 +46,7 @@ fprintf('\n\n%s\n\n', 'Processing done.');
 micnum = 12
 % semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
 figure(2)
-semilogx(testdata(micnum).ofilt12_fvec, testdata(micnum).ofilt12_dbdata,'linewidth',1.2)
+semilogx(testdata(micnum).ofilt12_fvec, testdata(micnum).ofilt12_dbdata)
 xlim([10^1 10^4]);
-ylim([0 80])
 hold on
 % semilogx(testdata(micnum).ofilt12_fvec, testdata(micnum).ofilt12_dbAdata)

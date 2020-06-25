@@ -78,6 +78,7 @@ for micnum = 1:16
         
         switch worv
             case 'v'
+                figure(22)
                 subplot(2,1,1)
                 plot(caldata(micnum).tvec, caldata(micnum).wavdata);
                 grid on; grid minor;
@@ -101,7 +102,7 @@ for micnum = 1:16
         fprint(['File ', fname,' not found\n'])
     end
 end
-close all
+close(figure(22))
 cd(pdir);
 end
 

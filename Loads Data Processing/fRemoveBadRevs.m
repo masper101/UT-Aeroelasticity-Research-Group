@@ -16,9 +16,9 @@ Totalbadrevs = zeros(1,length(SortedData.names));
 while iteration_criteria > 0
     for k = 1:length(SortedData.names)      
         Nbadrevs(k) = sum(SortedData.badrevs{k});
-        Totalbadrevs(k) = Totalbadrevs(k) + Nbadrevs(k);
         
         if 0<Nbadrevs(k) && Nbadrevs(k)< Nrevmax
+            Totalbadrevs(k) = Totalbadrevs(k) + Nbadrevs(k);
             % NEW SortedData WITH BAD REVS REMOVED
             SortedData.Fx_outer{k} = SortedData.Fx_outer{k}(~SortedData.badrevs{k},:);
             SortedData.Fy_outer{k} = SortedData.Fy_outer{k}(~SortedData.badrevs{k},:);
@@ -42,6 +42,7 @@ while iteration_criteria > 0
             flag(k) = 0;
         elseif Nbadrevs(k)> Nrevmax
             flag(k) = 1;
+            Totalbadrevs(k) = Nbadrevs(k);
         end
     end
     

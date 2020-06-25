@@ -37,7 +37,6 @@ cd(directory);
 fprintf('\n%s\n','Processing Data. Test file: ')
 
 %% INPUTS
-Pref = 20E-6; %[Pa]
 files = dir('*.wav');
 filenames = {files(:).name}';
 testletters = unique(extractBetween(filenames(~contains(filenames,'cal')),'test_',' -'));
@@ -69,18 +68,23 @@ for micnum = 1:16
         testdata(micnum).Pdata = testdata(micnum).testmag * caldata(micnum).calfactor * doubling_factor;
         testdata(micnum).Pdata_t = testdata(micnum).wavdata * caldata(micnum).calfactor * doubling_factor;
         
-        [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,12);
-        [testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,3);
+        [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata,testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata,...
+            testdata(micnum).dbdata,testdata(micnum).dbAdata,testdata(micnum).ofilt12_dbdata,testdata(micnum).ofilt3_dbdata,...
+            testdata(micnum).ofilt12_dbAdata,testdata(micnum).ofilt3_dbAdata, testdata(micnum).oaspl,testdata(micnum).oasplA] = ...
+            fPostProcAc(testdata(micnum).tvec,testdata(micnum).fvec,testdata(micnum).Pdata_t,testdata(micnum).Pdata);
         
-        testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref);
-        A = fAfilt(testdata(micnum).fvec);
-        testdata(micnum).dbAdata = testdata(micnum).dbdata + A';
-        
-        testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref);
-        testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref);
-        
-        testdata(micnum).oaspl = fOverallSPL_time(testdata(micnum).Pdata_t, testdata(micnum).tvec);
-        testdata(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata(micnum).dbAdata / 20));
+%         [testdata(micnum).ofilt12_fvec,testdata(micnum).ofilt12_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,12);
+%         [testdata(micnum).ofilt3_fvec,testdata(micnum).ofilt3_Pdata] = fOctaveFilter(testdata(micnum).fvec,testdata(micnum).Pdata,3);
+%         
+%         testdata(micnum).dbdata = 20*log10(testdata(micnum).Pdata / Pref);
+%         A = fAfilt(testdata(micnum).fvec);
+%         testdata(micnum).dbAdata = testdata(micnum).dbdata + A';
+%         
+%         testdata(micnum).ofilt12_dbdata = 20*log10(testdata(micnum).ofilt12_Pdata / Pref);
+%         testdata(micnum).ofilt3_dbdata = 20*log10(testdata(micnum).ofilt3_Pdata / Pref);
+%         
+%         testdata(micnum).oaspl = fOverallSPL_time(testdata(micnum).Pdata_t, testdata(micnum).tvec);
+%         testdata(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata(micnum).dbAdata / 20));
         
         fprintf('%s\n',['OASPL = ',num2str(testdata(micnum).oaspl)])
     end
