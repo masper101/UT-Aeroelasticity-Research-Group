@@ -40,6 +40,7 @@ function [StreamData, SortedData] = fSortStream(StreamData, conditions)
 %                     .FM_tot = (F + F)^1.5 / (P+P) / sqrt(2 rho A)
 
 %% DEFINE CONSTANTS
+Nbits = 12;       % number of bits in the 
 StreamData.R = 1.108;
 c = 0.08;
 Nblade = 2;
@@ -111,40 +112,76 @@ for k = 1:length(StreamData.names)
         b = SortedData.binsize{k}(n);
 
         SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
-        SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
         az = StreamData.encoder{k}(count:count-1+b)';
-%         azdt = wshift('1D', az, 1);
-        azdt = circshift(az,1);
-        instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
-        instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb        
-
-        % interpolate to azimuth with dpsi = 1/Naz
-        SortedData.instRPM{k}(n,:) = interp1(az, instRPM, SortedData.azimuth{k}, 'pchip');
+        %        SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
+        % if binsize is greater than maximum readable by encoder, decimate
+        % the data stream by dcm8 = 3
+        dcm8 = 3;
+        if b > (2^Nbits-1)      
+            az = az(1:dcm8:end);     % length of decimated az is ceil(b/3);
+            SortedData.encoder{k}(n,1:length(az)) = az;
+            azdt = circshift(az,-1);
+            instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180 /dcm8; % instantaneous RPM, rad/s
+            instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb
+            % interpolate to azimuth with dpsi = 1/Naz
+            SortedData.instRPM{k}(n,:) = interp1(az, instRPM, SortedData.azimuth{k}, 'pchip');
                 
-        SortedData.Fx_outer{k}(n,:) = interp1(az, StreamData.Fx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fx_outer{k}(n,:) = interp1(az, StreamData.Fx_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
         
-        SortedData.Fy_outer{k}(n,:) = interp1(az, StreamData.Fy_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fy_outer{k}(n,:) = interp1(az, StreamData.Fy_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.Fz_outer{k}(n,:) = interp1(az, StreamData.Fz_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fz_outer{k}(n,:) = interp1(az, StreamData.Fz_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.Mx_outer{k}(n,:) = interp1(az, StreamData.Mx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.Mx_outer{k}(n,:) = interp1(az, StreamData.Mx_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.My_outer{k}(n,:) = interp1(az, StreamData.My_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.My_outer{k}(n,:) = interp1(az, StreamData.My_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
         
-        SortedData.Mz_outer{k}(n,:) = interp1(az, StreamData.Mz_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.Mz_outer{k}(n,:) = interp1(az, StreamData.Mz_outer{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.Fx_inner{k}(n,:) = interp1(az, StreamData.Fx_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fx_inner{k}(n,:) = interp1(az, StreamData.Fx_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
         
-        SortedData.Fy_inner{k}(n,:) = interp1(az, StreamData.Fy_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fy_inner{k}(n,:) = interp1(az, StreamData.Fy_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.Fz_inner{k}(n,:) = interp1(az, StreamData.Fz_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');      
+            SortedData.Fz_inner{k}(n,:) = interp1(az, StreamData.Fz_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.Mx_inner{k}(n,:) = interp1(az, StreamData.Mx_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.Mx_inner{k}(n,:) = interp1(az, StreamData.Mx_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
-        SortedData.My_inner{k}(n,:) = interp1(az, StreamData.My_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.My_inner{k}(n,:) = interp1(az, StreamData.My_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
         
-        SortedData.Mz_inner{k}(n,:) = interp1(az, StreamData.Mz_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+            SortedData.Mz_inner{k}(n,:) = interp1(az, StreamData.Mz_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        else
+            SortedData.encoder{k}(n,1:b) = az;
+            azdt = circshift(az,-1);
+            instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
+            instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb      
+            % interpolate to azimuth with dpsi = 1/Naz
+            SortedData.instRPM{k}(n,:) = interp1(az, instRPM, SortedData.azimuth{k}, 'pchip');
+                
+            SortedData.Fx_outer{k}(n,:) = interp1(az, StreamData.Fx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        
+            SortedData.Fy_outer{k}(n,:) = interp1(az, StreamData.Fy_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
 
+            SortedData.Fz_outer{k}(n,:) = interp1(az, StreamData.Fz_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.Mx_outer{k}(n,:) = interp1(az, StreamData.Mx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.My_outer{k}(n,:) = interp1(az, StreamData.My_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        
+            SortedData.Mz_outer{k}(n,:) = interp1(az, StreamData.Mz_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.Fx_inner{k}(n,:) = interp1(az, StreamData.Fx_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        
+            SortedData.Fy_inner{k}(n,:) = interp1(az, StreamData.Fy_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.Fz_inner{k}(n,:) = interp1(az, StreamData.Fz_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.Mx_inner{k}(n,:) = interp1(az, StreamData.Mx_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+
+            SortedData.My_inner{k}(n,:) = interp1(az, StreamData.My_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        
+            SortedData.Mz_inner{k}(n,:) = interp1(az, StreamData.Mz_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+        end
+        
         count = count+b;
                 
     end 
