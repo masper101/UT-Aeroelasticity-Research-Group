@@ -71,7 +71,9 @@ for k = 1:length(SortedData.names)
             title('F_y')
             aa = split(SortedData.names{k}, '_test_');
             bb = split(aa{2}, '.csv');
-            sgtitle(bb{1});
+            if ~verLessThan('MATLAB','9.5')
+                sgtitle(bb{1});
+            end
             
             subplot(233)
             plot(crFzo, 'r.-', 'MarkerSize', 15); hold on;
