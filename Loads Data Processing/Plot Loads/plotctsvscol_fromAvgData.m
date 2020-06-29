@@ -24,17 +24,17 @@ for i = 1:length(col_uni)
 end
 
 i = 2;
-% errorbar(CTlo,CPlo,CPloerr,CPloerr,CTloerr,CTloerr, 's','color',colors{2},'MarkerEdgeColor',colors{2},'MarkerFaceColor',colors{2},'LineWidth', 1)
+% errorbar(col_uni,CTlo,,CTloerr, 's','color',colors{2},'MarkerEdgeColor',colors{2},'MarkerFaceColor',colors{2},'LineWidth', 1)
 hold on
-errorbar(CTup,CPup,CPuperr,CPuperr,CTuperr,CTuperr,'^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
-% errorbar(CT_data,CP_data,CPerr,CPerr,CTerr,CTerr, '^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
-ylabel('C_P/ \sigma')
-xlabel('C_T/ \sigma')
+errorbar(col_uni,CTup,CTuperr,'^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
+% errorbar(col_uni,CT_data,CTerr, '^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
+xlabel('Collective, \theta_0 [deg]')
+ylabel('C_T/ \sigma')
 set(gca,'FontSize',18)
 grid minor
 hold on
-xlim([-0.02, 0.12])
-ylim([0, 0.014])
+ylim([-.01, 0.15])
+xlim([-1,13])
 
 
 
