@@ -40,9 +40,10 @@ warning off
 % directory = '/Users/sirohi/Desktop/Two-bladed loads/Horizontal_900RPM_Outdoor';
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_900RPM_Outdoor';
-directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
+%directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_1200RPM_Outdoor';
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/4 bladed';
+directory = '\Users\admin-local\Box\Chloe Lab Stuff\Acoustics Spring 2020\Indoor Testing\200703';
 
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 testletters = input('Test letters: ','s');
