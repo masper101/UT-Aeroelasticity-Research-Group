@@ -23,11 +23,11 @@ for i = 1:length(col_uni)
     CPuperr(i) = sumsquares([AvgData_corr.err_cps_outer{loc}]);
 end
 
-i = 2;
-% errorbar(col_uni,CTlo,,CTloerr, 's','color',colors{2},'MarkerEdgeColor',colors{2},'MarkerFaceColor',colors{2},'LineWidth', 1)
+i = 1;
+errorbar(col_uni,CTlo,CTloerr, 's','color',colors{2},'MarkerEdgeColor',colors{2},'MarkerFaceColor',colors{2},'LineWidth', 1)
 hold on
-errorbar(col_uni,CTup,CTuperr,'^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
-% errorbar(col_uni,CT_data,CTerr, '^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
+errorbar(col_uni,CTup,CTuperr,'^','color',colors{3},'MarkerEdgeColor',colors{3},'MarkerFaceColor',colors{3},'LineWidth', 1)
+errorbar(col_uni,CT_data,CTerr, '^','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_T/ \sigma')
 set(gca,'FontSize',18)
