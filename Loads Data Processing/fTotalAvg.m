@@ -22,8 +22,11 @@ function AvgData = fTotalAvg(RevData,SortedData,StreamData)
 %                     .err_FM_outer 
 %                     .err_FM_inner
 %                     .err_FM_tot 
+fprintf('\n%s\n', 'Averaging data');
 
 for k = 1:length(StreamData.names)
+    fprintf('\t%s', ['- ' SortedData.names{k} ' ... ']);
+    
     OMEGA = nanmean(StreamData.OMEGA{k});
 
     % non-dimensionalization factor for CT
@@ -69,6 +72,8 @@ for k = 1:length(StreamData.names)
     
     AvgData.err_cps_total{k} = 1.96* sqrt( std(RevData.ms_cps_outer{k}+RevData.ms_cps_inner{k})^2 ...
     + (2*cps_bias)^2 ) / sqrt(SortedData.nrevs{k}); 
+    
+    fprintf('%s\n', ' Ok');
 end
 
 

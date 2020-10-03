@@ -1,4 +1,4 @@
-function [MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip)
+function [MeanData,StreamData] = fLoadData(directory, rotor, flip)
 % LOADS DATA FROM STREAMING DATA FILES AND MEAN DATA FILES
 % 
 % INPUTS
@@ -121,22 +121,42 @@ end
         
 %% LOAD MEAN DATA FILES
 
-Files = dir();
+Files = dir('*.csv');
 FileName = {Files.name};
+dates = unique(extractBefore(FileName,'_'));
+letters = unique(extractBetween(FileName(contains(FileName,'mean')),'test_',' mean'));
 
+fprintf('\n\t%s', 'Loaded test dates are [YYMMDD] : ')
+fprintf('%s ',dates{:});
+fprintf('\n\t')
+testdates = input('Test Date [YYMMDD] : ', 's');
+testdates = split(testdates, ' ');
+
+fprintf('\n\t%s', 'Loaded test letters are : ')
+fprintf('%s ',letters{:});
+fprintf('\n\t')
+testletters = input('Test letters : ','s');
+testletters = split(testletters, ' ');
+
+cnt = 0;
 for ii = 1:length(testletters)
     if strcmp(testletters{ii}, 'all')
         testletters{ii} = ' mean';
     else
-        testletters{ii} = ['_' testletters{ii} ' mean'];
+        testletters{ii} = ['_test_' testletters{ii} ' mean'];
     end
-end
-TF = contains(FileName,testletters);
+    for jj = 1:length(testdates)
+        cnt = cnt+1;
+        testnames{cnt} = [testdates{jj}, testletters{ii}];
+    end
+end 
+    
+TF = contains(FileName,testnames);
 MeanData.names = FileName(TF);
 
 mdata = table(); % assemble a table with all the mean data
 for im = 1:length(MeanData.names) % need to fix reading multiple mean files
-    fprintf('%s\t', ['Loading mean data file : ' MeanData.names{im} ' ...']);
+    fprintf('\n%s\t', ['Loading mean data file : ' MeanData.names{im} ' ...']);
     opts = detectImportOptions(MeanData.names{im});
     opts.DataLines = [2 Inf];
     opts.VariableNamesLine = 1;
@@ -149,14 +169,19 @@ for im = 1:length(MeanData.names) % need to fix reading multiple mean files
     else
         MeanData.data{im} = readtable(MeanData.names{im}, opts, 'ReadVariableNames', false);
     end
+    if width(MeanData.data{im}) > 25
+        MeanData.data{im}.ExtraVar1 = [];
+    end
+        
     mdata = vertcat(mdata, MeanData.data{im});
+    fprintf('\n')
 end    
 
 %% FIND NAMES OF STREAMING FILES AND ASSIGN OPERATING VARIABLES
 
 StreamData.names = mdata{:,'Path'};
 
-fprintf('%s\n', 'Checking streaming files ...');
+fprintf('\n%s\n', 'Checking streaming files ...');
 
 % remove rows corresponding to files that dont exist
 row2rm = false(length(StreamData.names),1);   % vector of row numbers to remove
@@ -205,6 +230,8 @@ for k = 1:nfiles
     StreamData.Mx_inner{k} = [];
     StreamData.My_inner{k} = [];
     StreamData.Mz_inner{k} = [];
+    StreamData.ax{k} = [];
+    StreamData.ay{k} = [];
     StreamData.encoder{k} = [];
     StreamData.revolution{k} = [];
     StreamData.trigger{k} = [];
@@ -218,17 +245,18 @@ for k = 1:nfiles
     StreamData.Fz_outer{k} = data{:,Fzocol} * -1;    %C
     StreamData.Mx_outer{k} = data{:,Mxocol};         %D
     StreamData.My_outer{k} = data{:,Myocol};         %E
-    StreamData.Mz_outer{k} = data{:,Mzocol}*-1;         %F
+    StreamData.Mz_outer{k} = data{:,Mzocol}*-1;      %F
     StreamData.Fx_inner{k} = data{:,Fxicol};         %G
     StreamData.Fy_inner{k} = data{:,Fyicol};         %H
     StreamData.Fz_inner{k} = data{:,Fzicol};         %I
     StreamData.Mx_inner{k} = data{:,Mxicol};         %J
     StreamData.My_inner{k} = data{:,Myicol};         %K
     StreamData.Mz_inner{k} = data{:,Mzicol};         %L
-    
+    StreamData.ax{k} = data{:,axcol};                %M
+    StreamData.ay{k} = data{:,aycol};                %N
     StreamData.encoder{k} = data{:,enccol};          %W
     StreamData.revolution{k} = data{:,revcol};       %X
-    StreamData.trigger{k} = data{:,trigcol};         %Q
+    StreamData.trigger{k} = data{:,trigcol};         %Q           
     StreamData.nrevs{k} = StreamData.revolution{k}(end);
 
     fprintf('%s\n', 'Ok');

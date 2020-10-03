@@ -41,14 +41,8 @@ warning off
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
 % directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
 
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Indoor Testing/Isolated Rotor/200619_test_a';
-%directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_1200RPM_Outdoor';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/4 bladed';
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Indoor Testing/200704';
-
+directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Preliminary Testing/Accelerations';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
-testletters = input('Test letters: ','s');
-testletters = split(testletters, ' ');
 
 conditions = [64 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
@@ -57,15 +51,18 @@ write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip);
+
+StreamData = fFilterAccelerations(StreamData);
+
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
 RevData = fRevolutionAvg(SortedData);
-[CorrelatedData,RevData_corr] = fRemoveBadRevs(SortedData,RevData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
-AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
+
+% [CorrelatedData,RevData_corr] = fRemoveBadRevs(SortedData,RevData);
+% AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
-% 
 
 
 %% VISUALIZE OR WRITE TO FILE

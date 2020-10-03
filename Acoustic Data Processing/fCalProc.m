@@ -95,7 +95,23 @@ for micnum = 1:16
                 xlabel('Frequency, Hz');
                 ylabel('Magnitude');
                 legend(['Mic. ' num2str(micnum)]);
+                
+                figure(23)
+                set(gca,'xscale','log')
+                semilogx(caldata(micnum).fvec, 20*log10(caldata(micnum).calmag*caldata(micnum).calfactor./20E-6));
+                grid on; grid minor;
+                xlabel('Frequency, Hz');
+                ylim([-20,120])
+                xlim([10,10^4+10000])
+                ylabel('dB');
+                title(['114 dB Calibration: 07/21/20']);
+                set(gca, 'FontName', 'Times New Roman')
+                set(gca, 'FontSize', 14)
+                filename = ['mic' num2str(micnum) '.png'];
+                saveas(gcf,filename)
                 pause
+                
+                
             otherwise
         end
     else

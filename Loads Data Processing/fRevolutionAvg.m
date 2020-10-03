@@ -75,8 +75,11 @@ function RevData = fRevolutionAvg(SortedData)
 %                     .ms_FM_tot 
 
 
+fprintf('\n%s\n', 'Phase-averaging data');
 
 for k = 1:length(SortedData.Fx_inner)
+    fprintf('\t%s', ['- ' SortedData.names{k} ' ... ']);
+    
     % average revolution 
     RevData.avg_check{k} = nanmean(SortedData.check{k});
     RevData.avg_instRPM{k} = nanmean(SortedData.instRPM{k});
@@ -92,6 +95,9 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.avg_Mx_inner{k} = nanmean(SortedData.Mx_inner{k});
     RevData.avg_My_inner{k} = nanmean(SortedData.My_inner{k});
     RevData.avg_Mz_inner{k} = nanmean(SortedData.Mz_inner{k});
+    
+    RevData.avg_ax{k} = nanmean(SortedData.ax{k});
+    RevData.avg_ay{k} = nanmean(SortedData.ay{k});
     
     RevData.avg_cts_outer{k} = nanmean(SortedData.cts_outer{k});
     RevData.avg_cps_outer{k} = nanmean(SortedData.cps_outer{k});
@@ -116,6 +122,9 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.err_Mx_inner{k} = nanstd(SortedData.Mx_inner{k});
     RevData.err_My_inner{k} = nanstd(SortedData.My_inner{k});
     RevData.err_Mz_inner{k} = nanstd(SortedData.Mz_inner{k});
+    
+    RevData.err_ax{k} = nanstd(SortedData.ax{k});
+    RevData.err_ay{k} = nanstd(SortedData.ay{k});
     
     RevData.err_cts_outer{k} = nanstd(SortedData.cts_outer{k});
     RevData.err_cps_outer{k} = nanstd(SortedData.cps_outer{k});
@@ -142,6 +151,9 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.ms_My_inner{k} = nanmean(SortedData.My_inner{k}');
     RevData.ms_Mz_inner{k} = nanmean(SortedData.Mz_inner{k}');
     
+    RevData.ms_ax{k} = nanmean(SortedData.ax{k}');
+    RevData.ms_ay{k} = nanmean(SortedData.ay{k}');
+    
     RevData.ms_cts_outer{k} = nanmean(SortedData.cts_outer{k}');
     RevData.ms_cps_outer{k} = nanmean(SortedData.cps_outer{k}');
     RevData.ms_cts_inner{k} = nanmean(SortedData.cts_inner{k}');
@@ -150,4 +162,6 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.ms_FM_outer{k} = nanmean(SortedData.FM_outer{k}');
     RevData.ms_FM_inner{k} = nanmean(SortedData.FM_inner{k}');
     RevData.ms_FM_tot{k} = nanmean(SortedData.FM_tot{k}');
+    
+    fprintf('%s\n', ' Ok');
 end
