@@ -23,7 +23,7 @@ function [fvec, magVs, psdVs, dftVs2] = ffind_dft(tvec, Vs, winlen)
 if ( mod(length(tvec),2) == 1 )
     dt = tvec(2) - tvec(1);
     tvec = [tvec tvec(end)+dt];
-    wVs = [wVs wVs(end)];
+    Vs = [Vs Vs(end)];
 end
 
 fs = 1/(tvec(2)-tvec(1));

@@ -35,7 +35,8 @@ clear; clc; %close all
 warning off
 
 %% INPUTS
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
+%directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
+directory = '\Users\admin-local\Box\Chloe Lab Stuff\Acoustics Spring 2020\Uber Acoustics 200721'
 
 %% PROCESSING
 [caldata,testdate] = fCalProc(directory);
