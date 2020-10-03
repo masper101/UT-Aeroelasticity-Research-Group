@@ -54,6 +54,7 @@ StreamData.rho = P/R_air/T;
 
 SR = 10000; % SAMPLE RATE
 Naz = 1000;   % dpsi = 0.36 deg
+enc = input('\nEncoder? [Y/N] ','s');
 
 %% CALCULATE OMEGA FROM 1/Rev
 for k = 1:length(StreamData.names)
@@ -98,6 +99,9 @@ for k = 1:length(StreamData.names)
     SortedData.My_inner{k} = [];
     SortedData.Mz_inner{k} = [];
 
+    SortedData.ax{k} = [];
+    SortedData.ay{k} = [];
+    
     SortedData.cts_outer{k} = [];
     SortedData.cps_outer{k} = [];
     SortedData.cts_inner{k} = [];
@@ -122,7 +126,12 @@ for k = 1:length(StreamData.names)
 
         % if the rotor is not turning no need to interpolate
         if RotorTurning
-            az = StreamData.encoder{k}(count:count-1+b)';
+            if enc == 'Y'||enc == 'y'
+                az = StreamData.encoder{k}(count:count-1+b)';
+            else 
+                az = [360/b:360/b:360];
+            end
+            
             % SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
             % if binsize is greater than maximum readable by encoder, decimate
             % the data stream by dcm8 = 3
@@ -159,6 +168,10 @@ for k = 1:length(StreamData.names)
                 SortedData.My_inner{k}(n,:) = interp1(az, StreamData.My_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
                 
                 SortedData.Mz_inner{k}(n,:) = interp1(az, StreamData.Mz_inner{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
+                
+                SortedData.ax{k}(n,:) = interp1(az, StreamData.ax{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
+                
+                SortedData.ay{k}(n,:) = interp1(az, StreamData.ay{k}(count:dcm8:count-1+b)', SortedData.azimuth{k}, 'pchip');
             else
                 SortedData.encoder{k}(n,1:b) = az;
                 azdt = circshift(az,-1);
@@ -190,6 +203,10 @@ for k = 1:length(StreamData.names)
                 SortedData.My_inner{k}(n,:) = interp1(az, StreamData.My_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
                 
                 SortedData.Mz_inner{k}(n,:) = interp1(az, StreamData.Mz_inner{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+                
+                SortedData.ax{k}(n,:) = interp1(az, StreamData.ax{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
+                
+                SortedData.ay{k}(n,:) = interp1(az, StreamData.ay{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
             end
         else
             SortedData.azimuth{k} = 0:1/b*360:360*(1-1/b);
@@ -207,6 +224,9 @@ for k = 1:length(StreamData.names)
             SortedData.Mx_inner{k}(n,:) = StreamData.Mx_inner{k}(count:count-1+b)';
             SortedData.My_inner{k}(n,:) = StreamData.My_inner{k}(count:count-1+b)';
             SortedData.Mz_inner{k}(n,:) = StreamData.Mz_inner{k}(count:count-1+b)';
+            SortedData.ax{k}(n,:) = StreamData.ax{k}(count:count-1+b)';
+            SortedData.ay{k}(n,:) = StreamData.ay{k}(count:count-1+b)';
+
         end
         
         count = count+b;

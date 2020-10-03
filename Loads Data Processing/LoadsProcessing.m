@@ -39,32 +39,38 @@ warning off
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Streaming data_DIC_August_2019';
 % directory = '/Users/sirohi/Desktop/Two-bladed loads/Horizontal_900RPM_Outdoor';
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
+<<<<<<< HEAD
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_900RPM_Outdoor';
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_1200RPM_Outdoor';
 %directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Loads Files/4 bladed';
 directory = '\Users\admin-local\Box\Chloe Lab Stuff\Acoustics Spring 2020\Indoor Testing\200704';
+=======
+% directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
+>>>>>>> ad4b934ec93a3a34f0ca3fbb9ba1caca08a622a5
 
+directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Preliminary Testing/Accelerations';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
-testletters = input('Test letters: ','s');
-testletters = split(testletters, ' ');
 
-conditions = [34 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [64 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, testletters, rotor, flip);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip);
+
+StreamData = fFilterAccelerations(StreamData);
+
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
 RevData = fRevolutionAvg(SortedData);
-[CorrelatedData,RevData_corr] = fRemoveBadRevs(SortedData,RevData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
-AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
+
+% [CorrelatedData,RevData_corr] = fRemoveBadRevs(SortedData,RevData);
+% AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
-% 
 
 
 %% VISUALIZE OR WRITE TO FILE
