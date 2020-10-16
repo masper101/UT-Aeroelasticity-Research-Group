@@ -47,6 +47,7 @@ directory = '/Users/chloe/Library/Mobile Documents/com~apple~CloudDocs/Grad/Rese
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
 conditions = [75.2 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;

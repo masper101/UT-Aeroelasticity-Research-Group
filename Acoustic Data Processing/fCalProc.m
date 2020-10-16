@@ -51,7 +51,7 @@ cal_db = 114;
 
 %% read the calibration files
 worv = input('\nVisualize (v) calibration data ? ', 's');
-for micnum = 1:16
+for micnum = 1:17
     fname = [calprefix num2str(micnum) '.wav'];
     if isfile(fname)
         fprintf('\t%s',['- Mic ', num2str(micnum),' ... '])
@@ -115,7 +115,7 @@ for micnum = 1:16
             otherwise
         end
     else
-        fprint(['File ', fname,' not found\n'])
+        fprintf(['File ', fname,' not found\n'])
     end
 end
 close(figure(22))
