@@ -124,7 +124,6 @@ end
 Files = dir('*.csv');
 FileName = {Files.name};
 dates = unique(extractBefore(FileName,'_'));
-letters = unique(extractBetween(FileName(contains(FileName,'mean')),'test_',' mean'));
 
 fprintf('\n\t%s', 'Loaded test dates are [YYMMDD] : ')
 fprintf('%s ',dates{:});
@@ -132,24 +131,30 @@ fprintf('\n\t')
 testdates = input('Test Date [YYMMDD] : ', 's');
 testdates = split(testdates, ' ');
 
-fprintf('\n\t%s', 'Loaded test letters are : ')
-fprintf('%s ',letters{:});
-fprintf('\n\t')
-testletters = input('Test letters : ','s');
-testletters = split(testletters, ' ');
+for jj = 1:length(testdates)
+    Files = FileName(contains(FileName,'mean') & contains(FileName,testdates{jj}));
+    letters = extractBetween(Files,'test_',' mean');
+    fprintf('\n\t%s', 'Test Date : ')
+    fprintf('%s', testdates{jj})
+    fprintf('\n\t%s', 'Loaded test letters are : ')
+    fprintf('%s ',letters{:});
+    fprintf('\n\t')
+    testletters{jj} = input('Test letters : ','s');
+    testletters{jj} = split(testletters{jj}, ' ');
+end
 
 cnt = 0;
-for ii = 1:length(testletters)
-    if strcmp(testletters{ii}, 'all')
-        testletters{ii} = ' mean';
+for jj = 1:length(testletters)
+for ii = 1:length(testletters{jj})
+    if strcmp(testletters{jj}{ii}, 'all')
+        testletters{jj}{ii} = ' mean';
     else
-        testletters{ii} = ['_test_' testletters{ii} ' mean'];
+        testletters{jj}{ii} = ['_test_' testletters{jj}{ii} ' mean'];
     end
-    for jj = 1:length(testdates)
-        cnt = cnt+1;
-        testnames{cnt} = [testdates{jj}, testletters{ii}];
-    end
+    cnt = cnt+1;
+    testnames{cnt} = [testdates{jj}, testletters{jj}{ii}];
 end 
+end
     
 TF = contains(FileName,testnames);
 MeanData.names = FileName(TF);
@@ -169,7 +174,9 @@ for im = 1:length(MeanData.names) % need to fix reading multiple mean files
     else
         MeanData.data{im} = readtable(MeanData.names{im}, opts, 'ReadVariableNames', false);
     end
-    if width(MeanData.data{im}) > 25
+    
+    ExVar = startsWith(MeanData.data{im}.Properties.VariableNames,'ExtraVar');
+    if sum(ExVar) > 0
         MeanData.data{im}.ExtraVar1 = [];
     end
         
@@ -245,18 +252,18 @@ for k = 1:nfiles
     StreamData.Fz_outer{k} = data{:,Fzocol} * -1;    %C
     StreamData.Mx_outer{k} = data{:,Mxocol};         %D
     StreamData.My_outer{k} = data{:,Myocol};         %E
-    StreamData.Mz_outer{k} = data{:,Mzocol}*-1;      %F
+    StreamData.Mz_outer{k} = data{:,Mzocol};      %F
     StreamData.Fx_inner{k} = data{:,Fxicol};         %G
     StreamData.Fy_inner{k} = data{:,Fyicol};         %H
     StreamData.Fz_inner{k} = data{:,Fzicol};         %I
     StreamData.Mx_inner{k} = data{:,Mxicol};         %J
     StreamData.My_inner{k} = data{:,Myicol};         %K
-    StreamData.Mz_inner{k} = data{:,Mzicol};         %L
+    StreamData.Mz_inner{k} = data{:,Mzicol}*-1;         %L
     StreamData.ax{k} = data{:,axcol};                %M
     StreamData.ay{k} = data{:,aycol};                %N
     StreamData.encoder{k} = data{:,enccol};          %W
     StreamData.revolution{k} = data{:,revcol};       %X
-    StreamData.trigger{k} = data{:,trigcol};         %Q           
+%     StreamData.trigger{k} = data{:,trigcol};         %Q           
     StreamData.nrevs{k} = StreamData.revolution{k}(end);
 
     fprintf('%s\n', 'Ok');

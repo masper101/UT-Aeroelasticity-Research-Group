@@ -41,10 +41,12 @@ warning off
 %directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
 % directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
 
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Preliminary Testing/Accelerations';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Indoor';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Indoor Testing/200703';
+directory = '/Users/chloe/Library/Mobile Documents/com~apple~CloudDocs/Grad/Research/Uber/Mean Data/Streaming Data/0.73 chord';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [64 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [75.2 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
@@ -53,7 +55,7 @@ write_directory = directory;
 
 [MeanData,StreamData] = fLoadData(directory, rotor, flip);
 
-StreamData = fFilterAccelerations(StreamData);
+% StreamData = fFilterAccelerations(StreamData);
 
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
 RevData = fRevolutionAvg(SortedData);

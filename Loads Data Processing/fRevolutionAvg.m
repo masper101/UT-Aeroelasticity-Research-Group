@@ -107,6 +107,8 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.avg_FM_outer{k} = nanmean(SortedData.FM_outer{k});
     RevData.avg_FM_inner{k} = nanmean(SortedData.FM_inner{k});
     RevData.avg_FM_tot{k} = nanmean(SortedData.FM_tot{k});
+    
+    RevData.avg_ctcp{k} = nanmean(SortedData.ctcp{k});
    
     % standard deviation
     RevData.err_instRPM{k} = nanstd(SortedData.instRPM{k});
@@ -134,6 +136,8 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.err_FM_outer{k} = nanstd(SortedData.FM_outer{k});
     RevData.err_FM_inner{k} = nanstd(SortedData.FM_inner{k});
     RevData.err_FM_tot{k} = nanstd(SortedData.FM_tot{k});
+    
+    RevData.err_ctcp{k} = nanstd(SortedData.ctcp{k});
 
     % average over each revolution
     RevData.ms_check{k} = nanmean(SortedData.check{k}');
@@ -162,6 +166,8 @@ for k = 1:length(SortedData.Fx_inner)
     RevData.ms_FM_outer{k} = nanmean(SortedData.FM_outer{k}');
     RevData.ms_FM_inner{k} = nanmean(SortedData.FM_inner{k}');
     RevData.ms_FM_tot{k} = nanmean(SortedData.FM_tot{k}');
+    
+    RevData.ms_ctcp{k} = nanmean(SortedData.ctcp{k}');
     
     fprintf('%s\n', ' Ok');
 end

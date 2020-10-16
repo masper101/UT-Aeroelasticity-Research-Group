@@ -61,9 +61,9 @@ for k = 1:length(StreamData.names)
     StreamData.binsize{k} = zeros(1,StreamData.nrevs{k});
     for n = 1:StreamData.nrevs{k}
         StreamData.binsize{k}(n) = sum(StreamData.revolution{k}(:) == n-1);
-        if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 10 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
-            StreamData.binsize{k}(n) = StreamData.binsize{k}(1) + 10;
-        end
+%         if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 10 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
+%             StreamData.binsize{k}(n) = StreamData.binsize{k}(1) + 10;
+%         end
     end
     StreamData.OMEGA{k} = SR./StreamData.binsize{k} * 2 * pi;
     SortedData.binsize{k} = StreamData.binsize{k};
@@ -111,6 +111,8 @@ for k = 1:length(StreamData.names)
     SortedData.FM_inner{k} = [];
     SortedData.FM_tot{k} = [];
     
+    SortedData.ctcp{k} = [];
+    
     % if there is only one value in StreamData.encoder, it means that
     % the rotor is not turning,
     if length(unique(StreamData.encoder{k}))==1
@@ -130,6 +132,7 @@ for k = 1:length(StreamData.names)
                 az = StreamData.encoder{k}(count:count-1+b)';
             else 
                 az = [360/b:360/b:360];
+%                 StreamData.encoder{k}(count:count-1+b) =[360/b:360/b:360]; 
             end
             
             % SortedData.encoder{k}(n,1:b) = StreamData.encoder{k}(count:count-1+b)';
@@ -178,7 +181,9 @@ for k = 1:length(StreamData.names)
                 instRPM = (azdt(1:end-1) - az(1:end-1)) *SR * pi /180; % instantaneous RPM, rad/s
                 instRPM = [instRPM instRPM(end)]; % add one element to get size 1xb
                 % interpolate to azimuth with dpsi = 1/Naz
+                
                 SortedData.instRPM{k}(n,:) = interp1(az, instRPM, SortedData.azimuth{k}, 'pchip');
+
                 
                 SortedData.Fx_outer{k}(n,:) = interp1(az, StreamData.Fx_outer{k}(count:count-1+b)', SortedData.azimuth{k}, 'pchip');
                 
@@ -244,6 +249,7 @@ for k = 1:length(StreamData.names)
     SortedData.FM_tot{k} = sqrt(StreamData.sigma) * ...
         (abs(SortedData.cts_outer{k} + SortedData.cts_inner{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_outer{k} + SortedData.cps_inner{k});
     
+    SortedData.ctcp{k} = (SortedData.cts_outer{k}+SortedData.cts_inner{k})./(SortedData.cps_outer{k}+SortedData.cps_inner{k});
     fprintf('%s\n', ['Nrevs: ' num2str(StreamData.nrevs{k}) '... Ok'] );
    
 end

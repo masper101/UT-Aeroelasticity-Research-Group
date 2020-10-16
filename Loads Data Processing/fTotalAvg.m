@@ -43,7 +43,7 @@ for k = 1:length(StreamData.names)
     AvgData.avg_FM_outer{k} = nanmean(RevData.avg_FM_outer{k});
     AvgData.avg_FM_inner{k} = nanmean(RevData.avg_FM_inner{k});
     AvgData.avg_FM_tot{k} = nanmean(RevData.avg_FM_tot{k});
-   
+    AvgData.avg_ctcp{k} = nanmean(RevData.avg_ctcp{k});
     
     cts_bias = 8 / ct_den / StreamData.sigma;
     cps_bias = 0.48 / cq_den / StreamData.sigma;
@@ -63,6 +63,8 @@ for k = 1:length(StreamData.names)
     AvgData.err_FM_outer{k} = 1.96* std(RevData.ms_FM_outer{k})/sqrt(SortedData.nrevs{k});
     AvgData.err_FM_inner{k} = 1.96* std(RevData.ms_FM_inner{k})/sqrt(SortedData.nrevs{k});
     AvgData.err_FM_tot{k} = 1.96* std(RevData.ms_FM_tot{k})/sqrt(SortedData.nrevs{k});
+    
+    AvgData.err_ctcp{k} = 1.96* std(RevData.ms_ctcp{k})/sqrt(SortedData.nrevs{k});
  
     AvgData.avg_cts_total{k} = (AvgData.avg_cts_inner{k} + AvgData.avg_cts_outer{k})/2;
     AvgData.avg_cps_total{k} = (AvgData.avg_cps_inner{k} + AvgData.avg_cps_outer{k})/2;
