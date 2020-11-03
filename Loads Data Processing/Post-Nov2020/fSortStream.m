@@ -120,8 +120,8 @@ for k = 1:length(StreamData.names)
     end
     
     SortedData.azimuth{k} = linspace(0, 360*(1-1/Naz), Naz);
-        
-    for n = 1:StreamData.nrevs{k}
+    count = SortedData.binsize{k}(1)+1;  
+    for n = 2:StreamData.nrevs{k} %cut out first rev
         b = SortedData.binsize{k}(n);
         
         SortedData.check{k}(n,1:b) = StreamData.revolution{k}(count:count-1+b)';
@@ -238,7 +238,24 @@ for k = 1:length(StreamData.names)
                 
     end 
     
-    OMEGA = StreamData.OMEGA{k};
+    
+            SortedData.Fx_outer{k}(1,:) = [];
+            SortedData.Fy_outer{k}(1,:) = [];              
+            SortedData.Fz_outer{k}(1,:) = [];                
+            SortedData.Mx_outer{k}(1,:) = [];
+            SortedData.My_outer{k}(1,:) = [];
+            SortedData.Mz_outer{k}(1,:) = [];
+            SortedData.Fx_inner{k}(1,:) = [];
+            SortedData.Fy_inner{k}(1,:) = [];
+            SortedData.Fz_inner{k}(1,:) = [];
+            SortedData.Mx_inner{k}(1,:) = [];
+            SortedData.My_inner{k}(1,:) = [];
+            SortedData.Mz_inner{k}(1,:) = [];
+            SortedData.ax{k}(1,:) = [];
+            SortedData.ay{k}(1,:) = [];
+    
+    
+    OMEGA = StreamData.OMEGA{k}(2:length(StreamData.OMEGA{k}));
     SortedData.cts_outer{k} = SortedData.Fz_outer{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
     SortedData.cps_outer{k} = SortedData.Mz_outer{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
     SortedData.cts_inner{k} = SortedData.Fz_inner{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;

@@ -194,7 +194,7 @@ MeanData.RPMs = (round(mdata{:,'RPM'}/5))*5;
 switch (rotor)
     case 'Uber'
         MeanData.meancols = mdata{:,'MeanCollective'};
-        MeanData.diffcols = mdata{:,'Diff_Collective'};
+        MeanData.diffcols = mdata{:,'DifferentialCollective'};
         MeanData.zcs = mdata{:,'AxialSpacing'};
         MeanData.phis = mdata{:,'IndexAngle'};
     case 'CCR'
@@ -267,12 +267,13 @@ for k = 1:nfiles
     %% CREATE REV COUNTER
     revnum = 0;
     for i = 1:length(StreamData.encoder{k})-1
-        StreamData.revolution{k}(i) = revnum;
+        StreamData.revolution{k}(i,1) = revnum;
         if (StreamData.encoder{k}(i) > 359)&& (StreamData.encoder{k}(i+1) < 1)
             revnum = revnum + 1; 
         end
     end
-    StreamData.revolution{k}(length(StreamData.encoder{k})) = revnum;
+    StreamData.revolution{k}(length(StreamData.encoder{k}),1) = revnum;
+    StreamData.nrevs{k} = revnum;
 end
 
 cd(pdir);   % return to original directory
