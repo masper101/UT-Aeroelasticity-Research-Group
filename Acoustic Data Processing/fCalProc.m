@@ -44,7 +44,7 @@ else
     calsuffix = '';
 end
 
-calprefix = [testdate '_test_' calletter '_cal' calsuffix ' - 01 Start - '];
+calprefix = [testdate '_test_' calletter '_cal' calsuffix ' - 01 Start - Mic '];
 % calprefix = ['./Uber Acoustics ' testdate '/Audio Files/' testdate '_test_' testletter '_cal' calsuffix ' - 01 Start - '];
 caldata = struct('scale', [], 'calmag', [], 'tvec',[],'wavdata',[],'fs',[],'fvec',[]);
 cal_db = 114;
@@ -96,19 +96,21 @@ for micnum = 1:17
                 ylabel('Magnitude');
                 legend(['Mic. ' num2str(micnum)]);
                 
-                figure(23)
-                set(gca,'xscale','log')
-                semilogx(caldata(micnum).fvec, 20*log10(caldata(micnum).calmag*caldata(micnum).calfactor./20E-6));
-                grid on; grid minor;
-                xlabel('Frequency, Hz');
-                ylim([-20,120])
-                xlim([10,10^4+10000])
-                ylabel('dB');
-                title(['114 dB Calibration: 07/21/20']);
-                set(gca, 'FontName', 'Times New Roman')
-                set(gca, 'FontSize', 14)
-                filename = ['mic' num2str(micnum) '.png'];
-                saveas(gcf,filename)
+%                 figure(23)
+%                 set(gca,'xscale','log')
+%                 semilogx(caldata(micnum).fvec, 20*log10(caldata(micnum).calmag*caldata(micnum).calfactor./20E-6));
+%                 grid on; grid minor;
+%                 xlabel('Frequency, Hz');
+%                 ylim([-20,120])
+%                 xlim([10,10^4+10000])
+%                 ylabel('dB');
+%                 micSN = [223 214 221 222 202 177 199 191 189 205 188 107 220 219 203];
+%                 micserialnum = micSN(micnum);
+%                 title(['10/27/20: 114 dB Calibration, Mic ' num2str(micserialnum)]);
+%                 set(gca, 'FontName', 'Times New Roman')
+%                 set(gca, 'FontSize', 14)
+%                 filename = ['mic' num2str(micserialnum) '.png'];
+%                 saveas(gcf,filename)
                 pause
                 
                 

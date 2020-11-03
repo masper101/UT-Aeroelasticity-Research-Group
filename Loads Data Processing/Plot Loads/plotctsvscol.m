@@ -90,6 +90,25 @@ set(gca,'FontSize',18)
 grid minor
 % xlim([-0.0001, 0.11])
 
+%------------------------------
+figure(3)
+set(0,'defaultlegendinterpreter','latex')
+set(0,'defaultAxesTickLabelInterpreter','latex')
+
+hold on
+
+errorbar(col_uni,CPup,CPuperr,'^','color',colors{4},'MarkerEdgeColor',colors{4},'MarkerFaceColor',colors{4},'LineWidth', 1)
+if (~isolated)
+errorbar(col_uni,CPlo,CPloerr, 's','color',colors{2},'MarkerEdgeColor',colors{2},'MarkerFaceColor',colors{2},'LineWidth', 1)
+errorbar(col_uni,CP_data,CPerr, 'o','color',colors{1},'MarkerEdgeColor',colors{1},'MarkerFaceColor',colors{1},'LineWidth', 1)
+legend('Upper','Lower','Total','location','northwest')
+end
+
+xlabel('$\theta_0$ [deg]','interpreter','latex')
+ylabel('$C_P/ \sigma$','interpreter','latex')
+set(gca,'FontSize',18)
+grid minor
+% xlim([-0.0001, 0.11])
 
 %%
 function x = sumsquares(y)

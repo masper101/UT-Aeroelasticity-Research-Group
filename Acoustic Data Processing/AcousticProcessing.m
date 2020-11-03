@@ -35,14 +35,9 @@ clear; clc; %close all
 warning off
 
 %% INPUTS
-<<<<<<< HEAD
-%directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
-directory = '\Users\admin-local\Box\Chloe Lab Stuff\Acoustics Spring 2020\Uber Acoustics 200721'
-=======
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200721';
-
->>>>>>> ad4b934ec93a3a34f0ca3fbb9ba1caca08a622a5
-
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200721';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Mic Test';
 %% PROCESSING
 [caldata,testdate] = fCalProc(directory);
 testdata = fAcProc(directory, testdate, caldata);

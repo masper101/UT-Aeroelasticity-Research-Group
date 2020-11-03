@@ -87,8 +87,10 @@ xlim([-95 95])
 xticks([-90:15:90])
 yticks([0.05:0.02:0.17])
 ylabel('C_T/ \sigma')
+xlabel('Index Angle, deg')
 grid on
 grid minor
+set(gca, 'fontsize',14)
 
 % UPPER
 subplot(2,1,1)
@@ -99,10 +101,11 @@ ylim([0.05, 0.17])
 xlim([-95 95])
 xticks([-90:15:90])
 yticks([0.05:0.02:0.17])
-xlabel('Index Angle, deg')
+xlabel('')
 ylabel('C_T/ \sigma')
 grid on
-grid minor
+set(gca, 'fontsize',14)
+legend('CFD','VVPM','Exp','location',[.85 .88 .1 .1])
 
 % TOTAL
 figure(2)
@@ -112,28 +115,29 @@ plot([-95,95],[CT_90,CT_90], '--','color',[0 0 0]+0.7, 'linewidth',1.2)
 xlabel('Index Angle, deg')
 ylabel('C_T/ \sigma')
 set(gca,'FontSize',18)
-grid minor
 grid on
 hold on
 ylim([0.05, 0.17])
 xlim([-95 95])
 xticks([-90:15:90])
 yticks([0.05:0.02:0.17])
+legend('CFD','VVPM','Exp','location',[.85 .86 .1 .1])
 
 % CT/CP
-figure(4)
+figure(3)
 hold on
 errorbar(phis_uni,CT_data./CP_data,ctcperr, 'o','color',colors{i},'MarkerEdgeColor',colors{i},'MarkerFaceColor',colors{i},'LineWidth', 1)
+plot([-95,95],[CT_90./CP_90,CT_90./CP_90], '--','color',[0 0 0]+0.7, 'linewidth',1.2)
 xlabel('Index Angle, deg')
 ylabel('C_T/ C_P')
 set(gca,'FontSize',18)
-grid minor
 grid on
 hold on
-% ylim([0.05, 0.17])
+ylim([5 12])
 xlim([-95 95])
 xticks([-90:15:90])
 % yticks([0.05:0.02:0.17])
+legend('CFD','VVPM','Exp','location',[.88 .88 .1 .1])
 
 
 %%

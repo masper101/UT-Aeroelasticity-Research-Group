@@ -1,5 +1,5 @@
 % PROCESS MISC LOADS DATA 
-% CMJOHNSON UPDATED: 03/02/2020
+% CMJOHNSON UPDATED: 11/03/2020
 % Sirohi 200416 reads in mean data file and then reads corresponding
 % streaming files
 
@@ -36,17 +36,10 @@ warning off
 
 %% INPUTS
 
-%directory = '/Users/sirohi/Desktop/Two-bladed loads/Streaming data_DIC_August_2019';
-% directory = '/Users/sirohi/Desktop/Two-bladed loads/Horizontal_900RPM_Outdoor';
-%directory = '/Users/sirohi/Desktop/Two-bladed loads/Uber Acoustics 200227 4bl';
-% directory = '/Users/sirohi/Desktop/Two-bladed loads/200619_test_a';
-
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Indoor';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Indoor Testing/200703';
-directory = '/Users/chloe/Library/Mobile Documents/com~apple~CloudDocs/Grad/Research/Uber/Mean Data/Streaming Data/0.73 chord';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [75.2 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [68 54	30.33]; %[T(Farenh), % humidity, P(in.Hg)]
 
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
