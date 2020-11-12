@@ -37,9 +37,10 @@ warning off
 %% INPUTS
 
 directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
+directory = '\Users\admin-local\Box\Chloe Lab Stuff\2020 Fall Stacked Rotor\Indoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [68 54	30.33]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [74 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
 
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
@@ -59,7 +60,9 @@ AvgData = fTotalAvg(RevData,SortedData,StreamData);
 % AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
-
+i = 6;
+mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}', RevData.avg_Fz_outer{i}', RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}', RevData.avg_Mz_outer{i}'])
+mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}', RevData.avg_Fz_inner{i}', RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}', RevData.avg_Mz_inner{i}'])
 
 %% VISUALIZE OR WRITE TO FILE
 
