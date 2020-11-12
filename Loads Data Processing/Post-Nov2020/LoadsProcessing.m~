@@ -45,9 +45,16 @@ flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
 
+
+i = 5; 
+mean([RevData.Fx_outer{i}', RevData.Fy_outer{i}',RevData.Fz_outer{i}',RevData.Mx_outer{i}', RevData.My_outer{i}',RevData.Mz_outer{i}'])
+mean([RevData.Fx_inner{i}', RevData.Fy_ier{i}',RevData.Fz_outer{i}',RevData.Mx_outer{i}', RevData.My_outer{i}',RevData.Mz_outer{i}'])
+
 %% PROCESS
 
 [MeanData,StreamData] = fLoadData(directory, rotor, flip);
+
+% StreamData = fFilterAccelerations(StreamData);
 
 [StreamData,SortedData] = fSortStream(StreamData, conditions);
 RevData = fRevolutionAvg(SortedData);
@@ -58,9 +65,6 @@ AvgData = fTotalAvg(RevData,SortedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
 
-i = 5; 
-mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}',RevData.avg_Fz_outer{i}',RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}',RevData.avg_Mz_outer{i}'])
-mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}',RevData.avg_Fz_inner{i}',RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}',RevData.avg_Mz_inner{i}'])
 
 %% VISUALIZE OR WRITE TO FILE
 
@@ -73,15 +77,4 @@ switch worv
         fSeeData(rotor, MeanData, SortedData, RevData);
     otherwise
 end
-
-figure()
-subplot(2,1,1)
-hold on
-plot(SortedData.azimuth{i}, RevData.avg_ax{i})
-title('A_x')
-subplot(2,1,2)
-hold on
-plot(SortedData.azimuth{i}, RevData.avg_ay{i})
-title('A_y')
-
 

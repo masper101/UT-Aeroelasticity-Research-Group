@@ -1,6 +1,6 @@
 %plot phase avg loads
 load('colors.mat')
-i = 7;
+i = 1;
 
 figure('Position', [10 10 600 600])
 subplot(3,1,1)

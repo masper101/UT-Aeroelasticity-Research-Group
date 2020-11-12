@@ -36,15 +36,15 @@ warning off
 
 %% INPUTS
 
-directory = '/Users/chloe/Box/PIV Test info/PIV loads data/Stacked PIV/Streamed';
 % directory = '/Users/chloe/Box/Chloe Lab Stuff/2019 Spring Stacked Rotor/0 chord';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [76 54	29.11]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [74 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
 
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
+
 
 %% PROCESS
 
