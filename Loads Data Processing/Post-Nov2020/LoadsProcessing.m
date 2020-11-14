@@ -1,4 +1,9 @@
 % PROCESS MISC LOADS DATA 
+
+% *********************
+%     POST-NOV 2020
+% *********************
+
 % CMJOHNSON UPDATED: 11/03/2020
 % Sirohi 200416 reads in mean data file and then reads corresponding
 % streaming files

@@ -1,4 +1,9 @@
 % PROCESS MISC LOADS DATA 
+
+% *********************
+%     PRE-NOV 2020
+% *********************
+
 % CMJOHNSON UPDATED: 03/02/2020
 % Sirohi 200416 reads in mean data file and then reads corresponding
 % streaming files
@@ -36,10 +41,10 @@ warning off
 
 %% INPUTS
 
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/2019 Spring Stacked Rotor/0 chord';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [74 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [77 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
 
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
