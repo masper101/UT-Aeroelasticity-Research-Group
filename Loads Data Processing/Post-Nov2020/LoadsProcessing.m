@@ -42,6 +42,7 @@ warning off
 %% INPUTS
 
 directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
+directory = '\Users\admin-local\Box\Chloe Lab Stuff\2020 Fall Stacked Rotor\Indoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
 conditions = [74 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
@@ -62,10 +63,16 @@ AvgData = fTotalAvg(RevData,SortedData,StreamData);
 % AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
+<<<<<<< HEAD
+i = 6;
+mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}', RevData.avg_Fz_outer{i}', RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}', RevData.avg_Mz_outer{i}'])
+mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}', RevData.avg_Fz_inner{i}', RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}', RevData.avg_Mz_inner{i}'])
+=======
 
 i = 5; 
 mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}',RevData.avg_Fz_outer{i}',RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}',RevData.avg_Mz_outer{i}'])
 mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}',RevData.avg_Fz_inner{i}',RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}',RevData.avg_Mz_inner{i}'])
+>>>>>>> af02d1a01668a98fcb0215792119e7e30fc70b8f
 
 %% VISUALIZE OR WRITE TO FILE
 
