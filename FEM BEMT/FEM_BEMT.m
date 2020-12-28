@@ -27,7 +27,7 @@ m = load('m_L.csv');
 m = interp1(m(:,1)*R, m(:,2)*47.8803,x_blade,'pchip');                %kg/m
 
 %% BEMT
-[r,dr,dCT,CT,sig,CP,FM] = run_BEMT(R,c,cutout,th_0,th_tw,Nb,N_BEMT,plots,OMEGA,AF);
+[r,dr,dCT,CT,sig,CP,FM] = f_BEMT(R,c,cutout,th_0,th_tw,Nb,N,plots,OMEGA,AF);
 dL = dCT *rho*A*(OMEGA*R)^2 / Nb;                               %dL begins at node 2
 
 %% FEM
