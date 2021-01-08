@@ -1,4 +1,4 @@
-function [MeanData,StreamData] = fLoadData(directory, rotor, flip)
+function [MeanData,StreamData] = fLoadData(directory, rotor, flip,conditions)
 % LOADS DATA FROM STREAMING DATA FILES AND MEAN DATA FILES
 % 
 % INPUTS
@@ -148,7 +148,8 @@ MeanData.names = FileName(TF);
 
 mdata = table(); % assemble a table with all the mean data
 for im = 1:length(MeanData.names) % need to fix reading multiple mean files
-    fprintf('\n%s\t', ['Loading mean data file : ' MeanData.names{im} ' ...']);
+    fprintf('\n%s\t\n\t', ['Loading mean data file : ' MeanData.names{im} ' ...']);
+
     opts = detectImportOptions(MeanData.names{im});
     opts.DataLines = [2 Inf];
     opts.VariableNamesLine = 1;
@@ -162,13 +163,20 @@ for im = 1:length(MeanData.names) % need to fix reading multiple mean files
         MeanData.data{im} = readtable(MeanData.names{im}, opts, 'ReadVariableNames', false);
     end
     
+    T_F = input('Temperature [F]: ');
+    T = (T_F - 32)*5/9 + 273.15; % [Kelvin]
+    humid = conditions(1);
+    P = conditions(2)*101325/29.9212; % [Pa]
+    R_air = 287.05; % INDIVIDUAL GAS CONSTANT
+    rho = P/R_air/T;
+    MeanData.data{im}.rho = rho*ones(height(MeanData.data{im}),1);
+    
     ExVar = startsWith(MeanData.data{im}.Properties.VariableNames,'ExtraVar');
     if sum(ExVar) > 0
         MeanData.data{im}.ExtraVar1 = [];
     end
         
     mdata = vertcat(mdata, MeanData.data{im});
-    fprintf('\n')
 end    
 
 %% FIND NAMES OF STREAMING FILES AND ASSIGN OPERATING VARIABLES
@@ -197,6 +205,7 @@ switch (rotor)
         MeanData.diffcols = mdata{:,'DifferentialCollective'};
         MeanData.zcs = mdata{:,'AxialSpacing'};
         MeanData.phis = mdata{:,'IndexAngle'};
+        MeanData.rhos = mdata{:,'rho'};
     case 'CCR'
         % find nominal inner collective : round to closest integer 
         MeanData.cols_in = round((mdata{:,'Pitch1Inner'} + mdata{:,'Pitch2Inner'})/2);
@@ -263,6 +272,7 @@ for k = 1:nfiles
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
     end
     
+    StreamData.rho{k} = MeanData.rhos(k);
     
     %% CREATE REV COUNTER
     revnum = 0;

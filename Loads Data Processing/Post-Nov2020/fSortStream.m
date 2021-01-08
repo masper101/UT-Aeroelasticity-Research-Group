@@ -1,4 +1,4 @@
-function [StreamData, SortedData] = fSortStream(StreamData, conditions)
+function [StreamData, SortedData] = fSortStream(StreamData)
 % INPUTS
 %     StreamData
 %     conditions = [Temperature [F], % Humidity, Prassure [in-hg]]
@@ -45,12 +45,6 @@ StreamData.R = 1.108;
 c = 0.08;
 Nblade = 2;
 StreamData.sigma = StreamData.R*c*Nblade / (pi*StreamData.R^2);
-
-T = (conditions(1) - 32)*5/9 + 273.15; % [Kelvin]
-humid = conditions(2);
-P = conditions(3)*101325/29.9212; % [Pa]
-R_air = 287.05; % INDIVIDUAL GAS CONSTANT
-StreamData.rho = P/R_air/T;
 
 SR = 10000; % SAMPLE RATE
 Naz = 1000;   % dpsi = 0.36 deg
@@ -256,10 +250,10 @@ for k = 1:length(StreamData.names)
     
     
     OMEGA = StreamData.OMEGA{k}(2:length(StreamData.OMEGA{k}));
-    SortedData.cts_outer{k} = SortedData.Fz_outer{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
-    SortedData.cps_outer{k} = SortedData.Mz_outer{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
-    SortedData.cts_inner{k} = SortedData.Fz_inner{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
-    SortedData.cps_inner{k} = SortedData.Mz_inner{k} ./ StreamData.rho / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
+    SortedData.cts_outer{k} = SortedData.Fz_outer{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
+    SortedData.cps_outer{k} = SortedData.Mz_outer{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
+    SortedData.cts_inner{k} = SortedData.Fz_inner{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
+    SortedData.cps_inner{k} = SortedData.Mz_inner{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
 
     SortedData.FM_outer{k} = sqrt(StreamData.sigma) * (abs(SortedData.cts_outer{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_outer{k});
     SortedData.FM_inner{k} = sqrt(StreamData.sigma) * (abs(SortedData.cts_inner{k}).^(3/2)) ./ sqrt(2)./ (SortedData.cps_inner{k});

@@ -42,11 +42,15 @@ warning off
 %% INPUTS
 
 directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
+% directory='/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_1200RPM_Closed';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/2019 Spring Stacked Rotor/1.75 chord';
+
+
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [77 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [73 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
 
-flip = true;
+flip = false;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
 
