@@ -149,17 +149,13 @@ for k = 1:length(testprefix)
             
             % filter
             window = 'hamming';
-            N_avg = 10; 
-                % 10 avgs with no overlap
-            [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).mag_filt, ~] = ffind_spectrum(fs, x, N/N_avg, N_avg, window);
-            mag_filt = testdata{k}(micnum).mag_filt;
+            N_avg = 10;
+            [testdata{k}(micnum).f_filt, testdata{k}(micnum).mag_filt, ~] = ffind_spectrum(fs, x, N/N_avg, N_avg, );
             
             % convert to pressure
                 % freq domain
-            testdata{k}(micnum).Pdata = mag * caldata{k}(micnum).calfactor * doubling_factor; 
-            testdata{k}(micnum).Pdata_filt = mag_filt * caldata{k}(micnum).calfactor * doubling_factor;
+            testdata{k}(micnum).Pdata = mag * caldata{k}(micnum).calfactor * doubling_factor;
             P = testdata{k}(micnum).Pdata;
-            P_filt = testdata{k}(micnum).Pdata_filt;            
                 % time domain
             testdata{k}(micnum).Pdata_t = x * caldata{k}(micnum).calfactor * doubling_factor;
             
@@ -170,9 +166,7 @@ for k = 1:length(testprefix)
             [testdata{k}(micnum).ofilt3_fvec,testdata{k}(micnum).ofilt3_Pdata] = fOctaveFilter(f,P,3);
             
             % convert to dB
-            Pref = 20E-6; %[Pa]
             testdata{k}(micnum).dbdata = 20*log10(P / Pref);
-            testdata{k}(micnum).dbdata_filt = 20*log10(P_filt / Pref);
             testdata{k}(micnum).ofilt12_dbdata = 20*log10(testdata{k}(micnum).ofilt12_Pdata / Pref);
             testdata{k}(micnum).ofilt3_dbdata = 20*log10(testdata{k}(micnum).ofilt3_Pdata / Pref);
             
@@ -182,8 +176,6 @@ for k = 1:length(testprefix)
             % A-weighting
             A = fAfilt(testdata{k}(micnum).fvec);
             testdata{k}(micnum).dbAdata = testdata{k}(micnum).dbdata + A';
-            A_filt = fAfilt(testdata{k}(micnum).fvec_filt);
-            testdata{k}(micnum).dbAdata_filt = testdata{k}(micnum).dbdata_filt + A_filt';
             testdata{k}(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dbAdata / 20));
     
             fprintf('%s\n',['OASPL = ',num2str(testdata{k}(micnum).oaspl)])

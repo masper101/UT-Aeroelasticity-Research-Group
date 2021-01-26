@@ -50,12 +50,12 @@ end
 %% PLOT
 % ************************** CT **************************
 figure(1)
-subplot(2,1,1)
+% subplot(2,1,1)
 hold on
 % errorbar(col_uni,CTlo,CTloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
-% errorbar(col_uni,CTup,CTuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
-errorbar(col_uni,CT_data,CTerr,'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
+errorbar(col_uni,CTup,CTuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
+% errorbar(col_uni,CT_data,CTerr,'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_T/ \sigma')
 legend('Lower','Upper','Total','location','northwest')
@@ -69,13 +69,13 @@ xlim([0,12])
 
 
 % ************************** CP **************************
-% figure(2)
-subplot(2,1,2)
+figure(2)
+% subplot(2,1,2)
 hold on
-% errorbar(col_uni,-CPlo,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
+errorbar(col_uni,-CPlo,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
-% errorbar(col_uni,CPup,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
-errorbar(col_uni,CP_data,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
+errorbar(col_uni,-CPup,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
+% errorbar(col_uni,CP_data,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_P/ \sigma')
 legend('Lower','Upper','Total','location','northwest')
