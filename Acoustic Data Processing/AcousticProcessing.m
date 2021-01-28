@@ -31,7 +31,7 @@
 %         .ofilt3_dbdata
 %         .oaspl
 
-clear; clc; close all
+% clear; clc; close all
 warning off
 
 %% INPUTS

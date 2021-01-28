@@ -151,8 +151,8 @@ for k = 1:length(testprefix)
             window = 'hamming';
             N_avg = 10; 
                 % 10 avgs with no overlap
-            [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).mag_filt, ~] = ffind_spectrum(fs, x, N/N_avg, N_avg, window);
-            mag_filt = testdata{k}(micnum).mag_filt;
+            [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).testmag_filt, ~] = ffind_spectrum(fs, x, N/N_avg, N_avg, window);
+            mag_filt = testdata{k}(micnum).testmag_filt;
             
             % convert to pressure
                 % freq domain
