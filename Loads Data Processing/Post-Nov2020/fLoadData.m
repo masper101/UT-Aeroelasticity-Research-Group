@@ -134,12 +134,17 @@ cnt = 0;
 for jj = 1:length(testletters)
 for ii = 1:length(testletters{jj})
     if strcmp(testletters{jj}{ii}, 'all')
-        testletters{jj}{ii} = ' mean';
+        Files = FileName(contains(FileName,'mean') & contains(FileName,testdates{jj}));
+        letters = extractBetween(Files,'test_',' mean');
+        for kk = 1:length(letters)
+            cnt = cnt+1;
+            testnames{cnt} = [testdates{jj}, '_test_' letters{kk}, ' mean'];
+        end        
     else
         testletters{jj}{ii} = ['_test_' testletters{jj}{ii} ' mean'];
+        cnt = cnt+1;
+        testnames{cnt} = [testdates{jj}, testletters{jj}{ii}];
     end
-    cnt = cnt+1;
-    testnames{cnt} = [testdates{jj}, testletters{jj}{ii}];
 end 
 end
     

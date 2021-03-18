@@ -90,7 +90,11 @@ for ii = 1:length(testdates)
         fprintf('%s ',numbers{:});
         fprintf('\n\t\t\t')
         testnumbers{ii}{jj} = input('Test numbers to process : ', 's');
-        testnumbers{ii}{jj} = split(testnumbers{ii}{jj}, ' ');
+        if strcmp(testnumbers{ii}{jj}, 'all')
+            testnumbers{ii}{jj} = numbers;
+        else 
+            testnumbers{ii}{jj} = split(testnumbers{ii}{jj}, ' ');
+        end
     end
 end
 
@@ -149,9 +153,9 @@ for k = 1:length(testprefix)
             
             % filter
             window = 'hamming';
-            N_avg = 10; 
-                % 10 avgs with no overlap
-            [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).testmag_filt, ~] = ffind_spectrum(fs, x, N/N_avg, N_avg, window);
+            N_avg = 20; 
+                % 20 avgs with 50% overlap
+            [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).testmag_filt, ~] = ffind_spectrum(fs, x, 2*N/N_avg, N_avg, window);
             mag_filt = testdata{k}(micnum).testmag_filt;
             
             % convert to pressure
@@ -178,10 +182,16 @@ for k = 1:length(testprefix)
             
             % OASPL
             testdata{k}(micnum).oaspl = fOverallSPL_time(testdata{k}(micnum).Pdata_t, testdata{k}(micnum).tvec);
-
+                % split into tonal and broadband
+            fc = 500;
+            testdata{k}(micnum).tonal = fOverallSPL_freq(P(f<=fc));
+            testdata{k}(micnum).broadband = fOverallSPL_freq(P(f>fc));
+            
             % A-weighting
             A = fAfilt(testdata{k}(micnum).fvec);
             testdata{k}(micnum).dbAdata = testdata{k}(micnum).dbdata + A';
+            A_12 = fAfilt(testdata{k}(micnum).ofilt12_fvec);
+            testdata{k}(micnum).ofilt12_dbAdata = testdata{k}(micnum).ofilt12_dbdata + A_12';
             A_filt = fAfilt(testdata{k}(micnum).fvec_filt);
             testdata{k}(micnum).dbAdata_filt = testdata{k}(micnum).dbdata_filt + A_filt';
             testdata{k}(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dbAdata / 20));

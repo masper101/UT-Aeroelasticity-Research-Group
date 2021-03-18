@@ -42,7 +42,9 @@ warning off
 %% INPUTS
 
 % directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
+% directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Outdoor';
 directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Outdoor';
+
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
 conditions = [54 29.88]; %[%humidity, P(in.Hg)]

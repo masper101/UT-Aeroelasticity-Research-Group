@@ -41,14 +41,11 @@ warning off
 
 %% INPUTS
 
-directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
-% directory='/Users/chloe/Box/Chloe Lab Stuff/Two-bladed loads/Horizontal_1200RPM_Closed';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/2019 Spring Stacked Rotor/1.75 chord';
-
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2019 Spring Stacked Rotor/0.5 chord';
 
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [73 54	29.88]; %[T(Farenh), % humidity, P(in.Hg)]
+conditions = [54 29.88]; %[% humidity, P(in.Hg)]
 
 flip = false;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
@@ -57,11 +54,11 @@ write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, rotor, flip);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip,conditions);
 
 % StreamData = fFilterAccelerations(StreamData);
 
-[StreamData,SortedData] = fSortStream(StreamData, conditions);
+[StreamData,SortedData] = fSortStream(StreamData);
 RevData = fRevolutionAvg(SortedData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
 

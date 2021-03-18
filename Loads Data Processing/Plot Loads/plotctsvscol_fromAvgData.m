@@ -5,12 +5,13 @@ AvgData_corr = AvgData;
 %% INPUTS
 title_des = '';
 RPM_des = 1200; 
-phi_des = 2; 
+phi_des = 90; 
 diffcol_des = 0; 
+col_des = 12;
 
 upcolor = colors{5};
 locolor = colors{3};
-totcolor = colors{1};
+totcolor = colors{3};
 % for i = 1:7
 % plot([0,1],[i,i],'color',colors{i},'linewidth',4)
 % hold on
@@ -18,6 +19,7 @@ totcolor = colors{1};
 
 %% GET CONSTANTS
 diffcols = MeanData.diffcols;
+dif_uni = unique(diffcols);
 phis = MeanData.phis; 
 col = MeanData.meancols;
 RPMs = MeanData.RPMs;
@@ -25,9 +27,9 @@ col_uni = unique(col);
 errs = [AvgData_corr.err_cts_outer{:}]';
 
 %% GET DATA
-for i = 1:length(col_uni)
+for i = 1:length(dif_uni)
     loc =(RPMs> RPM_des*.98)&(RPMs < RPM_des*1.02);
-    loc = (col_uni(i) == col)&loc & (phis == phi_des) & (diffcols == diffcol_des);
+    loc = (dif_uni(i) == diffcols)&loc & (phis == phi_des) & (col == col_des);
     
     CT_data(i) = mean([AvgData_corr.avg_cts_total{loc}]);
     CTerr(i) = sumsquares([AvgData_corr.err_cts_total{loc}]);
@@ -54,18 +56,18 @@ figure(1)
 hold on
 % errorbar(col_uni,CTlo,CTloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
-errorbar(col_uni,CTup,CTuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
-% errorbar(col_uni,CT_data,CTerr,'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
+% errorbar(col_uni,CTup,CTuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
+errorbar(dif_uni,CT_data,CTerr,'o-','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_T/ \sigma')
-legend('Lower','Upper','Total','location','northwest')
+% legend('Lower','Upper','Total','location','northwest')
 title(title_des)
 set(gca,'FontSize',18)
 % grid minor
 grid on
 hold on
 ylim([-.02 0.16])
-xlim([0,12])
+% xlim([0,12])
 
 
 % ************************** CP **************************

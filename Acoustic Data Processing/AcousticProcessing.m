@@ -31,7 +31,7 @@
 %         .ofilt3_dbdata
 %         .oaspl
 
-% clear; clc; close all
+clear; clc; close all
 warning off
 
 %% INPUTS
@@ -43,7 +43,7 @@ fprintf('\n\n%s\n\n', 'Processing done.');
 
 %% PLOT
 k=1;
-RPM=990;
+RPM=1200;
 bladenumber = 2;
 micnum = 3;
 
@@ -58,3 +58,23 @@ ylim([0 80])
 xlabel('Frequency, Hz')
 ylabel('dB')
 % fplotperrev(RPM,bladenumber)
+
+%% save
+for i = 1:length(testdata)
+db(i,1) = [testdata{i}(3).oaspl];
+dbA(i,1) = [testdata{i}(3).oasplA];
+names{i,1} = [testdata{i}(1).name];
+end
+
+for i = 1:length(testdata)
+    data{i}(1).name = [testdata{i}(1).name];
+for micnum = 1:16
+data{i}(micnum).f = [testdata{i}(micnum).fvec_filt];
+data{i}(micnum).db = [testdata{i}(micnum).dbdata_filt];
+data{i}(micnum).dbA = [testdata{i}(micnum).dbAdata_filt];
+data{i}(micnum).oaspl = [testdata{i}(micnum).oaspl];
+data{i}(micnum).oasplA = [testdata{i}(micnum).oasplA];
+data{i}(micnum).tonal = [testdata{i}(micnum).tonal];
+data{i}(micnum).bb = [testdata{i}(micnum).broadband];
+end
+end

@@ -1,7 +1,7 @@
 function fplotperrev(RPM,bladenumber)
 
 perrev = RPM/60;
-perrevs = perrev*[bladenumber:bladenumber:bladenumber*10]';
+perrevs = perrev*[bladenumber:bladenumber:bladenumber*15]';
 
 YL = get(gca, 'YLim');
 

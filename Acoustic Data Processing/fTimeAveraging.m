@@ -30,6 +30,7 @@ for i = 1:Ntest
         % sort into revs
         revdata{i}(micnum).P = [];
         revdata{i}(micnum).t = [];
+        revdata{i}(micnum).P_filt = [];
         count = 1;
         check = 1;
 %         for n = 1:length(binsize)
@@ -59,9 +60,11 @@ for i = 1:Ntest
                     if n == Nrevs
                         excess = length(P_t(count:end));
                         revdata{i}(micnum).P(n,1:excess) = P_t(count:end)';
+%                         revdata{i}(micnum).P_filt(n,1:excess) = P_filt(count:end)';
                         revdata{i}(micnum).t(n,1:spr) = t(1:spr)';
                     else
                         revdata{i}(micnum).P(n,1:spr) = P_t(count:count-1+spr)';
+%                         revdata{i}(micnum).P_filt(n,1:spr) = P_filt(count:count-1+spr)';
                         revdata{i}(micnum).t(n,1:spr) = t(1:spr)';
                         count = count +  spr;
                     end
@@ -72,6 +75,7 @@ end
 
 tavg = mean(revdata{i}(micnum).t);
 Pavg = mean(revdata{i}(micnum).P);
+% P_filt_avg = mean(revdata{i}(micnum).P_filt);
 Perr = std(revdata{i}(micnum).P);
 figure()
 plot_confidenceint(tavg,Pavg,Perr, 'r')
@@ -82,12 +86,41 @@ plot(revdata{i}(micnum).t,revdata{i}(micnum).P)
 hold on
 plot_confidenceint(tavg,Pavg,Perr, 'r')
 title('All revolutions + averaged')
+
+
+%% SUBTRACT REV AVERAGE
+P_rev = [repmat(Pavg,1,200)]';
+figure()
+plot(t,P_t)
+hold on
+plot(t,P_t - P_rev)
+plot(t,P_rev,'k')
+
 %% AUTOCORRELATE
-% P_rev = revdata{i}(micnum).P;
-% [c,lags] = xcorr(P_rev,fs*5,'unbiased');
-% figure()
-% plot(lags,c)
-% title('Autocorrelation of raw data')
+i=1;
+micnum=4;
+P_t = testdata{i}(micnum).Pdata_t;
+[c,lags] = xcorr(P_t,'normalized');
+figure()
+subplot(2,1,1)
+plot(lags,c)
+title('Autocorrelation of raw data')
+
+subplot(2,1,2)
+plot(lags,c)
+xlim([-100,10000])
+grid on
+hold on
+mid = round(length(c)./2);
+[m,loc]=min(abs(c(mid:mid+500)));
+plot(lags(mid+loc),m,'o')
+
+%find tau
+dt = 2.0833e-05;
+tau = sum(c(mid:mid+loc))*dt;
+domfreq = 1/tau; 
+romf_freq = 1200./60;
+
 %% CROSSCORRELATE EACH REV
 figure()
 plot(t,P_t)
@@ -103,7 +136,7 @@ for i = 1:Nrevs
 end
 
 %% LOWPASS FILTER
-lpf = bpf * 2;
+lpf = bpf * 1.5;
 P_filt = lowpass(P_t,lpf,fs);
 figure()
 plot(t,P_t)

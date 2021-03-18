@@ -1,6 +1,13 @@
-clear CT_data CTerr CP_data CPerr CTlo CTloerr CPlo CPloerr CTup CTuperr CPup CPuperr ctcp ctcperr col col_uni
+clear CT_data CTerr CP_data CPerr CTlo CTloerr CPlo CPloerr CTup CTuperr CPup CPuperr ctcp ctcperr col col_uni phis_uni
 load('colors.mat')
 AvgData_corr = AvgData;
+for i = 1:length(AvgData_corr.avg_cps_inner)
+    AvgData_corr.avg_cts_inner{i} = -AvgData_corr.avg_cts_inner{i};
+    AvgData_corr.avg_cts_total{i} = (AvgData_corr.avg_cts_inner{i}+ AvgData_corr.avg_cts_outer{i})./2;
+
+    AvgData_corr.avg_cps_inner{i} = -AvgData_corr.avg_cps_inner{i};
+    AvgData_corr.avg_cps_total{i} = (AvgData_corr.avg_cps_inner{i}+ AvgData_corr.avg_cps_outer{i})./2;
+end
 
 RPM_des = 1200;
 col_des = 12;
@@ -48,10 +55,11 @@ CPerr=[];
 ctcperr=[];
 phis_plot=[];
 
+
 for i = 1:length(phis_uni)
     loc =(RPMs> RPM_des*.98)&(RPMs < RPM_des*1.02);
     loc = (phis_uni(i) == phis)&loc & (col == col_des) & (diffcols == diffcol_des);
-    loc=loc&(err<0.01);
+    loc=loc&(err<0.001);
     
     if sum(loc)>0
         phis_plot = [phis_plot,phis_uni(i)];
@@ -112,10 +120,10 @@ end
 
 
 % add -90 deg case
-if (false)
+if (true)
     if sum(phis_uni==90)>0
-        phis_uni(end+1) = -90;
         loc = (phis_uni == 90);
+        phis_uni(end+1) = -90;
         CT_data(end+1) = CT_data(loc);
         CTerr(end+1) = CTerr(loc);
         CP_data(end+1) = CP_data(loc);
@@ -134,6 +142,7 @@ if (false)
         ctcperr(end+1) = ctcperr(loc);
     end
 end
+phis_plot = phis_uni;
 
 %%
 if seperate
