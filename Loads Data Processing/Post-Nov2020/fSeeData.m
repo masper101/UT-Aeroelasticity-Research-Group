@@ -19,8 +19,8 @@ switch rotor
         fprintf('%s\t%s\n', 'Mean collective, deg : ', num2str(umcols));
         fprintf('%s\t%s\n\n', 'Diff collective, deg : ', num2str(udcols));
     case 'CCR'
-        umcols_in = unique(MeanData.cols_in');
-        umcols_out = unique(MeanData.cols_out');
+        umcols_in = 0;%unique(MeanData.cols_in');
+        umcols_out = 0;%unique(MeanData.cols_out');
         fprintf('%s\t%s\n', 'Inner collective, deg : ', num2str(umcols_in));
         fprintf('%s\t%s\n\n', 'Outer collective, deg : ', num2str(umcols_out));
     otherwise

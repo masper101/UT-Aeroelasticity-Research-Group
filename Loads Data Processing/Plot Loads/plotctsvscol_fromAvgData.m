@@ -7,7 +7,7 @@ RPM_des = 1200;
 phi_des = 2; 
 diffcol_des = 0; 
 
-upcolor = colors{7};
+upcolor = colors{5};
 locolor = colors{3};
 totcolot = colors{1};
 % for i = 1:7
@@ -49,45 +49,54 @@ end
 % ************************** CT **************************
 figure(1)
 hold on
-% errorbar(col_uni,CTlo,CTloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
+errorbar(col_uni,CTlo,CTloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
 errorbar(col_uni,CTup,CTuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
 % errorbar(col_uni,CT_data,CTerr,'o','color',totcolor,MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_T/ \sigma')
 set(gca,'FontSize',18)
-grid minor
+% grid minor
 grid on
 hold on
+ylim([-0.02,0.14])
+yticks([-0.02:0.02:0.14])
+xticks([-2:2:12])
+xlim([-2,12])
 
 
 % ************************** CP **************************
 figure(2)
 hold on
-% errorbar(col_uni,CPlo,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',colors{i},'LineWidth', 1)
+errorbar(col_uni,-CPlo,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
 errorbar(col_uni,-CPup,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
 % errorbar(col_uni,CP_data,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_P/ \sigma')
 set(gca,'FontSize',18)
-grid minor
+% grid minor
 grid on
 hold on
+ylim([0,0.012])
+xticks([-2:2:12])
+xlim([-2,12])
 
 % ************************** CT vs CP **************************
 figure(3)
 hold on
-% errorbar(CPlo,CTlo,CTloerr, CTloerr, CPloerr,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
+errorbar(-CPlo,CTlo,CTloerr, CTloerr, CPloerr,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
 errorbar(-CPup,CTup,CTuperr, CTuperr,CPuperr,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
 % errorbar(CP_data,CT_data,CTerr,CTerr,CPerr,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 ylabel('C_T/ \sigma')
 xlabel('C_P/ \sigma')
 set(gca,'FontSize',18)
-grid minor
+% grid minor
 grid on
 hold on
+ylim([-0.02,0.14])
+yticks([-0.02:0.02:0.14])
 
 
 

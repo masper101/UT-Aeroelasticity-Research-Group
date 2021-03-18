@@ -1,7 +1,7 @@
-RPM = 1200; 
-k = 6;
+RPM = 550; 
+k = 12;
 
-prev = 1200/60; 
+prev = RPM/60; 
 
 dt = 1/10000;
 tvec = dt:dt:length(StreamData.ax{k})*dt;
@@ -13,16 +13,22 @@ ax = max(magVsx(loc));
 ay = max(magVsy(loc)); 
 
 figure(1)
-plot(fvec, magVsx)
+subplot(2,1,1)
 hold on
-plot(fvec, magVsy)
-ylim([0,0.5])
+plot(fvec, magVsx,'.-')
+ylabel('a_x [g]')
+ylim([0,0.1])
 xlim([0,100])
-legend('a_x','a_y')
-ylabel('Accel [g]')
+subplot(2,1,2)
+hold on
+plot(fvec, magVsy,'.-')
+ylim([0,0.1])
+xlim([0,100])
+ylabel('a_y [g]')
 hold off
+xlabel('Freq [Hz]')
 
 a = sqrt(ax.^2 + ay.^2)
 
 
-bandpass(RevData.avg_ax{k},[prev*0.8,prev*1.2],10000)
+% bandpass(RevData.avg_ax{k},[prev*0.8,prev*1.2],10000)
