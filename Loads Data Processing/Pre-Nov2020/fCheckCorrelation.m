@@ -3,7 +3,7 @@ function [SortedData, RevData] = fCheckCorrelation(SortedData, RevData, visualiz
 % calculates cross-correlation of each revolution (Fz_inner and Fz_outer)
 % with the mean over all revolutions
 
-threshold = 0.9;     % how different the revolutions can be
+threshold = 0.7;     % how different the revolutions can be
 
 % Omega160 full-scale loads
 % SI-1000-120 calibration
@@ -43,9 +43,9 @@ for k = 1:length(SortedData.names)
 %         | (crMxi<threshold) | (crMyi<threshold) | (crMzi<threshold));
     
     SortedData.badrevs{k} = ((crFxo<threshold) | (crFyo<threshold) | (crFzo<threshold) ...
-        | (crMxo<threshold) | (crMyo<threshold) | (crMzo<threshold) ...
-        | (crFxi<threshold) | (crFyi<threshold) ...
-        | (crMxi<threshold) | (crMyi<threshold)); % == 1 if bad rev
+        | (crFxi<threshold) | (crFyi<threshold));% | (crFzi<threshold));
+%         | (crMxo<threshold) | (crMyo<threshold) | (crMzo<threshold) ...
+%         | (crMxi<threshold) | (crMyi<threshold)); % == 1 if bad rev
     
     switch worv
         case 'v'

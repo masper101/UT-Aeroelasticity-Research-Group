@@ -1,12 +1,10 @@
-function [caldata,testdate] = fCalProc(directory)
+function [caldata] = fCalProc2(calprefix)
 % READ CALIBRATION FILES AND PLOT EACH FFT
 % sirohi 200227
 % MODIFIED CMJOHNSON 05/15/2020
 %
 % INPUTS
-%     testdate          -> format: % "testdate"_test_"testletter"_cal"calsuffix" - 01 Start - 1.wav
-%     calletter
-%     calsuffix
+%     calprefix -> from fAcProc          
 % OUTPUTS
 %     caldata
 %         .fvec
@@ -17,40 +15,14 @@ function [caldata,testdate] = fCalProc(directory)
 %         .scale
 %
 
-pdir = pwd;
-cd(directory); 
-fprintf('%s\n',['Calibrating microphones. Calibration file: '])
 
-%% INPUTS
-files = dir('*.wav');
-filenames = {files(:).name}';
-dates = unique(extractBefore(filenames,'_'));
-calletters = unique(extractBetween(filenames(contains(filenames,'cal')),'test_','_cal'));
-
-fprintf('\n\t%s', 'Loaded test dates are [YYMMDD] : ')
-fprintf('%s ',dates{:});
-fprintf('\n\t')
-testdate = input('Test Date [YYMMDD] : ', 's');
-
-fprintf('\n\t%s', 'Loaded calibration tests are : ')
-fprintf('%s ',calletters{:});
-fprintf('\n\t')
-calletter = input('Calibration test : ', 's');
-
-if sum(contains(filenames,[testdate,'_test_',calletter,'_cal'])) > 16 %more than one set of calibration files
-    fprintf('\n\t')
-    calsuffix = input('Calibration test suffix : ', 's');
-else
-    calsuffix = '';
-end
-
-calprefix = [testdate '_test_' calletter '_cal' calsuffix ' - 01 Start - '];
-% calprefix = ['./Uber Acoustics ' testdate '/Audio Files/' testdate '_test_' testletter '_cal' calsuffix ' - 01 Start - '];
 caldata = struct('scale', [], 'calmag', [], 'tvec',[],'wavdata',[],'fs',[],'fvec',[]);
 cal_db = 114;
 
 %% read the calibration files
-worv = input('\nVisualize (v) calibration data ? ', 's');
+% fprintf('\t')
+% worv = input('Visualize (v) calibration data ? ', 's');
+worv ='n';
 for micnum = 1:16
     fname = [calprefix num2str(micnum) '.wav'];
     if isfile(fname)
@@ -121,7 +93,6 @@ for micnum = 1:16
     end
 end
 close(figure(22))
-cd(pdir);
 end
 
 

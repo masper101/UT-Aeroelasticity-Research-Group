@@ -30,10 +30,10 @@ for k = 1:length(StreamData.names)
     OMEGA = nanmean(StreamData.OMEGA{k});
 
     % non-dimensionalization factor for CT
-    ct_den = StreamData.rho * (pi * StreamData.R^2) * (OMEGA*StreamData.R).^2;
+    ct_den = StreamData.rho{k} * (pi * StreamData.R^2) * (OMEGA*StreamData.R).^2;
 
     % non-dimensionalization factor for CP
-    cq_den = StreamData.rho * (pi * StreamData.R^2) * (OMEGA*StreamData.R).^2 * StreamData.R;
+    cq_den = StreamData.rho{k} * (pi * StreamData.R^2) * (OMEGA*StreamData.R).^2 * StreamData.R;
 
     AvgData.names{k} = StreamData.names{k};
     AvgData.avg_cts_outer{k} = nanmean(RevData.avg_cts_outer{k});

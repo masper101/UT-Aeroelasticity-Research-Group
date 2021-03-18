@@ -31,24 +31,50 @@
 %         .ofilt3_dbdata
 %         .oaspl
 
-clear; clc; %close all
+clear; clc; close all
 warning off
 
 %% INPUTS
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200227/Audio Files';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Spring 2020/Uber Acoustics 200721';
-directory = '/Users/chloe/Box/Chloe Lab Stuff/Acoustics Fall 2020/Mic Test';
-%% PROCESSING
-[caldata,testdate] = fCalProc(directory);
-testdata = fAcProc(directory, testdate, caldata);
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Acoustic Tests';
 
+%% PROCESSING
+[testnames, testdata, caldata] = fAcProc(directory);
 fprintf('\n\n%s\n\n', 'Processing done.');
 
-micnum = 12
-% semilogx(testdata(micnum).fvec, testdata(micnum).dbdata)
-figure(2)
-semilogx(testdata(micnum).ofilt12_fvec, testdata(micnum).ofilt12_dbdata,'linewidth',1.2)
+%% PLOT
+k=1;
+RPM=1200;
+bladenumber = 2;
+micnum = 3;
+
+figure(1)
+semilogx(testdata{k}(micnum).fvec, testdata{k}(micnum).dbdata)
+hold on
+semilogx(testdata{k}(micnum).ofilt12_fvec, testdata{k}(micnum).ofilt12_dbdata,'linewidth',1.1)
+semilogx(testdata{k}(micnum).fvec_filt, testdata{k}(micnum).dbdata_filt,'k')
+
 xlim([10^1 10^4]);
 ylim([0 80])
-hold on
-% semilogx(testdata(micnum).ofilt12_fvec, testdata(micnum).ofilt12_dbAdata)
+xlabel('Frequency, Hz')
+ylabel('dB')
+% fplotperrev(RPM,bladenumber)
+
+%% save
+for i = 1:length(testdata)
+db(i,1) = [testdata{i}(3).oaspl];
+dbA(i,1) = [testdata{i}(3).oasplA];
+names{i,1} = [testdata{i}(1).name];
+end
+
+for i = 1:length(testdata)
+    data{i}(1).name = [testdata{i}(1).name];
+for micnum = 1:16
+data{i}(micnum).f = [testdata{i}(micnum).fvec_filt];
+data{i}(micnum).db = [testdata{i}(micnum).dbdata_filt];
+data{i}(micnum).dbA = [testdata{i}(micnum).dbAdata_filt];
+data{i}(micnum).oaspl = [testdata{i}(micnum).oaspl];
+data{i}(micnum).oasplA = [testdata{i}(micnum).oasplA];
+data{i}(micnum).tonal = [testdata{i}(micnum).tonal];
+data{i}(micnum).bb = [testdata{i}(micnum).broadband];
+end
+end
