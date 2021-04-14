@@ -35,7 +35,7 @@ clear; clc; close all
 warning off
 
 %% INPUTS
-directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Acoustic Tests';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2021 Spring Stacked Rotor/Acoustics/zc_15';
 
 %% PROCESSING
 [testnames, testdata, caldata] = fAcProc(directory);
