@@ -1,5 +1,5 @@
 RPM = 550; 
-k = 6;
+k = 12;
 
 prev = RPM/60; 
 
@@ -14,29 +14,21 @@ ay = max(magVsy(loc));
 
 figure(1)
 subplot(2,1,1)
-plot(fvec, magVsx)
 hold on
-ylabel('a_x')
+plot(fvec, magVsx,'.-')
+ylabel('a_x [g]')
 ylim([0,0.1])
 xlim([0,100])
-
 subplot(2,1,2)
 hold on
-plot(fvec, magVsy)
+plot(fvec, magVsy,'.-')
 ylim([0,0.1])
 xlim([0,100])
-ylabel('a_y')
-ylabel('Accel [g]')
-
+ylabel('a_y [g]')
+hold off
+xlabel('Freq [Hz]')
 
 a = sqrt(ax.^2 + ay.^2)
 
-figure(2)
-hold on
-plot(fvec, magVsy)
-ylim([0,0.1])
-xlim([0,100])
-ylabel('a')
-ylabel('Accel [g]')
 
 % bandpass(RevData.avg_ax{k},[prev*0.8,prev*1.2],10000)

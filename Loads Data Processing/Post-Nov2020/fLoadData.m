@@ -69,19 +69,19 @@ switch(rotor)
         Mxicol = 10;          % Mx_inner column
         Myicol = 11;          % My_inner column
         Mzicol = 12;          % Mz_inner column
-        t1icol = 13;          % Pitch 1 inner column
-        t2icol = 14;          % Pitch 2 inner column
-        t1ocol = 15;          % Pitch 1 outer column
-        t2ocol = 16;          % Pitch 2 outer column
-        pr1icol = 17;          % Push rod 1 inner column
-        pr2icol = 18;          % Push rod 2 inner column
-        pr1ocol = 19;          % Push rod 1 outer column
-        pr2ocol = 20;          % Push rod 2 outer column
+        t1icol = 17;          % Pitch 1 inner column
+        t2icol = 18;          % Pitch 2 inner column
+        t1ocol = 19;          % Pitch 1 outer column
+        t2ocol = 20;          % Pitch 2 outer column
+        pr1icol = 13;          % Push rod 1 inner column
+        pr2icol = 14;          % Push rod 2 inner column
+        pr1ocol = 14;          % Push rod 1 outer column
+        pr2ocol = 16;          % Push rod 2 outer column
         axcol = 21;           % mag Ax column
         aycol = 22;           % mag Ay column
-        enccol = 23;          % encoder angle column
-        revcol = 24;          % revolution column
-        trigcol = 25;         % trigger column
+        enccol = 25;          % encoder angle column
+        revcol = 26;          % revolution column
+%         trigcol = 25;         % trigger column
     case 'Uber'
         Fxocol = 1;          % Fx_outer column
         Fyocol = 2;          % Fy_outer column
@@ -213,9 +213,9 @@ switch (rotor)
         MeanData.rhos = mdata{:,'rho'};
     case 'CCR'
         % find nominal inner collective : round to closest integer 
-        MeanData.cols_in = round((mdata{:,'Pitch1Inner'} + mdata{:,'Pitch2Inner'})/2);
+%         MeanData.cols_in = round((mdata{:,'Pitch1Inner'} + mdata{:,'Pitch2Inner'})/2);
         % find nominal outer collective : round to closest integer 
-        MeanData.cols_out = round((mdata{:,'Pitch1Outer'} + mdata{:,'Pitch1Outer'})/2);
+%         MeanData.cols_out = round((mdata{:,'Pitch1Outer'} + mdata{:,'Pitch1Outer'})/2);
 end
 
 %% LOAD AND PROCESS STREAMING FILES
@@ -265,11 +265,13 @@ for k = 1:nfiles
     StreamData.ax{k} = data{:,axcol};                %M
     StreamData.ay{k} = data{:,aycol};                %N
     StreamData.encoder{k} = data{:,enccol};          %W
-    StreamData.curr1{k} = data{:,curr1col};          %W
-    StreamData.curr2{k} = data{:,curr2col};          %W
-%     StreamData.revolution{k} = data{:,revcol};       %X
+%     StreamData.curr1{k} = data{:,curr1col};          %W
+%     StreamData.curr2{k} = data{:,curr2col};          %W
+    StreamData.revolution{k} = data{:,revcol};       %X
 %     StreamData.trigger{k} = data{:,trigcol};         %Q           
 %     StreamData.nrevs{k} = StreamData.revolution{k}(end);
+      StreamData.tlicol{k} = data{:,t1icol};   
+      StreamData.t2icol{k} = data{:,t2icol};
 
     fprintf('%s\n', 'Ok');
 

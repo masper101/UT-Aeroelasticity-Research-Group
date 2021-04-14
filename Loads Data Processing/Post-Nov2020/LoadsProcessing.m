@@ -41,13 +41,10 @@ warning off
 
 %% INPUTS
 
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Indoor';
-% directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Outdoor';
-directory = '/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Outdoor';
-
+directory = '\Users\admin-local\Desktop\Research\02 Data\Streaming';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [54 29.88]; %[%humidity, P(in.Hg)]
+conditions = [69 54	29.88]; % [T(Farenh), % humidity, P(in.Hg)]
 
 flip = true;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
@@ -55,9 +52,9 @@ write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, rotor, flip, conditions);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip);
 
-[StreamData,SortedData] = fSortStream(StreamData);
+[StreamData,SortedData] = fSortStream(StreamData, conditions);
 RevData = fRevolutionAvg(SortedData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
 
@@ -65,9 +62,15 @@ AvgData = fTotalAvg(RevData,SortedData,StreamData);
 % AvgData_corr = fTotalAvg(RevData_corr,CorrelatedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
+
 % i = 6;
 % mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}', RevData.avg_Fz_outer{i}', RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}', RevData.avg_Mz_outer{i}'])
 % mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}', RevData.avg_Fz_inner{i}', RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}', RevData.avg_Mz_inner{i}'])
+% 
+% 
+% i = 5; 
+% mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}',RevData.avg_Fz_outer{i}',RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}',RevData.avg_Mz_outer{i}'])
+% mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}',RevData.avg_Fz_inner{i}',RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}',RevData.avg_Mz_inner{i}'])
 
 %% VISUALIZE OR WRITE TO FILE
 
@@ -81,14 +84,52 @@ switch worv
     otherwise
 end
 
+%%
+i = 2;
+figure()
+subplot(2,1,1)
+hold on
+plot(SortedData.azimuth{i}, RevData.avg_Fx_outer{i})
+xlim([0 360])
+title('F_x')
+subplot(2,1,2)
+hold on
+plot(SortedData.azimuth{i}, RevData.avg_Fy_outer{i})
+xlim([0 360])
+title('F_y')
+
 % figure()
 % subplot(2,1,1)
 % hold on
-% plot(SortedData.azimuth{i}, RevData.avg_ax{i})
-% title('A_x')
+% plot(SortedData.azimuth{i}, RevData.avg_Fx_inner{i})
+% xlim([0 360])
+% title('F_x')
 % subplot(2,1,2)
 % hold on
-% plot(SortedData.azimuth{i}, RevData.avg_ay{i})
-% title('A_y')
+% plot(SortedData.azimuth{i}, RevData.avg_Fy_inner{i})
+% xlim([0 360])
+% title('F_y')
 
+figure()
+subplot(2,1,1)
+hold on
+plot(SortedData.azimuth{i}, RevData.avg_Mx_outer{i})
+xlim([0 360])
+title('M_x')
+subplot(2,1,2)
+hold on
+plot(SortedData.azimuth{i}, RevData.avg_My_outer{i})
+xlim([0 360])
+title('M_y')
 
+% figure()
+% subplot(2,1,1)
+% hold on
+% plot(SortedData.azimuth{i}, RevData.avg_Mx_inner{i})
+% xlim([0 360])
+% title('M_x')
+% subplot(2,1,2)
+% hold on
+% plot(SortedData.azimuth{i}, RevData.avg_My_inner{i})
+% xlim([0 360])
+% title('M_y')
