@@ -19,6 +19,7 @@ rpms = testmat.rpm;
 
 %%
 phi_plot = [28.1250   39.3750   45.0000   50.6250   67.5000   90.0000];
+phi_plot = 90;
 c = {'+-','o-','*-','.-','x-','s-','d-','^-'};
 cnt=0;
 for phi_des = phi_plot

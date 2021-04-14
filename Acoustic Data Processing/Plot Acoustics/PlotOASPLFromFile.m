@@ -355,7 +355,7 @@ ylabel('OASPL, db')
 figure(8)
 hold on
 [a,b] = sort(phis(loc));
-l = plot(a,oasplA(b),'o-');
+l = plot(a,oasplA(b),'ko-');
 l.MarkerFaceColor = l.Color;
 xlabel('Azimuthal Spacing, \phi')
 ylabel('OASPLA, db')
