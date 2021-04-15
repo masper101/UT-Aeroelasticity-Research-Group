@@ -171,11 +171,21 @@ for k = 1:length(testprefix)
             % phase averaging 
             encname = [testprefix{k} num2str(24) '.wav'];
             enc = audioread(encname);
-            [testdata{k}(micnum).P_sort, testdata{k}(micnum).P_tonal, testdata{k}(micnum).P_bb] = fPhaseAvg(P_t, enc); 
-            N = length(testdata{k}(micnum).P_tonal);
-            [testdata{k}(micnum).fvec_tonal, P_spectra_tonal, ~] = ffind_spectrum(fs, testdata{k}(micnum).P_tonal, 2*N/N_avg, N_avg, window);
-            [testdata{k}(micnum).fvec_bb, P_spectra_bb, ~] = ffind_spectrum(fs, testdata{k}(micnum).P_bb, 2*N/N_avg, N_avg, window);            
-            
+            if max(enc) > 1e-3
+                [testdata{k}(micnum).P_sort, testdata{k}(micnum).P_tonal, testdata{k}(micnum).P_bb, fs_new] = fPhaseAvg(P_t, enc);
+                N = length(testdata{k}(micnum).P_tonal);
+                % freq domain
+                [testdata{k}(micnum).fvec_tonal, P_spectra_tonal, ~] = ffind_spectrum(fs_new, testdata{k}(micnum).P_tonal, N,1);
+                [testdata{k}(micnum).fvec_bb, P_spectra_bb, ~] = ffind_spectrum(fs_new, testdata{k}(micnum).P_bb, 2*N/N_avg, N_avg, window);
+                % db
+                Pref = 20E-6; %[Pa]
+                testdata{k}(micnum).db_tonal = 20*log10(P_spectra_tonal / Pref);
+                testdata{k}(micnum).db_bb = 20*log10(P_spectra_bb / Pref);
+                % oaspl
+                testdata{k}(micnum).oaspl_tonal = fOverallSPL_freq(P_spectra_tonal);
+                testdata{k}(micnum).oaspl_bb = fOverallSPL_freq(P_spectra_bb);   
+            end
+                
             % octave filtering
                 % 1/12
             [testdata{k}(micnum).ofilt12_fvec,testdata{k}(micnum).ofilt12_Pdata] = fOctaveFilter(f,P,12);
@@ -188,13 +198,9 @@ for k = 1:length(testprefix)
             testdata{k}(micnum).dbdata_filt = 20*log10(P_filt / Pref);
             testdata{k}(micnum).ofilt12_dbdata = 20*log10(testdata{k}(micnum).ofilt12_Pdata / Pref);
             testdata{k}(micnum).ofilt3_dbdata = 20*log10(testdata{k}(micnum).ofilt3_Pdata / Pref);
-            testdata{k}(micnum).db_tonal = 20*log10(P_spectra_tonal / Pref);
-            testdata{k}(micnum).db_bb = 20*log10(P_spectra_bb / Pref);
             
             % OASPL
-            testdata{k}(micnum).oaspl = fOverallSPL_time(testdata{k}(micnum).Pdata_t, testdata{k}(micnum).tvec);
-            testdata{k}(micnum).oaspl_tonal = fOverallSPL_freq(P_spectra_tonal, testdata{k}(micnum).fvec_tonal);
-            testdata{k}(micnum).oaspl_bb = fOverallSPL_freq(P_spectra_bb, testdata{k}(micnum).fvec_bb);            
+            testdata{k}(micnum).oaspl = fOverallSPL_time(testdata{k}(micnum).Pdata_t, testdata{k}(micnum).tvec);     
             
             % A-weighting
             A = fAfilt(testdata{k}(micnum).fvec);
