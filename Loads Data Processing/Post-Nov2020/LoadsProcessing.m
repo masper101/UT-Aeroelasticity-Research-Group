@@ -42,19 +42,20 @@ warning off
 %% INPUTS
 
 directory = '\Users\admin-local\Desktop\Research\02 Data\Streaming';
+directory = '\Users\admin-local\Box\Chloe Lab Stuff\2021 Spring Stacked Rotor\Outdoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [69 54	29.88]; % [T(Farenh), % humidity, P(in.Hg)]
+conditions = [54	29.88]; % [T(Farenh), % humidity, P(in.Hg)]
 
-flip = true;
+flip = false;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, rotor, flip);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip,conditions);
 
-[StreamData,SortedData] = fSortStream(StreamData, conditions);
+[StreamData,SortedData] = fSortStream(StreamData);
 RevData = fRevolutionAvg(SortedData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
 
@@ -63,10 +64,10 @@ AvgData = fTotalAvg(RevData,SortedData,StreamData);
 
 fprintf('\n\n%s\n\n', 'Processing done.');
 
-% i = 6;
-% mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}', RevData.avg_Fz_outer{i}', RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}', RevData.avg_Mz_outer{i}'])
-% mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}', RevData.avg_Fz_inner{i}', RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}', RevData.avg_Mz_inner{i}'])
-% 
+i = 1;
+mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}', RevData.avg_Fz_outer{i}', RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}', RevData.avg_Mz_outer{i}'])
+mean([RevData.avg_Fx_inner{i}', RevData.avg_Fy_inner{i}', RevData.avg_Fz_inner{i}', RevData.avg_Mx_inner{i}', RevData.avg_My_inner{i}', RevData.avg_Mz_inner{i}'])
+
 % 
 % i = 5; 
 % mean([RevData.avg_Fx_outer{i}', RevData.avg_Fy_outer{i}',RevData.avg_Fz_outer{i}',RevData.avg_Mx_outer{i}', RevData.avg_My_outer{i}',RevData.avg_Mz_outer{i}'])

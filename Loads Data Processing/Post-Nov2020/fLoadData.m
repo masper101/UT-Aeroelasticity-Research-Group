@@ -269,14 +269,15 @@ for k = 1:nfiles
 %     StreamData.curr2{k} = data{:,curr2col};          %W
     StreamData.revolution{k} = data{:,revcol};       %X
 %     StreamData.trigger{k} = data{:,trigcol};         %Q           
-%     StreamData.nrevs{k} = StreamData.revolution{k}(end);
-      StreamData.tlicol{k} = data{:,t1icol};   
-      StreamData.t2icol{k} = data{:,t2icol};
+    StreamData.nrevs{k} = StreamData.revolution{k}(end);
+%       StreamData.tlicol{k} = data{:,t1icol};   
+%       StreamData.t2icol{k} = data{:,t2icol};
 
     fprintf('%s\n', 'Ok');
 
     if (~flip)
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
+        StreamData.Mz_outer{k} = StreamData.Mz_outer{k}*-1;
     end
     
     StreamData.rho{k} = MeanData.rhos(k);
