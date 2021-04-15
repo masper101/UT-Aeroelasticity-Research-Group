@@ -1,12 +1,14 @@
-function [testnames, testdata, caldata] = fAcProc(directory)
+function [testnames, testdata, caldata] = fAcProc(directory,env,far,varargin)
 % READ AND CONVERT TEST FILES INTO DB VALUES, PLOT EACH MIC
 % CMJOHNSON 05/15/2020
 % INPUTS
+%     env: .temp, .press, .rh - temperature (C), pressure (Pa), rel. humidity(%)
 %     caldata                 -> get calibration factors
 %     testdate
 %     testletter
 %     plots = true or false
 %     Pdoubling = true or false
+%     varargin = structure of inputs [ doubling, date,test,cal,testnum]
 % OUTPUTS
 %     testdata
 %         .fvec               -> frequency vector (1 x 240000)
@@ -34,10 +36,20 @@ function [testnames, testdata, caldata] = fAcProc(directory)
 %         .oasplA
 pdir = pwd;
 cd(directory);
-
+if length(varargin) >0
+    getin = false;
+    inputs = varargin{1};
+else
+    getin = true;
+end
 %% INPUTS
-%Pdoubling
-Pdoubling = input('Pressure doubling [y n] ? ', 's');
+
+if getin
+    Pdoubling = input('Pressure doubling [y n] ? ', 's');
+else
+    Pdoubling = inputs.doubling;
+end
+
 if (Pdoubling == 'y')
     doubling_factor = 1/2; %PRESSURE DOUBLING AT RIGID SURFACE
 else
@@ -54,7 +66,11 @@ dates = unique(extractBefore(filenames,'_'));
 fprintf('\n\t%s', 'Loaded test dates are [YYMMDD] : ')
 fprintf('%s ',dates{:});
 fprintf('\n\t')
-testdates = input('Test Date [YYMMDD] : ', 's');
+if getin
+    testdates = input('Test Date [YYMMDD] : ', 's');
+else
+    testdates = inputs.date;
+end
 testdates = split(testdates, ' ');
 
 %choose tests
@@ -71,7 +87,11 @@ for ii = 1:length(testdates)
     fprintf('\n\t\t%s', 'Loaded tests are : ')
     fprintf('%s ',letters{:});
     fprintf('\n\t\t')
-    testletters{ii} = input('Tests to process : ', 's');
+    if getin
+        testletters{ii} = input('Tests to process : ', 's');
+    else
+        testletters{ii} = inputs.test;
+    end
     testletters{ii} = split(testletters{ii}, ' ');
     
     %choose test numbers
@@ -83,14 +103,23 @@ for ii = 1:length(testdates)
         fprintf('\n\t\t\t%s', 'Loaded calibration tests are : ')
         fprintf('%s ',caltests{:});
         fprintf('\n\t\t\t')
-        calletters{ii}{jj} = input('Calibration test : ', 's');
+        if getin
+            calletters{ii}{jj} = input('Calibration test : ', 's');
+        else
+            calletters{ii}{jj} = inputs.cal;
+        end
         calletters{ii}{jj} = split(calletters{ii}{jj}, ' ');
         
         fprintf('\n\t\t\t%s', 'Loaded test numbers are : ')
         fprintf('%s ',numbers{:});
         fprintf('\n\t\t\t')
-        testnumbers{ii}{jj} = input('Test numbers to process : ', 's');
-        if strcmp(testnumbers{ii}{jj}, 'all')
+        if getin
+            testnumbers{ii}{jj} = input('Test numbers to process : ', 's');
+        else
+            testnumbers{ii}{jj} = inputs.testnum;
+        end
+        
+        if strcmp(testnumbers{ii}{jj},'all')
             testnumbers{ii}{jj} = numbers;
         else 
             testnumbers{ii}{jj} = split(testnumbers{ii}{jj}, ' ');
@@ -131,6 +160,7 @@ for k = 1:length(testprefix)
     testdata{k}.name = extractBefore(testprefix{k},' -');  
     testnames{k} = extractBefore(testprefix{k},' -');  
     fprintf('\n%s\n',['Processing Data. Data file: ', testdata{k}.name])
+    fprintf('%s\n',['      SPL    SPLtl   SPLbb   SPLfar    SPLfartl  SPLfarbb  SPLfarA    SPLfarAtl  SPLfarAbb'])
     for micnum = 1:16
         fname = [testprefix{k} num2str(micnum) '.wav'];
         if isfile(fname)
@@ -153,8 +183,7 @@ for k = 1:length(testprefix)
             
             % filter
             window = 'hamming';
-            N_avg = 20; 
-                % 20 avgs with 50% overlap
+            N_avg = 20; % N_avg = 20; % 20 avgs with 50% overlap
             [testdata{k}(micnum).fvec_filt, testdata{k}(micnum).testmag_filt, ~] = ffind_spectrum(fs, x, 2*N/N_avg, N_avg, window);
             mag_filt = testdata{k}(micnum).testmag_filt;
             
@@ -166,60 +195,66 @@ for k = 1:length(testprefix)
             P_filt = testdata{k}(micnum).Pdata_filt;            
                 % time domain
             testdata{k}(micnum).Pdata_t = x * caldata{k}(micnum).calfactor * doubling_factor;
-            P_t = testdata{k}(micnum).Pdata_t; 
             
-            % phase averaging 
-            encname = [testprefix{k} num2str(24) '.wav'];
-            enc = audioread(encname);
-            if max(enc) > 1e-3
-                [testdata{k}(micnum).P_sort, testdata{k}(micnum).P_tonal, testdata{k}(micnum).P_bb, fs_new] = fPhaseAvg(P_t, enc);
-                N = length(testdata{k}(micnum).P_tonal);
-                [testdata{k}(micnum).fvec_tonal, P_spectra_tonal, ~] = ffind_spectrum(fs_new, testdata{k}(micnum).P_tonal, N,1);
-                [testdata{k}(micnum).fvec_bb, P_spectra_bb, ~] = ffind_spectrum(fs_new, testdata{k}(micnum).P_bb, 2*N/N_avg, N_avg, window);
-                % db
-                Pref = 20E-6; %[Pa]
-                testdata{k}(micnum).db_tonal = 20*log10(P_spectra_tonal / Pref);
-                testdata{k}(micnum).db_bb = 20*log10(P_spectra_bb / Pref);
-                %oaspl
-                testdata{k}(micnum).oaspl_tonal = fOverallSPL_freq(P_spectra_tonal);
-                testdata{k}(micnum).oaspl_bb = fOverallSPL_freq(P_spectra_bb);   
-            end
-                
             % octave filtering
                 % 1/12
-            [testdata{k}(micnum).ofilt12_fvec,testdata{k}(micnum).ofilt12_Pdata] = fOctaveFilter(f,P,12);
+            %[testdata{k}(micnum).ofilt12_fvec,testdata{k}(micnum).ofilt12_Pdata] = fOctaveFilter(f,P,12);
                 % 1/3
-            [testdata{k}(micnum).ofilt3_fvec,testdata{k}(micnum).ofilt3_Pdata] = fOctaveFilter(f,P,3);
+            %[testdata{k}(micnum).ofilt3_fvec,testdata{k}(micnum).ofilt3_Pdata] = fOctaveFilter(f,P,3);
             
             % convert to dB
             Pref = 20E-6; %[Pa]
             testdata{k}(micnum).dbdata = 20*log10(P / Pref);
             testdata{k}(micnum).dbdata_filt = 20*log10(P_filt / Pref);
-            testdata{k}(micnum).ofilt12_dbdata = 20*log10(testdata{k}(micnum).ofilt12_Pdata / Pref);
-            testdata{k}(micnum).ofilt3_dbdata = 20*log10(testdata{k}(micnum).ofilt3_Pdata / Pref);
+            %testdata{k}(micnum).ofilt12_dbdata = 20*log10(testdata{k}(micnum).ofilt12_Pdata / Pref);
+            %testdata{k}(micnum).ofilt3_dbdata = 20*log10(testdata{k}(micnum).ofilt3_Pdata / Pref);
             
-            % OASPL
-            testdata{k}(micnum).oaspl = fOverallSPL_time(testdata{k}(micnum).Pdata_t, testdata{k}(micnum).tvec);     
+            % filter spectrum
+            % use values bpf = 80 Hz, df = 1Hz, npeaks = 28, 2% to 5%
+            [pmsbb,pmstl] = remove_peaks(80,1,28,P_filt.^2,.02,.05);
+            testdata{k}(micnum).dBbb = 10*log10(pmsbb/Pref^2);
+            testdata{k}(micnum).dBtl = 10*log10(pmstl/Pref^2);
+            
+            % propagation
+            testdata{k}(micnum).dBfar = propagate(testdata{k}(micnum).fvec_filt',testdata{k}(micnum).dbdata_filt,far.dist,far.dist_fac,env.temp,env.press,env.hr);
+            testdata{k}(micnum).dBfarbb = propagate(testdata{k}(micnum).fvec_filt',testdata{k}(micnum).dBbb,far.dist,far.dist_fac,env.temp,env.press,env.hr);
+            testdata{k}(micnum).dBfartl = propagate(testdata{k}(micnum).fvec_filt',testdata{k}(micnum).dBtl,far.dist,far.dist_fac,env.temp,env.press,env.hr);
+            
             
             % A-weighting
             A = fAfilt(testdata{k}(micnum).fvec);
             testdata{k}(micnum).dbAdata = testdata{k}(micnum).dbdata + A';
-            A_12 = fAfilt(testdata{k}(micnum).ofilt12_fvec);
-            testdata{k}(micnum).ofilt12_dbAdata = testdata{k}(micnum).ofilt12_dbdata + A_12';
             A_filt = fAfilt(testdata{k}(micnum).fvec_filt);
             testdata{k}(micnum).dbAdata_filt = testdata{k}(micnum).dbdata_filt + A_filt';
+            testdata{k}(micnum).dBfarA = testdata{k}(micnum).dBfar+ A_filt';
+            testdata{k}(micnum).dBfarAbb = testdata{k}(micnum).dBfarbb+ A_filt';
+            testdata{k}(micnum).dBfarAtl = testdata{k}(micnum).dBfartl+ A_filt';
+            
+            % OASPL
+            testdata{k}(micnum).oaspl = fOverallSPL_time(testdata{k}(micnum).Pdata_t, testdata{k}(micnum).tvec);
             testdata{k}(micnum).oasplA = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dbAdata / 20));
+            testdata{k}(micnum).oasplbb = fOverallSPL_freq(sqrt(pmsbb));
+            testdata{k}(micnum).oaspltl = fOverallSPL_freq(sqrt(pmstl));
+            testdata{k}(micnum).oasplfar = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfar / 20));
+            testdata{k}(micnum).oasplfarbb = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfarbb / 20));
+            testdata{k}(micnum).oasplfartl = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfartl / 20));
+            testdata{k}(micnum).oasplfarA = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfarA / 20));
+            testdata{k}(micnum).oasplfarAbb = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfarAbb / 20));
+            testdata{k}(micnum).oasplfarAtl = fOverallSPL_freq(Pref * 10.^(testdata{k}(micnum).dBfarAtl / 20));
     
-            fprintf('%s\n',['OASPL = ',num2str(testdata{k}(micnum).oaspl)])
+            
+            
+            fprintf('%7.2f %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f \n',testdata{k}(micnum).oaspl,testdata{k}(micnum).oaspltl,testdata{k}(micnum).oasplbb,testdata{k}(micnum).oasplfar,testdata{k}(micnum).oasplfartl, testdata{k}(micnum).oasplfarbb,testdata{k}(micnum).oasplfarA,testdata{k}(micnum).oasplfarAtl, testdata{k}(micnum).oasplfarAbb)
         end
     end
-    cd(pdir);
+    %cd(pdir);
     fprintf('\n\t')
 %% VISUALIZE    
 %     worv = input('Visualize (v) test data ? ', 's');
 worv = 'n';
     switch worv
         case 'v'
+            
             %FREQ DOMAIN
             figure(11)
             for micnum = 1:8
