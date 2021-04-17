@@ -1,7 +1,12 @@
-function [ynopeak,ypeak] = remove_peaks(f0,df,n,y,p1,p2)
+function [ynopeak,ypeak] = remove_peaks(f0,df,n,y,inner,outer)
 % filter at n multiples of index i0
 % inputs:
-% p1
+% f0, first frequency
+% df, freq step size
+% n - number of peaks to filter
+% y total signal
+% inner - inner range (index units)
+% outer - outer range (index units)
 
 ynopeak = y;
 
@@ -11,17 +16,18 @@ if f0/df ~= i0
 end
 
 for icen = i0:i0:n*i0 % for each peak region
-    fp = round(icen*df) % peak frequency
+    fp = round(icen*df); % peak frequency
     
-    i1 = round(fp*p1/df) % width 1 in Hz, also index
-    i2 = round(fp*p2/df) % width 2 in Hz, also index
-    
+    % use percentage
+    %i1 = ceil(fp*p1/df); % width 1 in Hz, also index
+    %i2 = ceil(fp*p2/df); % width 2 in Hz, also index
+       
     % extract non peak data
-    ybb = y([icen-i2:icen-i1,icen+i1:icen+i2]);
+    ybb = y([icen-outer:icen-inner,icen+inner:icen+outer]);
     ybb = mean(ybb); % average of non peak data
     
     % replace peak with min of average value or total noise
-    ynopeak(icen-i1:icen+i1) = min(y(icen-i1:icen+i1),ybb);
+    ynopeak(icen-inner:icen+inner) = min(y(icen-inner:icen+inner),ybb);
 end
 
 ypeak = y - ynopeak; % data with peaks only

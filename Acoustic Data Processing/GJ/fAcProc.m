@@ -210,8 +210,8 @@ for k = 1:length(testprefix)
             %testdata{k}(micnum).ofilt3_dbdata = 20*log10(testdata{k}(micnum).ofilt3_Pdata / Pref);
             
             % filter spectrum
-            % use values bpf = 80 Hz, df = 1Hz, npeaks = 28, 2% to 5%
-            [pmsbb,pmstl] = remove_peaks(80,1,28,P_filt.^2,.02,.05);
+            % remove_peaks(bpf in Hz, df in Hz, npeaks, pressure^2, inner%, outer%)
+            [pmsbb,pmstl] = remove_peaks(40,1,35,P_filt.^2,15,25);
             testdata{k}(micnum).dBbb = 10*log10(pmsbb/Pref^2);
             testdata{k}(micnum).dBtl = 10*log10(pmstl/Pref^2);
             

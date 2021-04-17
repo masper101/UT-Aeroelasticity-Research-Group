@@ -42,19 +42,20 @@ warning off
 %% INPUTS
 
 directory = '\Users\admin-local\Desktop\Research\02 Data\Streaming';
+directory = '/Users/chloe/Box/Chloe Lab Stuff/2021 Spring Stacked Rotor/Outdoor';
 rotor = input('Rotor type [ Uber CCR ]: ', 's');
 
-conditions = [69 54	29.88]; % [T(Farenh), % humidity, P(in.Hg)]
+conditions = [54	29.88]; % [T(Farenh), % humidity, P(in.Hg)]
 
-flip = true;
+flip = false;
 filename = 'Compiled_data_DIC_August_2019.xlsx';
 write_directory = directory;
 
 %% PROCESS
 
-[MeanData,StreamData] = fLoadData(directory, rotor, flip);
+[MeanData,StreamData] = fLoadData(directory, rotor, flip,conditions);
 
-[StreamData,SortedData] = fSortStream(StreamData, conditions);
+[StreamData,SortedData] = fSortStream(StreamData);
 RevData = fRevolutionAvg(SortedData);
 AvgData = fTotalAvg(RevData,SortedData,StreamData);
 

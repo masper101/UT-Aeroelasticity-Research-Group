@@ -46,13 +46,21 @@ inputs.doubling = 'y';
 % inputs.testnum = '8'; %1200 RPM coll:10, i90
 %  inputs.testnum = 'ref'; Background - 0RPM
     
-inputs.date = '201118'; inputs.test = 'b'; inputs.cal = 'a';
+%inputs.date = '201118'; inputs.test = 'b'; inputs.cal = 'a';
 %    inputs.testnum = '5'; %1200 RPM coll:0, i90    
-%    inputs.testnum = '8'; % 1200 RPM coll:10, i90
-    inputs.testnum = '14 5 6 12 7 11 8 9'; % coll sweep i90 1200 RPM
-%inputs.date = '201119'; inputs.test = 'd'; inputs.cal = 'a';
-%    inputs.testnum = '5'; %1200 RPM coll:0, i45  
-%   inputs.testnum = '8'; % 1200 RPM coll:10, i45
+    inputs.testnum = '8'; % 1200 RPM coll:10, i90
+%    inputs.testnum = '14 5 6 12 7 11 8 9'; % coll sweep i90 1200 RPM
+%inputs.testnum = '8';
+inputs.date = '201119'; 
+%inputs.cal = 'i'; inputs.test = 'i'; inputs.testnum = '9'; % 1200 RPM
+%coll:10, i28.125
+%inputs.date = '201118'; inputs.cal = 'a'; inputs.test = 'd'; inputs.testnum = '9'; % 1200 RPM coll:10, i28
+%inputs.cal = 'a'; inputs.test = 'b'; inputs.testnum = '8'; % 1200 RPM coll:10, i39.375
+%inputs.cal = 'a'; inputs.test = 'd'; inputs.testnum = '8'; % 1200 RPM coll:10, i45
+%inputs.cal = 'a'; inputs.test = 'f'; inputs.testnum = '8'; % 1200 RPM coll:10, i50.625
+%inputs.cal = 'i'; inputs.test = 'h'; inputs.testnum = '4'; % 1200 RPM coll:10, i67.5
+inputs.date = '201118'; inputs.cal = 'a'; inputs.test = 'b'; inputs.testnum = '8'; % 1200 RPM coll:10, i90
+
 
 % set environment
 env.temp = 20;
@@ -74,8 +82,8 @@ figure(1); hold on;
 plot(testdata{k}(micnum).tvec-7.4,testdata{k}(micnum).Pdata_t)
 
 
-figure(2); % vs elevtion
-plot(linspace(-90,90,16),[testdata{k}.oaspl])
+%figure(2); % vs elevtion
+%plot(linspace(-90,90,16),[testdata{k}.oaspl])
 
 figure(3);  % spectrum
 %semilogx(tetestdata{k}(micnum).fvec, testdata{k}(micnum).dbdata); hold on
@@ -112,8 +120,8 @@ end
 
 figure(4);
 plot(exp.db); hold on;
-plot(exp.dBbb)
 plot(exp.dBtl)
+plot(exp.dBbb)
 
 
 for i = 1:length(testdata)

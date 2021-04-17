@@ -255,7 +255,7 @@ for k = 1:nfiles
     StreamData.Fz_outer{k} = data{:,Fzocol} * -1;    %C
     StreamData.Mx_outer{k} = data{:,Mxocol};         %D
     StreamData.My_outer{k} = data{:,Myocol};         %E
-    StreamData.Mz_outer{k} = data{:,Mzocol};      %F
+    StreamData.Mz_outer{k} = data{:,Mzocol} *-1;      %F
     StreamData.Fx_inner{k} = data{:,Fxicol};         %G
     StreamData.Fy_inner{k} = data{:,Fyicol};         %H
     StreamData.Fz_inner{k} = data{:,Fzicol};         %I
@@ -269,9 +269,9 @@ for k = 1:nfiles
 %     StreamData.curr2{k} = data{:,curr2col};          %W
     StreamData.revolution{k} = data{:,revcol};       %X
 %     StreamData.trigger{k} = data{:,trigcol};         %Q           
-%     StreamData.nrevs{k} = StreamData.revolution{k}(end);
-      StreamData.tlicol{k} = data{:,t1icol};   
-      StreamData.t2icol{k} = data{:,t2icol};
+    StreamData.nrevs{k} = StreamData.revolution{k}(end);
+%       StreamData.tlicol{k} = data{:,t1icol};   
+%       StreamData.t2icol{k} = data{:,t2icol};
 
     fprintf('%s\n', 'Ok');
 
