@@ -2,8 +2,8 @@
 clear; clc; close all;
 addpath('/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Results');
 
-load('acousticdata.mat')
-load('testmatrix.mat');
+% load('acousticdata.mat')
+% load('testmatrix.mat');
 % load('zc15_ac.mat')
 % load('zc15_ac_testmat.mat')
 load('colors.mat')

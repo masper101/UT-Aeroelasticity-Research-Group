@@ -119,8 +119,8 @@ xlabel('Freq, Hz')
 ylabel('SPL, dB')
 grid on
 leg = phis(loc);
-l = legend(num2str(leg),'location','eastoutside');
-title(l,'\phi')
+% l = legend(num2str(leg([1:6],1)),'location','eastoutside');
+% title(l,'\phi')
 
 figure(3)
 fplotperrev(1200,2)

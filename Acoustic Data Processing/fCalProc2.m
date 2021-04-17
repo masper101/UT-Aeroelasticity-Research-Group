@@ -26,7 +26,7 @@ worv ='n';
 for micnum = 1:16
     fname = [calprefix num2str(micnum) '.wav'];
     if isfile(fname)
-        fprintf('\t%s',['- Mic ', num2str(micnum),' ... '])
+%         fprintf('\t%s',['- Mic ', num2str(micnum),' ... '])
         [caldata(micnum).wavdata, caldata(micnum).fs] = audioread(fname);
         caldata(micnum).tvec = 0: 1/caldata(micnum).fs: (length(caldata(micnum).wavdata)-1)/caldata(micnum).fs;
         
@@ -46,7 +46,7 @@ for micnum = 1:16
 
         %CHECK CALIBRATION
         OASPL = fOverallSPL_freq(caldata(micnum).calfactor * caldata(micnum).calmag);
-        fprintf('%s\n',['OASPL = ',num2str(OASPL)])
+%         fprintf('%s\n',['OASPL = ',num2str(OASPL)])
         
         switch worv
             case 'v'

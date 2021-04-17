@@ -1,11 +1,9 @@
 % PLOT OASPL FROM FILE
 clear; clc; close all;
-addpath('/Users/chloe/Box/Chloe Lab Stuff/2020 Fall Stacked Rotor/Results');
+addpath('/Users/chloe/Box/Chloe Lab Stuff/2021 Spring Stacked Rotor/Results/zc15');
 
-load('acousticdata.mat')
-load('testmatrix.mat');
-% load('zc15_ac.mat')
-% load('zc15_ac_testmat.mat')
+load('zc15_ac.mat')
+load('zc15_ac_testmat.mat');
 load('colors.mat')
 
 %% GET DATA
@@ -28,99 +26,13 @@ grid on
 xlabel('Reference Number')
 ylabel('OASPL, dB')
 yl = ylim;
-hold on
-a=plot([0,0],yl,'--');
-b=plot([5,5],yl,'--');
-c=plot([8,8],yl,'--');
-legend([a,b,c],'201117','201118','201119')
+
 
 %% PLOT ISOLATED ROTOR
-% --------------------990--------------------
-clear oaspl oasplA
-rpm_des = 990; 
-phi_des = 2; 
-diff_des = 0; 
-
-loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(1)
-l = plot(colls(loc),oaspl,'o');
-l.MarkerFaceColor = l.Color;
-grid on
-xlabel('Collective')
-ylabel('OASPL, dB')
-title('Isolated Rotor')
-
-%% --------------------1200--------------------
-clear oaspl oasplA
-rpm_des = 1200; 
-phi_des = 2; 
-diff_des = 0; 
-
-loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(1)
-hold on
-l = plot(colls(loc),oaspl,'o');
-l.MarkerFaceColor = l.Color;
-legend('990 RPM','1200 RPM','location','northwest')
-
-% --------------------1200 201118--------------------
-clear oaspl oasplA
-rpm_des = 1200; 
-phi_des = 2; 
-diff_des = 0; 
-date_des = '201118';
-
-loc = contains(testmat.name, '201118');
-loc = loc & (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(5)
-[a,b] = sort(colls(loc));
-l = plot(a,oaspl(b),'o-');
-l.MarkerFaceColor = l.Color;
-grid on
-xlabel('Collective')
-ylabel('dB')
-title('1200 RPM')
-
-%% PLOT SINGLE ROTOR
-% --------------------990--------------------
-clear oaspl oasplA
-rpm_des = 990; 
-phi_des = 90; 
-diff_des = 0; 
-
-loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(2)
-l = plot(colls(loc),oaspl,'o');
-l.MarkerFaceColor = l.Color;
-grid on
-xlabel('Collective')
-ylabel('OASPL, dB')
-title('4-Bladed Rotor')
-
 % --------------------1200--------------------
 clear oaspl oasplA
 rpm_des = 1200; 
-phi_des = 90; 
+phi_des = 2; 
 diff_des = 0; 
 
 loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
@@ -129,66 +41,20 @@ for i = 1:length(plotdata)
     oaspl(i,1) = plotdata{i}(3).oaspl;
     oasplA(i,1) = plotdata{i}(3).oasplA;
 end
-figure(2)
+figure(1)
 hold on
 l = plot(colls(loc),oaspl,'o');
 l.MarkerFaceColor = l.Color;
 legend('990 RPM','1200 RPM','location','northwest')
 
-% --------------------1200 201118--------------------
-clear oaspl oasplA
-rpm_des = 1200; 
-phi_des = 90; 
-diff_des = 0; 
-date_des = '201118';
-
-loc = contains(testmat.name, '201118');
-loc = loc & (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(5)
-hold on
-[a,b] = sort(colls(loc));
-l = plot(a,oaspl(b),'o-');
-l.MarkerFaceColor = l.Color;
-legend('2-Bladed','4-Bladed','location','northwest')
-
-% --------------------1200 Differential--------------------
-clear oaspl oasplA
-rpm_des = 1200; 
-phi_des = 90; 
-coll_des = 12; 
-date_des = '201118';
-
-loc = contains(testmat.name, '201118');
-loc = loc & (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (colls == coll_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(3)
-hold on
-[a,b] = sort(diffs(loc));
-l = plot(a,oaspl(b),'o-');
-l.MarkerFaceColor = l.Color;
-grid on
-xlabel('Differential')
-ylabel('OASPL, dB')
-title('4-Bladed Rotor')
 
 %% PLOT PHIS
-% --------------------90--------------------
+% -------------------- -90 --------------------
 clear oaspl oasplA
 rpm_des = 1200; 
 phi_des = 90; 
 diff_des = 0; 
-% date_des = '201118';
 
-% loc = contains(testmat.name, '201118');
 loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
 plotdata = {data{loc}};
 for i = 1:length(plotdata)
@@ -212,10 +78,10 @@ l.MarkerFaceColor = l.Color;
 grid on
 xlabel('Collective')
 ylabel('OASPLA, dB')
-% --------------------28.125--------------------
+% -------------------- -45 --------------------
 clear oaspl oasplA
 rpm_des = 1200; 
-phi_des = 28.125; 
+phi_des = -45; 
 diff_des = 0; 
 
 loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
@@ -235,10 +101,45 @@ hold on
 [a,b] = sort(colls(loc));
 l = plot(a,oasplA(b),'o');
 l.MarkerFaceColor = l.Color;
-% --------------------39.375--------------------
+% -------------------- -16.875 --------------------
+clear oaspl oasplA tl bb
+rpm_des = 1200; 
+phi_des = -16.875; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+    tl(i,1) = plotdata{i}(3).dBtl;
+    bb(i,1) = plotdata{i}(3).dBbb;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+
+figure(6)
+    hold on
+    [a,b] = sort(colls(loc));
+    l = plot(a,oasplA(b),'o');
+    l.MarkerFaceColor = l.Color;
+figure(7)
+    hold on
+    [a,b] = sort(colls(loc));
+    l = plot(a,tl(b),'o');
+    l.MarkerFaceColor = l.Color;
+figure(8)
+    hold on
+    [a,b] = sort(colls(loc));
+    l = plot(a,bb(b),'o');
+    l.MarkerFaceColor = l.Color;
+% -------------------- -11.25 --------------------
 clear oaspl oasplA
 rpm_des = 1200; 
-phi_des = 39.375; 
+phi_des = -11.25; 
 diff_des = 0; 
 
 loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
@@ -258,7 +159,116 @@ hold on
 [a,b] = sort(colls(loc));
 l = plot(a,oasplA(b),'o');
 l.MarkerFaceColor = l.Color;
-% --------------------45--------------------
+% -------------------- -5.625 --------------------
+clear oaspl oasplA
+rpm_des = 1200; 
+phi_des = -5.625; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+
+figure(6)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oasplA(b),'o');
+l.MarkerFaceColor = l.Color;
+% --------------------0--------------------
+clear oaspl oasplA
+rpm_des = 1200; 
+phi_des = 0; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+% -------------------- 5.625 --------------------
+clear oaspl oasplA
+rpm_des = 1200; 
+phi_des = 5.625; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+
+figure(6)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oasplA(b),'o');
+l.MarkerFaceColor = l.Color;
+% -------------------- 11.25 --------------------
+clear oaspl oasplA
+rpm_des = 1200; 
+phi_des = 11.25; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+
+figure(6)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oasplA(b),'o');
+l.MarkerFaceColor = l.Color;
+% -------------------- 16.875 --------------------
+clear oaspl oasplA
+rpm_des = 1200; 
+phi_des = 16.875; 
+diff_des = 0; 
+
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+    oaspl(i,1) = plotdata{i}(3).oaspl;
+    oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;
+
+figure(6)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oasplA(b),'o');
+l.MarkerFaceColor = l.Color;
+% -------------------- 45 --------------------
 clear oaspl oasplA
 rpm_des = 1200; 
 phi_des = 45; 
@@ -281,10 +291,10 @@ hold on
 [a,b] = sort(colls(loc));
 l = plot(a,oasplA(b),'o');
 l.MarkerFaceColor = l.Color;
-% --------------------50.625--------------------
+% -------------------- 90 --------------------
 clear oaspl oasplA
 rpm_des = 1200; 
-phi_des = 50.625; 
+phi_des = 90; 
 diff_des = 0; 
 
 loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
@@ -304,61 +314,92 @@ hold on
 [a,b] = sort(colls(loc));
 l = plot(a,oasplA(b),'o');
 l.MarkerFaceColor = l.Color;
-% --------------------67.5--------------------
-clear oaspl oasplA
-rpm_des = 1200; 
-phi_des = 67.5; 
-diff_des = 0; 
-
-loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
-plotdata = {data{loc}};
-for i = 1:length(plotdata)
-    oaspl(i,1) = plotdata{i}(3).oaspl;
-    oasplA(i,1) = plotdata{i}(3).oasplA;
-end
-figure(4)
-hold on
-[a,b] = sort(colls(loc));
-l = plot(a,oaspl(b),'o');
-l.MarkerFaceColor = l.Color;
-l = legend('90','28.125','39.375','45','50.625','67.5','location','northwest');
+%----------------
+l = legend('-90','-45', '-16.875','-11.25','-5.625','0','5.625','11.25','16.875','45','90','location','northwest');
 title(l,'\phi')
 
-figure(6)
-hold on
-[a,b] = sort(colls(loc));
-l = plot(a,oasplA(b),'o');
-l.MarkerFaceColor = l.Color;
-
-l = legend('90','28.125','39.375','45','50.625','67.5','location','northwest');
+figure(4)
+l = legend('-90','-45', '-16.875','-11.25','-5.625','0','5.625','11.25','16.875','45','90','location','northwest');
 title(l,'\phi')
 
 %% PLOT VS PHI
-clear oaspl oasplA
+clear oaspl oasplA bb tl phi_uni oaspls oasplAs tls bbs
 rpm_des = 1200; 
-coll_des = 12; 
+coll_des = 10; 
 diff_des = 0; 
 
-loc = (contains(testmat.name, '201118'))|(contains(testmat.name, '201119'));
-loc = (phis ~= 2) & loc & (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (colls == coll_des) & (diffs == diff_des);
+loc = (phis ~= 2)& (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (colls == coll_des) & (diffs == diff_des);
 plotdata = {data{loc}};
 for i = 1:length(plotdata)
     oaspl(i,1) = plotdata{i}(3).oaspl;
     oasplA(i,1) = plotdata{i}(3).oasplA;
+    bb(i,1) = plotdata{i}(3).dBbb;
+    tl(i,1) = plotdata{i}(3).dBtl;
 end
+
+phi_plot = phis(loc);
+phi_uni = unique(phi_plot);
+for i = 1:length(phi_uni)
+    loc = phi_plot==phi_uni(i);
+    oaspls(i,1) = mean(oaspl(loc));
+    oasplAs(i,1) =mean(oasplA(loc));
+    bbs(i,1) = mean(bb(loc));
+    tls(i,1) = mean(tl(loc));
+end
+
+loc_90 = phi_uni==90;
+phi_uni =[phi_uni; -1*phi_uni(loc_90)];
+oaspls = [oaspls; oaspls(loc_90)];
+oasplAs = [oasplAs; oasplAs(loc_90)];
+bbs = [bbs; bbs(loc_90)];
+tls = [tls; tls(loc_90)];
+
 figure(7)
 hold on
-[a,b] = sort(phis(loc));
-l = plot(a,oaspl(b),'o-');
+[a,b] = sort(phi_uni);
+l = plot(a,oaspls(b),'ko-');
 l.MarkerFaceColor = l.Color;
 xlabel('Azimuthal Spacing, \phi')
 ylabel('OASPL, db')
 
 figure(8)
 hold on
-[a,b] = sort(phis(loc));
-l = plot(a,oasplA(b),'ko-');
+[a,b] = sort(phi_uni);
+l = plot(a,oasplAs(b),'ko-');
 l.MarkerFaceColor = l.Color;
 xlabel('Azimuthal Spacing, \phi')
 ylabel('OASPLA, db')
 
+figure(7)
+hold on
+[a,b] = sort(phi_uni);
+l = plot(a,bbs(b),'o-');
+l.MarkerFaceColor = l.Color;
+xlabel('Azimuthal Spacing, \phi')
+ylabel('Broadband Noise, dB')
+
+figure(7)
+hold on
+[a,b] = sort(phi_uni);
+l = plot(a,tls(b),'ko-');
+l.MarkerFaceColor = l.Color;
+xlabel('Azimuthal Spacing, \phi')
+ylabel('Tonal + Loading Noise, dB')
+
+
+%% any
+clear oaspl oasplA
+rpm_des = 990;
+phi_des = -11.25;
+diff_des = 0;
+loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs == diff_des);
+plotdata = {data{loc}};
+for i = 1:length(plotdata)
+oaspl(i,1) = plotdata{i}(3).oaspl;
+oasplA(i,1) = plotdata{i}(3).oasplA;
+end
+figure(4)
+hold on
+[a,b] = sort(colls(loc));
+l = plot(a,oaspl(b),'o');
+l.MarkerFaceColor = l.Color;

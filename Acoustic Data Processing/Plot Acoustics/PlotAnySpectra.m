@@ -3,16 +3,16 @@
 load('colors.mat')
 
 %% INPUTS
-clear h 
+% clear h
 phi_plot = [28.1250   39.3750   45.0000   50.6250   67.5000   90.0000];
-phi_plot = [90];
+phi_plot = [45,90];
 for cnt = 1:length(phi_plot)
 phi_des = phi_plot(cnt);
 rpm_des = 1200;  
 diff_des = 0; 
-coll_des = 12;
-c = colors{cnt+1};
-markerstyle = {'o','o','*','.','x','s','d','^'};
+coll_des = 10;
+c = colors{cnt};
+markerstyle = {'o','v','*','.','x','s','d','^'};
 m = markerstyle{cnt};
 
 % loc = contains(testmat.name, '201118');
@@ -20,12 +20,12 @@ loc = (rpms > rpm_des*.98) & (rpms < rpm_des*1.02) & (phis == phi_des) & (diffs 
 % loc = contains(testmat.name, '201118')&contains(testmat.name, 'ref')&contains(testmat.name, 'b');
 % PLOT W PEAKS
 plotdata = {data{loc}};
-for i = 1
+for i = length(plotdata)
     figure(1)
-    semilogx(plotdata{i}(3).f, plotdata{i}(3).dbA,'color',c,'linewidth',0.7)
+    semilogx(plotdata{i}(3).f, plotdata{i}(3).db,'color',c,'linewidth',0.7)
     hold on
     
-    [a,b] = findpeaks(plotdata{i}(3).dbA,'Npeaks',12,'MinPeakDistance',35);
+    [a,b] = findpeaks(plotdata{i}(3).db,'Npeaks',12,'MinPeakDistance',35);
     h(cnt) = semilogx(plotdata{i}(3).f(b),a,m,'color',c,'markerfacecolor',c);
     hold on
 end

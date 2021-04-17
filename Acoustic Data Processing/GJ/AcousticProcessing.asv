@@ -93,48 +93,44 @@ ylabel('SPL, dB \Delta f = 1Hz')
 % fplotperrev(RPM,bladenumber)
 
 %% save
-% exp = table(); %data structure for saving
-% % make vector for specific mic from multiple tests
-% for i = 1:length(testdata)
-% exp.names{i} = [testdata{i}(1).name];
-% exp.db(i,1) = [testdata{i}(micnum).oaspl];
-% exp.dbA(i,1) = [testdata{i}(micnum).oasplA];
-% exp.dBbb(i,1) = [testdata{i}(micnum).oasplbb];
-% exp.dBtl(i,1) = [testdata{i}(micnum).oaspltl];
-% exp.dbfar(i,1) = [testdata{i}(micnum).oasplfar];
-% exp.dbfarbb(i,1) = [testdata{i}(micnum).oasplfarbb];
-% exp.dbfartl(i,1) = [testdata{i}(micnum).oasplfartl];
-% exp.dbfarA(i,1) = [testdata{i}(micnum).oasplfarA];
-% exp.dbfarAbb(i,1) = [testdata{i}(micnum).oasplfarAbb];
-% exp.dbfarAtl(i,1) = [testdata{i}(micnum).oasplfarAtl];
-% end
-% 
-% 
-% figure(4);
-% plot(exp.db); hold on;
-% plot(exp.dBbb)
-% plot(exp.dBtl)
-addpath('\Users\admin-local\Box\Chloe Lab Stuff\2021 Spring Stacked Rotor\Results')
-% load('zc15_ac_v2.mat')
-
-% for i = length(data)+1:length(data)+1+length(testdata)
+exp = table(); %data structure for saving
+% make vector for specific mic from multiple tests
 for i = 1:length(testdata)
-%     j = i -length(data);
-j = i;
-    data{i}(1).name = [testdata{j}(1).name];
-for micnum = 1:14
-data{i}(micnum).f = [testdata{j}(micnum).fvec_filt];
-data{i}(micnum).db = [testdata{j}(micnum).dbdata_filt];
-data{i}(micnum).dbA = [testdata{j}(micnum).dbAdata_filt];
-data{i}(micnum).oaspl = [testdata{j}(micnum).oaspl];
-data{i}(micnum).oasplA = [testdata{j}(micnum).oasplA];
-data{i}(micnum).dBbb = [testdata{j}(micnum).oasplbb];
-data{i}(micnum).dBtl = [testdata{j}(micnum).oaspltl];
-data{i}(micnum).dbfar = [testdata{j}(micnum).oasplfar];
-data{i}(micnum).dbfarbb = [testdata{j}(micnum).oasplfarbb];
-data{i}(micnum).dbfartl = [testdata{j}(micnum).oasplfartl];
-data{i}(micnum).dbfarA = [testdata{j}(micnum).oasplfarA];
-data{i}(micnum).dbfarAbb = [testdata{j}(micnum).oasplfarAbb];
-data{i}(micnum).dbfarAtl = [testdata{j}(micnum).oasplfarAtl];
+exp.names{i} = [testdata{i}(1).name];
+exp.db(i,1) = [testdata{i}(micnum).oaspl];
+exp.dbA(i,1) = [testdata{i}(micnum).oasplA];
+exp.dBbb(i,1) = [testdata{i}(micnum).oasplbb];
+exp.dBtl(i,1) = [testdata{i}(micnum).oaspltl];
+exp.dbfar(i,1) = [testdata{i}(micnum).oasplfar];
+exp.dbfarbb(i,1) = [testdata{i}(micnum).oasplfarbb];
+exp.dbfartl(i,1) = [testdata{i}(micnum).oasplfartl];
+exp.dbfarA(i,1) = [testdata{i}(micnum).oasplfarA];
+exp.dbfarAbb(i,1) = [testdata{i}(micnum).oasplfarAbb];
+exp.dbfarAtl(i,1) = [testdata{i}(micnum).oasplfarAtl];
+end
+
+
+figure(4);
+plot(exp.db); hold on;
+plot(exp.dBbb)
+plot(exp.dBtl)
+
+
+for i = 1:length(testdata)
+    data{i}(1).name = [testdata{i}(1).name];
+for micnum = 1:16
+data{i}(micnum).f = [testdata{i}(micnum).fvec_filt];
+data{i}(micnum).db = [testdata{i}(micnum).dbdata_filt];
+data{i}(micnum).dbA = [testdata{i}(micnum).dbAdata_filt];
+data{i}(micnum).oaspl = [testdata{i}(micnum).oaspl];
+data{i}(micnum).oasplA = [testdata{i}(micnum).oasplA];
+data{i}(micnum).dBbb = [testdata{i}(micnum).oasplbb];
+data{i}(micnum).dBtl = [testdata{i}(micnum).oaspltl];
+data{i}(micnum).dbfar = [testdata{i}(micnum).oasplfar];
+data{i}(micnum).dbfarbb = [testdata{i}(micnum).oasplfarbb];
+data{i}(micnum).dbfartl = [testdata{i}(micnum).oasplfartl];
+data{i}(micnum).dbfarA = [testdata{i}(micnum).oasplfarA];
+data{i}(micnum).dbfarAbb = [testdata{i}(micnum).oasplfarAbb];
+data{i}(micnum).dbfarAtl = [testdata{i}(micnum).oasplfarAtl];
 end
 end
