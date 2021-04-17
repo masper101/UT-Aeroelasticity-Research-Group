@@ -4,7 +4,7 @@ AvgData_corr = AvgData;
 
 %% INPUTS
 RPM_des = 1200; 
-phi_des = 16.875; 
+phi_des = 45; 
 diffcol_des = 0; 
 
 upcolor = colors{5};
@@ -22,11 +22,13 @@ col = MeanData.meancols;
 RPMs = MeanData.RPMs;
 col_uni = unique(col);
 col_uni = col_uni(col_uni~=-4);
+err = [AvgData_corr.err_cts_outer{:}]';
 
 %% GET DATA
 for i = 1:length(col_uni)
     loc =(RPMs> RPM_des*.98)&(RPMs < RPM_des*1.02);
     loc = (col_uni(i) == col)&loc & (phis == phi_des);% & (diffcols == diffcol_des);
+    loc=loc&(err<0.001);
     
     CT_data(i) = mean([AvgData_corr.avg_cts_total{loc}]);
     CTerr(i) = sumsquares([AvgData_corr.err_cts_total{loc}]);
@@ -48,7 +50,7 @@ end
 
 %% PLOT
 % ************************** CT **************************
-figure(1)
+figure(5)
 hold on
 errorbar(col_uni,CTlo,CTloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
@@ -72,7 +74,7 @@ hold on
 errorbar(col_uni,CPlo,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
 errorbar(col_uni,CPup,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
-errorbar(col_uni,CP_data,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
+% errorbar(col_uni,CP_data,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 xlabel('Collective, \theta_0 [deg]')
 ylabel('C_P/ \sigma')
 set(gca,'FontSize',18)
@@ -89,7 +91,7 @@ hold on
 errorbar(CPlo,CTlo,CTloerr, CTloerr, CPloerr,CPloerr, 's','color',locolor,'MarkerEdgeColor',locolor,'MarkerFaceColor',locolor,'LineWidth', 1)
 hold on
 errorbar(CPup,CTup,CTuperr, CTuperr,CPuperr,CPuperr,'^','color',upcolor,'MarkerEdgeColor',upcolor,'MarkerFaceColor',upcolor,'LineWidth', 1)
-errorbar(CP_data,CT_data,CTerr,CTerr,CPerr,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
+% errorbar(CP_data,CT_data,CTerr,CTerr,CPerr,CPerr, 'o','color',totcolor,'MarkerEdgeColor',totcolor,'MarkerFaceColor',totcolor,'LineWidth', 1)
 ylabel('C_T/ \sigma')
 xlabel('C_P/ \sigma')
 set(gca,'FontSize',18)

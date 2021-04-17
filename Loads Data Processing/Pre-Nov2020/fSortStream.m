@@ -55,9 +55,9 @@ for k = 1:length(StreamData.names)
     StreamData.binsize{k} = zeros(1,StreamData.nrevs{k});
     for n = 1:StreamData.nrevs{k}
         StreamData.binsize{k}(n) = sum(StreamData.revolution{k}(:) == n-1);
-%         if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 10 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
-%             StreamData.binsize{k}(n) = StreamData.binsize{k}(1) + 10;
-%         end
+        if StreamData.binsize{k}(n) > StreamData.binsize{k}(1) + 100 %CUT OFF REV WHERE ENCODER MISSED NEXT REV SIGNAL 
+            StreamData.binsize{k}(n) = StreamData.binsize{k}(1);
+        end
     end
     StreamData.OMEGA{k} = SR./StreamData.binsize{k} * 2 * pi;
     SortedData.binsize{k} = StreamData.binsize{k};

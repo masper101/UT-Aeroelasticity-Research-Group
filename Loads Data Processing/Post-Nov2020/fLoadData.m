@@ -255,7 +255,7 @@ for k = 1:nfiles
     StreamData.Fz_outer{k} = data{:,Fzocol} * -1;    %C
     StreamData.Mx_outer{k} = data{:,Mxocol};         %D
     StreamData.My_outer{k} = data{:,Myocol};         %E
-    StreamData.Mz_outer{k} = data{:,Mzocol};      %F
+    StreamData.Mz_outer{k} = data{:,Mzocol} *-1;      %F
     StreamData.Fx_inner{k} = data{:,Fxicol};         %G
     StreamData.Fy_inner{k} = data{:,Fyicol};         %H
     StreamData.Fz_inner{k} = data{:,Fzicol};         %I
@@ -277,7 +277,6 @@ for k = 1:nfiles
 
     if (~flip)
         StreamData.Fz_inner{k} = StreamData.Fz_inner{k}*-1;
-        StreamData.Mz_outer{k} = StreamData.Mz_outer{k}*-1;
     end
     
     StreamData.rho{k} = MeanData.rhos(k);

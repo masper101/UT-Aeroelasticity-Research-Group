@@ -10,7 +10,7 @@ for i = 1:length(AvgData_corr.avg_cps_inner)
 end
 
 RPM_des = 1200;
-col_des = 10;
+col_des = 12;
 diffcol_des = 0;
 seperate = false;
 upcolor = colors{5};

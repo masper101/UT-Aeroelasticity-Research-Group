@@ -247,7 +247,7 @@ for k = 1:length(StreamData.names)
             SortedData.Mz_inner{k}(1,:) = [];
             SortedData.ax{k}(1,:) = [];
             SortedData.ay{k}(1,:) = [];
-
+    
     OMEGA = StreamData.OMEGA{k}(2:length(StreamData.OMEGA{k}));
     SortedData.cts_outer{k} = SortedData.Fz_outer{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 / StreamData.sigma;
     SortedData.cps_outer{k} = SortedData.Mz_outer{k} ./ StreamData.rho{k} / (pi * StreamData.R^2) ./ (OMEGA'*StreamData.R).^2 /StreamData.R / StreamData.sigma;
