@@ -1,0 +1,6 @@
+This folder contains MATLAB simulink models of the LaunchPoint electric motor controller. The model predicts the coupled dynamics of the rotor-motor system by utilizing FOC and BEMT.
+
+Files:
+...speedChange -- performs a constant collective speed change with rotor sync NOT enabled.
+...angleChange -- performs an index angle change under constant collective and constant speed.
+...torqueCmd -- performs a torque-controlled command where the motor simply uses the current controller and not the speed nor position controllers.
